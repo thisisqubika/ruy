@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name        = 'Ruy'
+  s.name        = 'ruy'
   s.version     = '0.0.1'
   s.date        = '2014-06-04'
   s.files       = Dir['lib/**/*']
