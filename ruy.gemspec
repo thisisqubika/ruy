@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'ruy'
-  s.version     = '0.0.1'
-  s.date        = '2014-06-04'
+  s.version     = '0.1.0'
+  s.date        = '2014-07-22'
   s.files       = Dir['lib/**/*']
   s.author      = 'Moove-IT'
   s.license     = 'MIT'
