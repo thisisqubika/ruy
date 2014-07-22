@@ -1,4 +1,4 @@
 ruy
 ===
 
-Rule Engine for Ruby
+Rules Engine for Ruby
