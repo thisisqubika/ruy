@@ -7,6 +7,7 @@ module Ruy
 
       # @param attr Context attribute's name
       def initialize(attr)
+        super()
         @attr = attr
         @params = [@attr]
       end
