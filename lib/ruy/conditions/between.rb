@@ -15,9 +15,7 @@ module Ruy
         super()
 
         @attr = attr
-        @from = from
-        @to = to
-
+        @from, @to = from <= to ? [from, to] : [to, from]
         @params = [@attr, @from, @to]
 
         instance_exec(&block) if block_given?
@@ -25,7 +23,7 @@ module Ruy
 
       def call(var_ctx)
         value = var_ctx.resolve(@attr)
-        @from <= value && value <= @to && super
+        value && @from <= value && value <= @to && super
       end
 
       def ==(o)
