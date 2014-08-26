@@ -73,6 +73,8 @@ module Ruy
     end
   end
 
+  Ruleset = RuleSet
+
   class Context < Hash
     def self.from_hash(hash)
        ctx = Context.new
