@@ -17,12 +17,9 @@ module Ruy
 
         @attr = attr
         @value = value
-
         @params = [@attr, @value]
 
-        if block_given?
-          instance_exec(&block)
-        end
+        instance_exec(&block) if block_given?
       end
 
       def call(var_ctx)

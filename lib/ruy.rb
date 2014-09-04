@@ -62,9 +62,7 @@ module Ruy
 
     def outcome(value, &block)
       outcome = Outcome.new(value)
-
       outcome.instance_exec(&block) if block_given?
-
       @outcomes << outcome
     end
 
@@ -93,9 +91,7 @@ module Ruy
     end
 
     def call(ctx)
-      if super(ctx)
-        @value
-      end
+      @value if super(ctx)
     end
 
     def ==(o)
@@ -107,10 +103,9 @@ module Ruy
 
   # Context that can resolve variable access
   class VariableContext
-    def initialize(ctx, vars)
+    def initialize(ctx, vars = {})
       @ctx = ctx
       @vars = vars
-
       @resolved_vars = {}
     end
 
