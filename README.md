@@ -4,9 +4,9 @@ Rules Engine for Ruby
 
 ##Introduction
 
-Ruy is a [rules engine](http://en.wikipedia.org/wiki/Business_rules_engine) built for detecting when certain conditions obtain, and what events (or outcomes) should be trigger when they do. 
+Ruy is a [rules engine](http://en.wikipedia.org/wiki/Business_rules_engine) built for detecting when certain conditions obtain, and what events (or outcomes) should be trigger when they do.
 
-A Ruy `ruleset` is a combination of `rules` that check for `conditions` and result in zero or more `outcomes`. Rulesets are loaded from an `adapter` that lets developers specify how to persist and store their rules arbitrarily. 
+A Ruy `ruleset` is a combination of `rules` that check for `conditions` and result in zero or more `outcomes`. Rulesets are loaded from an `adapter` that lets developers specify how to persist and store their rules arbitrarily.
 
 ## Example
 ```ruby
@@ -17,7 +17,7 @@ ruleset = Ruy::RuleSet.new
 ruleset.any do
 
     # RuleSets evaluate against Context variables.
-    # Equality, scalarity (less than, greater 
+    # Equality, scalarity (less than, greater
     # than or equal to, etc), and inclusion/exclusion
     # are supported
 
@@ -25,7 +25,7 @@ ruleset.any do
     eq :school, 'University of Texas'
 end
 
-# RuleSets can have multiple outcomes when 
+# RuleSets can have multiple outcomes when
 # conditions obtain in a certain Context.
 
 ruleset.outcome "I matched!"
@@ -70,7 +70,7 @@ rule.eq :age, 21
 rule.call(VariableContext.new({age: 21, name: 'Leah'}, {})) # => true
 ```
 
-Cool thing about this is that by responding to `#call`, rules can do the whole `.()` syntax, or can be tested via `===`. 
+Cool thing about this is that by responding to `#call`, rules can do the whole `.()` syntax, or can be tested via `===`.
 
 `VariableContext`s are Hash-like objects that resolve attributes in some context. Typically, that context is just the hash, but it could be enriched via a `Rule` or extra info.
 
@@ -118,5 +118,25 @@ ruleset.fallback "Nothing Matched"
 ruleset.(Ruy::VariableContext.new({age: 21}, {})) # => "Nothing matched"
 ```
 
+### Time Zone awareness
 
+When it comes to matching times in different time zones, Ruy comes with a built in 'tz' block that will enable specific matchers to support time zone-aware comparisons.
 
+```ruby
+ruleset = Ruy::RuleSet.new
+
+ruleset.tz 'America/New_York' do
+  eq :timestamp, '2015-01-01T00:00:00'
+  outcome 'Happy New Year, NY!'
+end
+```
+
+For example, if the timestamp provided in the context is a Ruby Time object in UTC (zero offset), 'eq' wrapped around 'tz' will take the time zone passed as argument to the block (`America/New_York`) to calculate the current offset and make the comparison.
+
+String time patterns follow the Ruy's well-formed time pattern structure as follows:
+
+`YYYY-MM-DDTHH:MM:SS[z<IANA Time Zone Database identifier>]`
+
+Where the time zone identifier is optional. In case you don't specify it, Ruy will guess the time zone from the 'tz' block's argument. If none is specified, UTC will be used.
+
+Ruy relies on [TZInfo](http://tzinfo.github.io/ "TZ Info website") to calculate offsets using IANA's Time Zone Database.

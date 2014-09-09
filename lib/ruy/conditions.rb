@@ -10,7 +10,4 @@ require_relative 'conditions/include'
 require_relative 'conditions/included'
 require_relative 'conditions/less_than'
 require_relative 'conditions/less_than_or_equal'
-
-module Ruy
-  module Conditions; end
-end
+require_relative 'conditions/tz'
