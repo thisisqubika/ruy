@@ -9,6 +9,16 @@ describe Ruy::Conditions::TZ do
     subject { described_class.new(tz_identifier) }
 
     shared_examples_for 'tz wrapped matchers' do
+      describe 'day_of_week' do
+        before do
+          subject.day_of_week :time, :wednesday
+        end
+
+        it 'returns a truthy value' do
+          expect(subject.call(ctx)).to be_truthy
+        end
+      end
+
       describe 'equality' do
         before do
           subject.eq :time, value
@@ -86,11 +96,12 @@ describe Ruy::Conditions::TZ do
 
     before do
       subject.eq :time, value
+      subject.day_of_week :time, :sunday
     end
 
     it 'returns a hash containing the build parameters' do
       expect(subject.to_hash).to match({node: subject.class.name, params: [tz_identifier],
-        conditions: [subject.conditions.first.to_hash]})
+        conditions: [subject.conditions[0].to_hash, subject.conditions[1].to_hash]})
     end
   end
 

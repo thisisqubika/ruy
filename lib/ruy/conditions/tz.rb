@@ -20,6 +20,14 @@ module Ruy
         end
       end
 
+      # Adds a condition to check the day of the week for the attribute
+      #
+      # @param attr
+      # @param [Fixnum|String] value
+      def day_of_week(attr, value)
+        @conditions << DayOfWeek.new(attr, value, @tz_identifier)
+      end
+
       # Intercepts an 'eq' call to the superclass and enhances its arguments
       #
       # @param (see Ruy::Conditions::Eq#initialize)
