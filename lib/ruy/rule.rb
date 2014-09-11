@@ -51,7 +51,7 @@ module Ruy
       self
     end
 
-    # Load a new role from it hash representation
+    # Load a new rule from its hash representation
     #
     # @param [Hash] hash
     # @return [Ruy::Rule]
@@ -151,6 +151,17 @@ module Ruy
     # @param (see Conditions::LessThan#initialize)
     def less_than(attr, value)
       @conditions << Conditions::LessThan.new(attr, value)
+    end
+
+    # Adds a TZ condition block
+    #
+    # @param [String] tz_identifier String representing IANA's time zone identifier. Defaults to UTC if none passed.
+    # @yield Evaluates the given block in the context of the TZ rule
+    def tz(tz_identifier = 'UTC', &block)
+      cond = Conditions::TZ.new(tz_identifier)
+      cond.instance_exec(&block)
+
+      @conditions << cond
     end
 
     # Gets attribute's value from the given name.
