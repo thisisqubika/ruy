@@ -120,23 +120,67 @@ ruleset.(Ruy::VariableContext.new({age: 21}, {})) # => "Nothing matched"
 
 ### Time Zone awareness
 
-When it comes to matching times in different time zones, Ruy comes with a built in 'tz' block that will enable specific matchers to support time zone-aware comparisons.
+When it comes to matching times in different time zones, Ruy comes with a built in `tz` block that will enable specific matchers to support time zone-aware comparisons.
 
 ```ruby
 ruleset = Ruy::RuleSet.new
 
 ruleset.tz 'America/New_York' do
   eq :timestamp, '2015-01-01T00:00:00'
-  outcome 'Happy New Year, NY!'
+  outcome 'Happy New Year, NYC!'
 end
 ```
 
-For example, if the timestamp provided in the context is a Ruby Time object in UTC (zero offset), 'eq' wrapped around 'tz' will take the time zone passed as argument to the block (`America/New_York`) to calculate the current offset and make the comparison.
+For example, if the timestamp provided in the context is a Ruby Time object in UTC (zero offset), `eq` wrapped around `tz` will take the time zone passed as argument to the block (`America/New_York`) to calculate the current offset and make the comparison.
 
 String time patterns follow the Ruy's well-formed time pattern structure as follows:
 
 `YYYY-MM-DDTHH:MM:SS[z<IANA Time Zone Database identifier>]`
 
-Where the time zone identifier is optional. In case you don't specify it, Ruy will guess the time zone from the 'tz' block's argument. If none is specified, UTC will be used.
+Where the time zone identifier is optional. In case you don't specify it, Ruy will guess the time zone from the `tz` block's argument. If none is specified, UTC will be used.
+
+You can use any other matcher inside a `tz` block, even those that do not support time zones as of yet.
+
+```ruby
+ruleset = Ruy::RuleSet.new
+
+ruleset.tz 'America/New_York' do
+  eq :timestamp, '2015-01-01T00:00:00'
+  all do
+    eq :place, 'Times Square'
+    greater_than :number_of_people, 1
+  end
+  outcome 'Happy New Year, NYC!'
+end
+```
+
+Currently supported matchers inside `tz` are:
+* `day_of_week`
+* `eq`
+* `greater_than_or_equal`
+* `less_than`
+* `less_than_or_equal`
+* `between`
+
+Other matchers will just behave like a standard Ruy matcher inside the block.
+
+You cannot use matchers inside `tz` sub-blocks expecting them to work as immediate children.
+
+```ruby
+ruleset = Ruy::RuleSet.new
+
+ruleset.tz 'America/New_York' do
+  all do
+    eq :timestamp, '2015-01-01T00:00:00' # Won't work because it'll compare against the String
+    eq :place, 'Times Square'
+    greater_than :number_of_people, 1
+  end
+  outcome 'Happy New Year, NYC!'
+end
+```
+
+For the moment being, if you want to do something like that, you should put your sub-block's time zone-aware matchers inside another `tz` block as a workaround.
+
+We plan to have this feature available in future versions.
 
 Ruy relies on [TZInfo](http://tzinfo.github.io/ "TZ Info website") to calculate offsets using IANA's Time Zone Database.
