@@ -2,6 +2,7 @@ require_relative 'ruy/rule'
 require_relative 'ruy/adapters'
 require_relative 'ruy/conditions'
 require_relative 'ruy/rule_storage'
+require_relative 'ruy/time_pattern'
 
 module Ruy
   class RuleSet < Rule
