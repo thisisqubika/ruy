@@ -140,6 +140,30 @@ String time patterns follow the Ruy's well-formed time pattern structure as foll
 
 Where the time zone identifier is optional, but if you specify it, will take precedence over the block's identifier. In case you don't specify it, Ruy will get the time zone from the `tz` block's argument. If neither the block nor the pettern specify it, UTC will be used.
 
+#### Days of week matcher
+
+Inside any `tz` block, there's a matcher to look for a specific day of the week in the time zone of the block.
+
+```ruby
+ruleset = Ruy::RuleSet.new
+
+ruleset.any do
+  tz 'America/New_York' do
+      day_of_week :timestamp, :saturday
+  end
+
+  tz 'America/New_York' do
+      day_of_week :timestamp, 0 # Sunday
+  end
+end
+
+ruleset.outcome 'Have a nice weekend, NYC!'
+```
+
+This matcher supports both the `Symbol` and number syntax in the range `(0..6)` starting on Sunday.
+
+The day of week matcher will try to parse timestamps using the ISO8601 format unless the context passes a Time object.
+
 #### Nested blocks support
 
 You cannot use matchers inside nested blocks in a `tz` block expecting them to work as if they were immediate children of `tz`.
