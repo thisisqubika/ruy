@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'ruy'
-  s.version     = '0.1.0'
+  s.version     = '0.2.0'
   s.date        = '2014-07-22'
   s.files       = Dir['lib/**/*']
   s.author      = 'Moove-IT'
@@ -8,6 +8,8 @@ Gem::Specification.new do |s|
   s.summary     = 'Rules Engine for Ruby'
   s.homepage    = 'https://github.com/Moove-it/ruy'
 
-  s.add_development_dependency 'rspec', ['>= 3.0.0']
-  s.add_development_dependency 'sequel', ['>= 4.12.0']
+  s.add_runtime_dependency 'tzinfo'
+
+  s.add_development_dependency 'rspec', ['~> 3.1']
+  s.add_development_dependency 'sequel', ['~> 4.12']
 end

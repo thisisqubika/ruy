@@ -107,6 +107,20 @@ describe Ruy::Rule do
     end
   end
 
+  describe '#tz' do
+    it 'adds a TZ condition' do
+      rule.tz {
+        between :timestamp, '2014-12-31T23:00:00', '2015-01-01T01:00:00'
+        eq :timestamp, '2015-01-01T00:00:00'
+        all do
+          eq :age, 18
+        end
+      }
+
+      expect(rule.conditions).to include(be_a(Ruy::Conditions::TZ))
+    end
+  end
+
   describe '#set, #get' do
     it 'sets an attribute' do
       rule.set(:name, :value)
