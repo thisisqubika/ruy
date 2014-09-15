@@ -4,14 +4,14 @@ module Ruy
   class TimePattern
     include Comparable
 
-    EXP = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(z(\S+))?$/
+    WELL_FORMED_TS_EXP = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(z(\S+))?$/
 
     attr_reader :tz, :local_time, :utc_time
 
     # @param [String] pattern String representing a Ruy's well-formed timestamp pattern
     # @param [String] tz_identifier String representing IANA's time zone identifier. Defaults to UTC if none passed.
     def initialize(pattern, tz_identifier = 'UTC')
-      raise ArgumentError, 'Pattern is malformed' unless match_data = pattern.match(EXP)
+      raise ArgumentError, 'Pattern is malformed' unless match_data = pattern.match(WELL_FORMED_TS_EXP)
 
       year = match_data[1].to_i
       month = match_data[2].to_i

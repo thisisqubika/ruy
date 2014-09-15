@@ -172,11 +172,9 @@ A possible workaround for this is to use `tz` blocks inside the nested block in 
 
 ```ruby
 ruleset = Ruy::RuleSet.new
-ruleset.tz 'America/New_York' do
-  any do
-    tz 'America/New_York' { eq :timestamp, '2015-01-01T00:00:00' }
-    tz 'America/New_York' { eq :timestamp, '2015-01-01T02:00:00zUTC' }
-  end
+any do
+  tz 'America/New_York' { eq :timestamp, '2015-01-01T00:00:00' }
+  tz 'America/New_York' { eq :timestamp, '2015-01-01T02:00:00zUTC' }
 end
 
 ruleset.outcome 'Happy New Year, NYC!'

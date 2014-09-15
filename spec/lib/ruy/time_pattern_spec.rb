@@ -1,15 +1,9 @@
 require 'spec_helper'
 
 describe Ruy::TimePattern do
-  let(:year) { 2014 }
-  let(:month) { 12 }
-  let(:day) { 31 }
-  let(:hour) { 23 }
-  let(:min) { 59 }
-  let(:sec) { 59 }
   let(:time_zone_identifier) { 'America/Argentina/Buenos_Aires' }
-  let(:timestamp) { "#{'%04d' % year}-#{'%02d' % month}-#{'%02d' % day}T#{'%02d' % hour}:#{'%02d' % min}:#{'%02d' % sec}z#{time_zone_identifier}" }
-  let(:local_time) { Time.new(year, month, day, hour, min, sec, '+00:00') }
+  let(:timestamp) { "2014-12-31T23:59:59z#{time_zone_identifier}" }
+  let(:local_time) { Time.new(2014, 12, 31, 23, 59, 59, '+00:00') }
   let(:utc_time) { TZInfo::Timezone.get(time_zone_identifier).local_to_utc local_time }
 
   subject { described_class.new(timestamp) }
@@ -43,7 +37,7 @@ describe Ruy::TimePattern do
       end
 
       context 'timestamp does not specify a time zone' do
-        let(:timestamp) { "#{'%04d' % year}-#{'%02d' % month}-#{'%02d' % day}T#{'%02d' % hour}:#{'%02d' % min}:#{'%02d' % sec}" }
+        let(:timestamp) { '2014-12-31T23:59:59'  }
 
         context 'default time zone argument is not passed' do
           it 'parses a timestamp without time zone' do
@@ -116,12 +110,9 @@ describe Ruy::TimePattern do
     let(:future_time) { equal_time + 1 }
     let(:past_time) { equal_time - 1 }
 
-    let(:equal_timestamp) { timestamp }
-    let(:older_timestamp) { "2014-12-31T23:59:58zAmerica/Argentina/Buenos_Aires" }
-    let(:newer_timestamp) { "2015-01-01T00:00:00zAmerica/Argentina/Buenos_Aires" }
-    let(:equal_time_pattern) { described_class.new(equal_timestamp) }
-    let(:older_time_pattern) { described_class.new(older_timestamp) }
-    let(:newer_time_pattern) { described_class.new(newer_timestamp) }
+    let(:equal_time_pattern) { described_class.new(timestamp) }
+    let(:newer_time_pattern) { described_class.new("2015-01-01T00:00:00zAmerica/Argentina/Buenos_Aires") }
+    let(:older_time_pattern) { described_class.new("2014-12-31T23:59:58zAmerica/Argentina/Buenos_Aires") }
 
     describe '#<=>' do
       context 'passing a time object' do
