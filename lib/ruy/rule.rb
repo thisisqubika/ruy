@@ -51,7 +51,7 @@ module Ruy
       self
     end
 
-    # Load a new role from it hash representation
+    # Load a new rule from its hash representation
     #
     # @param [Hash] hash
     # @return [Ruy::Rule]
