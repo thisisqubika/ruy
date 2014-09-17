@@ -68,6 +68,14 @@ describe Ruy::Conditions::TZ do
       it_behaves_like 'tz wrapped matchers'
     end
 
+    context 'values have wildcards' do
+      let(:value) { "2014-12-*T*:*:*z#{tz_identifier}" }
+      let(:left_value) { "*-11-*T*:*:*z#{tz_identifier}" }
+      let(:right_value) { "2014-*-*T22:*:00z#{tz_identifier}" }
+
+      it_behaves_like 'tz wrapped matchers'
+    end
+
     context 'values don\'t have their time zone identifiers' do
       let(:value) { "2014-12-31T21:00:00" }
       let(:left_value) { "2014-12-31T20:00:00" }
