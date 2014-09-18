@@ -20,6 +20,13 @@ module Ruy
         end
       end
 
+      # Adds a DayOfWeek condition
+      #
+      # @param (see Ruy::Conditions::DayOfWeek#initialize)
+      def day_of_week(attr, dow)
+        @conditions << DayOfWeek.new(attr, dow, @tz_identifier)
+      end
+
       # Intercepts an 'eq' call to the superclass and enhances its arguments
       #
       # @param (see Ruy::Conditions::Eq#initialize)

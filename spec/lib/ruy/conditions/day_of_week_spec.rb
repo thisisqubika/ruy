@@ -46,6 +46,14 @@ describe Ruy::Conditions::DayOfWeek do
             end
           end
         end
+
+        context 'value is invalid' do
+          let(:value) { :whatever }
+
+          it 'returns a falsey value' do
+            expect(subject.call(vctx)).to be_falsey
+          end
+        end
       end
 
       context 'time zone identifier is not passed' do
@@ -70,13 +78,15 @@ describe Ruy::Conditions::DayOfWeek do
             end
           end
         end
+
+        context 'value is invalid' do
+          let(:value) { :whatever }
+
+          it 'returns a falsey value' do
+            expect(subject.call(vctx)).to be_falsey
+          end
+        end
       end
-    end
-
-    context 'time is a timestamp' do
-      let(:time) { '2015-01-01T00:00:00z' }
-
-      it_behaves_like 'day of week matcher call'
     end
 
     context 'time is a time object' do

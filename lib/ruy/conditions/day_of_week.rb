@@ -6,6 +6,7 @@ module Ruy
 
     # Expects that a Time object's date corresponds to a specified day of the week
     class DayOfWeek < Ruy::Rule
+      DAYS_INTO_WEEK = %w(sunday monday tuesday wednesday thursday friday saturday)
       attr_reader :attr, :value, :tz_identifier
 
       # @param attr
@@ -25,13 +26,12 @@ module Ruy
       # @param [Ruy::VariableContext] var_ctx
       def call(var_ctx)
         resolved = var_ctx.resolve(@attr)
-        time = resolved.is_a?(Time) ? resolved : Time.parse(resolved)
-        cmp = @tz.utc_to_local(time.utc)
+        cmp = @tz.utc_to_local(resolved.to_time.utc)
 
         if @value.is_a?(Fixnum)
           cmp.wday == @value
         else
-          cmp.send("#{@value}?")
+          DAYS_INTO_WEEK.include?(@value.to_s) && cmp.send("#{@value}?")
         end
       end
 
