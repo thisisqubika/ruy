@@ -8,7 +8,33 @@ describe Ruy::Conditions::TZ do
 
     subject { described_class.new(tz_identifier) }
 
-    shared_examples_for 'tz wrapped matchers' do
+    describe 'day of week' do
+      context 'with day name' do
+        let(:day_of_week) { :wednesday }
+
+        before do
+          subject.day_of_week :time, day_of_week
+        end
+
+        it 'returns a truthy value' do
+          expect(subject.call(ctx)).to be_truthy
+        end
+      end
+
+      context 'with day number' do
+        let(:day_of_week) { 3 }
+
+        before do
+          subject.day_of_week :time, day_of_week
+        end
+
+        it 'returns a truthy value' do
+          expect(subject.call(ctx)).to be_truthy
+        end
+      end
+    end
+
+    shared_examples_for 'tz wrapped comparators' do
       describe 'equality' do
         before do
           subject.eq :time, value
@@ -65,7 +91,7 @@ describe Ruy::Conditions::TZ do
       let(:left_value) { "2014-12-31T20:00:00z#{tz_identifier}" }
       let(:right_value) { "2014-12-31T22:00:00z#{tz_identifier}" }
 
-      it_behaves_like 'tz wrapped matchers'
+      it_behaves_like 'tz wrapped comparators'
     end
 
     context 'values have wildcards' do
@@ -73,7 +99,7 @@ describe Ruy::Conditions::TZ do
       let(:left_value) { "*-11-*T*:*:*z#{tz_identifier}" }
       let(:right_value) { "2014-*-*T22:*:00z#{tz_identifier}" }
 
-      it_behaves_like 'tz wrapped matchers'
+      it_behaves_like 'tz wrapped comparators'
     end
 
     context 'values don\'t have their time zone identifiers' do
@@ -81,7 +107,7 @@ describe Ruy::Conditions::TZ do
       let(:left_value) { "2014-12-31T20:00:00" }
       let(:right_value) { "2014-12-31T22:00:00" }
 
-      it_behaves_like 'tz wrapped matchers'
+      it_behaves_like 'tz wrapped comparators'
     end
 
   end
