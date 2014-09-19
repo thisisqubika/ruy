@@ -384,6 +384,32 @@ describe Ruy::TimePattern do
     let(:expected_value_for_less_than) { false }
 
     it_behaves_like 'time pattern comparison'
+
+    context 'object is a time pattern' do
+      context 'object is equal to the time pattern' do
+        let(:object) { described_class.new(timestamp) }
+
+        it 'returns a truthy value' do
+          expect(subject == object).to be_truthy
+        end
+      end
+
+      context 'object is not equal to the time pattern' do
+        let(:object) { described_class.new('2013-02-02T13:00:00') }
+
+        it 'returns a falsey value' do
+          expect(subject == object).to be_falsey
+        end
+      end
+    end
+
+    context 'object is of generic class' do
+      let(:object) { Object.new }
+
+      it 'returns a falsey value' do
+        expect(subject == object).to be_falsey
+      end
+    end
   end
 
   describe '#!=' do

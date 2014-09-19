@@ -67,7 +67,15 @@ module Ruy
     # @param [#to_time]
     # @return [Boolean]
     def ==(o)
-      if o.respond_to?(:to_time)
+      if o.is_a?(self.class)
+        return year == o.year &&
+          month == o.month &&
+          day == o.day &&
+          hour == o.hour &&
+          min == o.min &&
+          sec == o.sec &&
+          time_zone == o.time_zone
+      elsif o.respond_to?(:to_time)
         super
       else
         equal?(o)
