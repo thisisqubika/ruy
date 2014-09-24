@@ -6,7 +6,7 @@ describe Ruy::Conditions::Any do
     subject(:condition) { Ruy::Conditions::Any.new }
 
     before do
-      condition.conditions << :c1
+      condition.conditions << Ruy::Conditions::Assert.new(:c1)
     end
 
     context 'when comparing against self' do
@@ -19,7 +19,7 @@ describe Ruy::Conditions::Any do
       let(:other) { Ruy::Conditions::Any.new }
 
       before do
-        other.conditions << :c1
+        other.conditions << Ruy::Conditions::Assert.new(:c1)
       end
 
       it { should eq(other) }
@@ -29,7 +29,7 @@ describe Ruy::Conditions::Any do
       let(:other) { Ruy::Conditions::All.new }
 
       before do
-        other.conditions << :c1
+        other.conditions << Ruy::Conditions::Assert.new(:c1)
       end
 
       it { should_not eq(other) }
@@ -39,7 +39,7 @@ describe Ruy::Conditions::Any do
       let(:other) { Ruy::Conditions::Any.new }
 
       before do
-        other.conditions << :c99
+        other.conditions << Ruy::Conditions::Assert.new(:c99)
       end
 
       it { should_not eq(other) }

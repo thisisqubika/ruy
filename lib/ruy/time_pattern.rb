@@ -101,7 +101,7 @@ module Ruy
     #
     # @return [String]
     def inspect
-      @pattern
+      @pattern.inspect
     end
 
     # Overrides Ruby's method missing call to redirect calls

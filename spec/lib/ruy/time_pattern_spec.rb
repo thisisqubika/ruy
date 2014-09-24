@@ -187,10 +187,10 @@ describe Ruy::TimePattern do
     end
   end
 
-  shared_examples_for 'time pattern string representation' do |method|
+  describe '#to_s' do
     context 'pattern is a full timestamp' do
       it 'returns the corresponding well-formed timestamp' do
-        expect(subject.send(method)).to eq timestamp
+        expect(subject.to_s).to eq timestamp
       end
     end
 
@@ -199,7 +199,7 @@ describe Ruy::TimePattern do
         let(:timestamp) { '*-12-31T23:59:59zAmerica/Argentina/Buenos_Aires' }
 
         it 'returns the corresponding well-formed timestamp' do
-          expect(subject.send(method)).to eq timestamp
+          expect(subject.to_s).to eq timestamp
         end
       end
 
@@ -207,7 +207,7 @@ describe Ruy::TimePattern do
         let(:timestamp) { '2014-*-31T23:59:59zAmerica/Argentina/Buenos_Aires' }
 
         it 'returns the corresponding well-formed timestamp' do
-          expect(subject.send(method)).to eq timestamp
+          expect(subject.to_s).to eq timestamp
         end
       end
 
@@ -215,7 +215,7 @@ describe Ruy::TimePattern do
         let(:timestamp) { '2014-12-*T23:59:59zAmerica/Argentina/Buenos_Aires' }
 
         it 'returns the corresponding well-formed timestamp' do
-          expect(subject.send(method)).to eq timestamp
+          expect(subject.to_s).to eq timestamp
         end
       end
 
@@ -223,7 +223,7 @@ describe Ruy::TimePattern do
         let(:timestamp) { '2014-12-31T*:59:59zAmerica/Argentina/Buenos_Aires' }
 
         it 'returns the corresponding well-formed timestamp' do
-          expect(subject.send(method)).to eq timestamp
+          expect(subject.to_s).to eq timestamp
         end
       end
 
@@ -231,7 +231,7 @@ describe Ruy::TimePattern do
         let(:timestamp) { '2014-12-31T23:*:59zAmerica/Argentina/Buenos_Aires' }
 
         it 'returns the corresponding well-formed timestamp' do
-          expect(subject.send(method)).to eq timestamp
+          expect(subject.to_s).to eq timestamp
         end
       end
 
@@ -239,7 +239,7 @@ describe Ruy::TimePattern do
         let(:timestamp) { '2014-12-31T23:59:*zAmerica/Argentina/Buenos_Aires' }
 
         it 'returns the corresponding well-formed timestamp' do
-          expect(subject.send(method)).to eq timestamp
+          expect(subject.to_s).to eq timestamp
         end
       end
 
@@ -247,7 +247,7 @@ describe Ruy::TimePattern do
         let(:timestamp) { '2014-12-31T23:59:59' }
 
         it 'returns the corresponding well-formed timestamp' do
-          expect(subject.send(method)).to eq "#{timestamp}"
+          expect(subject.to_s).to eq "#{timestamp}"
         end
       end
     end
@@ -256,17 +256,15 @@ describe Ruy::TimePattern do
       let(:timestamp) { '2014-12-31T23:59:59' }
 
       it 'returns the corresponding well-formed timestamp' do
-        expect(subject.send(method)).to eq timestamp
+        expect(subject.to_s).to eq timestamp
       end
     end
   end
 
-  describe '#to_s' do
-    it_behaves_like 'time pattern string representation', :to_s
-  end
-
   describe '#inspect' do
-    it_behaves_like 'time pattern string representation', :inspect
+    it 'returns a string representation of the pattern' do
+      expect(subject.inspect).to eq timestamp.inspect
+    end
   end
 
   shared_examples_for 'time pattern comparison' do
