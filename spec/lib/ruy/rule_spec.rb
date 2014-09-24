@@ -218,4 +218,24 @@ describe Ruy::Rule do
     end
   end
 
+  describe '#to_s' do
+    let(:rule) do
+      between = Ruy::Conditions::Between.new(:age, 18, 22) do
+        eq :flag, true
+      end
+    end
+
+    let(:representation) do
+      <<EOS
+between :age, 18, 22 do
+  eq :flag, true
+end
+EOS
+    end
+
+    it 'matches the expected representation' do
+      expect(rule.to_s).to eq(representation)
+    end
+  end
+
 end

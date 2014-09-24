@@ -1,5 +1,7 @@
 module Ruy
   class Rule
+    include Utils::Printable
+
     attr_reader :conditions
     attr_reader :vars
 
@@ -167,6 +169,45 @@ module Ruy
       o.kind_of?(Rule) &&
         conditions == o.conditions &&
         vars.keys == o.vars.keys
+    end
+
+    # @param [Integer] indentation Indentation level
+    def to_s(indentation = 0)
+      rule_name = Ruy::Utils::Naming.simple_module_name(self.class).downcase
+
+      s = Ruy::Utils::Printable.indent(indentation) << rule_name
+
+      if @params.any?
+        stringified_params =  @params.map do |param|
+
+          # As conditions can receive TimePattern params, we must serialize the original pattern,
+          # not the TimePattern object.
+          if param.is_a?(Ruy::TimePattern)
+            param.to_s.inspect
+          else
+            param.inspect
+          end
+        end
+
+        s << ' ' << stringified_params.join(', ')
+      end
+
+      if @conditions.any?
+        s << " do\n"
+        s << @conditions.map { |c| c.to_s(indentation + 1) }.join("\n")
+        s << "\n" << Ruy::Utils::Printable.indent(indentation) + "end\n"
+      end
+
+      s
+    end
+
+    private
+
+    # Getter method for rules params. It returns all the params without nil objects
+    #
+    # @return [Array<Object>]
+    def params
+      @params.compact
     end
 
   end

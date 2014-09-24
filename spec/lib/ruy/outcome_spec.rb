@@ -20,7 +20,7 @@ describe Ruy::Outcome do
       let(:other) { Ruy::Outcome.new(:error) }
 
       before do
-        other.conditions << :c1
+        other.conditions << Ruy::Conditions::Assert.new(:c1)
       end
 
       it { should_not eq(other) }
@@ -30,7 +30,7 @@ describe Ruy::Outcome do
       let(:other) { Ruy::Outcome.new(:success) }
 
       before do
-        other.conditions << :c9
+        other.conditions << Ruy::Conditions::Assert.new(:c9)
       end
 
       it { should_not eq(other) }

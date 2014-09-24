@@ -1,3 +1,4 @@
+require_relative 'ruy/utils'
 require_relative 'ruy/rule'
 require_relative 'ruy/rule_set'
 require_relative 'ruy/conditions'
