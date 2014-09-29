@@ -42,10 +42,6 @@ module Ruy
       nil
     end
 
-    def method_missing(m, *args, &block)
-      super
-    end
-
   end
 
 end
