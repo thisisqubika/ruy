@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'ruy'
-  s.version     = '0.2.0'
+  s.version     = '0.2.1'
   s.date        = '2014-07-22'
   s.files       = Dir['lib/**/*']
   s.author      = 'Moove-IT'
@@ -11,5 +11,4 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'tzinfo'
 
   s.add_development_dependency 'rspec', ['~> 3.1']
-  s.add_development_dependency 'sequel', ['~> 4.12']
 end

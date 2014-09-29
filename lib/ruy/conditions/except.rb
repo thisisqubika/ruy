@@ -13,12 +13,9 @@ module Ruy
       # @param value Non-expected value
       # @yield a block in the context of the current rule
       def initialize(attr = nil, value = nil, &block)
-        super()
-
+        super
         @attr = attr
         @value = value
-        @params = [@attr, @value]
-
         instance_exec(&block) if block_given?
       end
 

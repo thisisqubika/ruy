@@ -112,20 +112,4 @@ describe Ruy::Conditions::TZ do
 
   end
 
-  describe '#to_hash' do
-    let(:value) { "2014-12-31T21:00:00z#{tz_identifier}" }
-    let(:tz_identifier) { 'America/Argentina/Buenos_Aires' }
-
-    subject { described_class.new(tz_identifier)}
-
-    before do
-      subject.eq :time, value
-    end
-
-    it 'returns a hash containing the build parameters' do
-      expect(subject.to_hash).to match({node: subject.class.name, params: [tz_identifier],
-        conditions: [subject.conditions.first.to_hash]})
-    end
-  end
-
 end

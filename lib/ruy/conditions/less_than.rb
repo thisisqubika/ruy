@@ -8,11 +8,9 @@ module Ruy
       # @param attr Context attribute's name
       # @param value
       def initialize(attr, value)
-        super()
+        super
         @attr = attr
         @value = value
-
-        @params = [@attr, @value]
       end
 
       def call(var_ctx)

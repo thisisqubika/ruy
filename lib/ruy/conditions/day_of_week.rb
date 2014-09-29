@@ -13,13 +13,10 @@ module Ruy
       # @param value
       # @param tz_identifier
       def initialize(attr, value, tz_identifier = 'UTC')
-        super()
-
+        super
         @attr = attr
         @value = value
         @tz_identifier = tz_identifier
-        @params = [@attr, @value, @tz_identifier]
-
         @tz = TZInfo::Timezone.get(tz_identifier)
       end
 

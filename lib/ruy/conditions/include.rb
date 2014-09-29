@@ -9,13 +9,9 @@ module Ruy
       # @param values Expected set of values
       # @yield a block in the context of the current rule
       def initialize(attr, values, &block)
-        super()
-
+        super
         @attr = attr
         @values = values
-
-        @params = [@attr, @values]
-
         instance_exec(&block) if block_given?
       end
 
