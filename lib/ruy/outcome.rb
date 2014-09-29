@@ -3,10 +3,8 @@ module Ruy
     attr_reader :value
 
     def initialize(value)
-      super()
-
+      super
       @value = value
-      @params = [@value]
     end
 
     def call(ctx)

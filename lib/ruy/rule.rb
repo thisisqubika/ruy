@@ -1,63 +1,13 @@
 module Ruy
-
-  # Returns a constant using a qualified constant name string
-  #
-  # @param [String] name
-  # @return [Object]
-  def self.qualified_const_get(name)
-    root = Object
-    name.split('::').each do |klass|
-      root = root.const_get(klass)
-    end
-
-    root
-  end
-
-  # A rule is a set of conditions
   class Rule
-
     attr_reader :conditions
     attr_reader :vars
 
-    def initialize
+    def initialize(*args)
       @conditions = []
       @vars = {}
       @attrs = {}
-      @params = []
-    end
-
-    # Serialize a rule object as a hash
-    #
-    # @return [Hash]
-    def to_hash
-      ret = { node: self.class.name, params: params }
-      ret[:conditions] = @conditions.map(&:to_hash) if @conditions.any?
-
-      ret
-    end
-
-    # Look to the given keys, and load the rule nodes in their values
-    #
-    # @param [Array<Symbol>] keys
-    # @param [Hash] hash
-    # @return [Ruy::Rule]
-    def load_rule_objects_from(hash, *keys)
-      keys.each do |key|
-        if hash.has_key?(key)
-          hash[key].each { |o| self.send(key) << Ruy::Rule.from_hash(o) }
-        end
-      end
-
-      self
-    end
-
-    # Load a new rule from its hash representation
-    #
-    # @param [Hash] hash
-    # @return [Ruy::Rule]
-    def self.from_hash(hash)
-      rule = Ruy.qualified_const_get(hash[:node]).new(*hash[:params])
-      rule.load_rule_objects_from(hash, :conditions, :outcomes)
+      @params = args
     end
 
     # Adds an All condition.
@@ -155,7 +105,8 @@ module Ruy
 
     # Adds a TZ condition block
     #
-    # @param [String] tz_identifier String representing IANA's time zone identifier. Defaults to UTC if none passed.
+    # @param [String] tz_identifier String representing IANA's
+    #   time zone identifier. Defaults to UTC if none passed.
     # @yield Evaluates the given block in the context of the TZ rule
     def tz(tz_identifier = 'UTC', &block)
       cond = Conditions::TZ.new(tz_identifier)
@@ -183,7 +134,8 @@ module Ruy
 
     # Defines a variable.
     #
-    # If both value and block are given, only the block will be taken into account.
+    # If both value and block are given,
+    #   only the block will be taken into account.
     #
     # @param name The name of the variable
     # @param value The value of the variable
@@ -217,14 +169,6 @@ module Ruy
         vars.keys == o.vars.keys
     end
 
-    private
-
-    # Getter method for rules params. It returns all the params without nil objects
-    #
-    # @return [Array<Object>]
-    def params
-      @params.compact
-    end
-
   end
+
 end

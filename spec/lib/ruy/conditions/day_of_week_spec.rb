@@ -136,12 +136,4 @@ describe Ruy::Conditions::DayOfWeek do
     end
   end
 
-  describe '#to_hash' do
-    subject { described_class.new(:timestamp, :dow, tz_identifier) }
-
-    it 'returns a hash containing the build parameters' do
-      expect(subject.to_hash).to match({node: subject.class.name, params: [:timestamp, :dow, tz_identifier]})
-    end
-
-  end
 end

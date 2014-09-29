@@ -1,23 +1,23 @@
 module Ruy
   class RuleSet < Rule
-    attr_reader :name
     attr_reader :outcomes
     attr_accessor :metadata
 
     def initialize
       super
-
       @outcomes = []
       @fallback = nil
       @metadata = {}
     end
 
-    def [](key)
-      @metadata[key]
+    def outcome(value, &block)
+      outcome = Outcome.new(value)
+      outcome.instance_exec(&block) if block_given?
+      @outcomes << outcome
     end
 
-    def []=(key, value)
-      @metadata[key] = value
+    def fallback(value)
+      @fallback = value
     end
 
     def call(ctx)
@@ -27,6 +27,14 @@ module Ruy
       else
         @fallback
       end
+    end
+
+    def [](key)
+      @metadata[key]
+    end
+
+    def []=(key, value)
+      @metadata[key] = value
     end
 
     def apply?
@@ -44,26 +52,10 @@ module Ruy
       nil
     end
 
-    def to_hash
-      if @outcomes.any?
-        super.merge({ outcomes: @outcomes.map { |o| o.to_hash } })
-      end
-    end
-
-    def fallback(value)
-      @fallback = value
-    end
-
-    def outcome(value, &block)
-      outcome = Outcome.new(value)
-
-      outcome.instance_exec(&block) if block_given?
-
-      @outcomes << outcome
-    end
-
     def method_missing(m, *args, &block)
       super
     end
+
   end
+
 end

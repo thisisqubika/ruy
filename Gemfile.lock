@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruy (0.2.0)
+    ruy (0.2.1)
       tzinfo
 
 GEM
@@ -20,7 +20,6 @@ GEM
     rspec-mocks (3.1.0)
       rspec-support (~> 3.1.0)
     rspec-support (3.1.0)
-    sequel (4.14.0)
     thread_safe (0.3.4)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
@@ -31,4 +30,3 @@ PLATFORMS
 DEPENDENCIES
   rspec (~> 3.1)
   ruy!
-  sequel (~> 4.12)

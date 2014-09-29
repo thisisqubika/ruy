@@ -12,14 +12,10 @@ module Ruy
       # @param to Range upper bound
       # @yield a block in the context of the current rule
       def initialize(attr, from, to, &block)
-        super()
-
+        super
         @attr = attr
         @from = from
         @to = to
-
-        @params = [@attr, @from, @to]
-
         instance_exec(&block) if block_given?
       end
 

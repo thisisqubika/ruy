@@ -8,9 +8,8 @@ module Ruy
     class TZ < Ruy::Rule
       # @param [String] tz_identifier String representing IANA's time zone identifier.
       def initialize(tz_identifier)
-        super()
+        super
         @tz_identifier = tz_identifier
-        @params = [@tz_identifier]
       end
 
       # @param [Ruy::VariableContext] var_ctx
