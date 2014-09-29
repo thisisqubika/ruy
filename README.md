@@ -103,7 +103,7 @@ ruleset.outcome "I matched!"
 
 In this case, calling `ruleset.call(age: 20)` will work just fine. But we can now attach multiple outcomes (each with their own conditions), and `#call` will return the first outcome matching.
 
-Additionally, RuleSets can have metadata associated with them, as well as a fallback value when no outcomes apply.
+Additionally, RuleSets can have a fallback value when no outcomes apply.
 
 ```ruby
 ruleset = Ruy::RuleSet.new

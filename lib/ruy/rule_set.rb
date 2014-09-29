@@ -1,13 +1,11 @@
 module Ruy
   class RuleSet < Rule
     attr_reader :outcomes
-    attr_accessor :metadata
 
     def initialize
       super
       @outcomes = []
       @fallback = nil
-      @metadata = {}
     end
 
     def outcome(value, &block)
@@ -27,14 +25,6 @@ module Ruy
       else
         @fallback
       end
-    end
-
-    def [](key)
-      @metadata[key]
-    end
-
-    def []=(key, value)
-      @metadata[key] = value
     end
 
     def apply?
