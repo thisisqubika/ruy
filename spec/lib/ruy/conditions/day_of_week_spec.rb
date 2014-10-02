@@ -90,7 +90,7 @@ describe Ruy::Conditions::DayOfWeek do
     end
 
     context 'time is a time object' do
-      let(:time) { Time.new(2015, 01, 01, 0, 0, 0, '+00:00') }
+      let(:time) { Time.new(2015, 01, 01, 0, 0, 0, 0) }
 
       it_behaves_like 'day of week matcher call'
     end

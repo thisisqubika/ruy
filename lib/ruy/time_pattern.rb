@@ -32,7 +32,7 @@ module Ruy
       @tz = TZInfo::Timezone.get(@time_zone || tz_identifier)
 
       # Store a Time object with values based on the specified time zone
-      @local = Time.new(year || 0, month, day, hour, min, sec, '+00:00')
+      @local = Time.new(year || 0, month, day, hour, min, sec, 0)
 
       # Store a Time object with values based on UTC
       @utc = @tz.local_to_utc(@local)

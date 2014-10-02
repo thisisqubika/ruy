@@ -4,7 +4,7 @@ describe Ruy::TimePattern do
   let(:time_zone_identifier) { 'America/Argentina/Buenos_Aires' }
   let(:timestamp) { "2014-12-31T23:59:59z#{time_zone_identifier}" }
   let(:tz) { TZInfo::Timezone.get(time_zone_identifier) }
-  let(:local_time) { Time.new(2014, 12, 31, 23, 59, 59, '+00:00') }
+  let(:local_time) { Time.new(2014, 12, 31, 23, 59, 59, 0) }
   let(:utc_time) { tz.local_to_utc local_time }
 
   subject { described_class.new(timestamp) }
@@ -275,7 +275,7 @@ describe Ruy::TimePattern do
 
       context 'object is a time' do
         context 'object is greater than subject' do
-          let(:object) { Time.new(2015, 1, 1, 2, 0, 1, '+00:00') }
+          let(:object) { Time.new(2015, 1, 1, 2, 0, 1, 0) }
 
           it 'evaluates to the expected value' do
             expect(subject.send(method, object)).to eq expected_value_for_greater_than
@@ -283,7 +283,7 @@ describe Ruy::TimePattern do
         end
 
         context 'object is equal to subject' do
-          let(:object) { Time.new(2015, 1, 1, 2, 0, 0, '+00:00') }
+          let(:object) { Time.new(2015, 1, 1, 2, 0, 0, 0) }
 
           it 'evaluates to the expected value' do
             expect(subject.send(method, object)).to eq expected_value_for_equal_to
@@ -291,7 +291,7 @@ describe Ruy::TimePattern do
         end
 
         context 'object is less than subject' do
-          let(:object) { Time.new(2015, 1, 1, 1, 59, 59, '+00:00') }
+          let(:object) { Time.new(2015, 1, 1, 1, 59, 59, 0) }
 
           it 'evaluates to the expected value' do
             expect(subject.send(method, object)).to eq expected_value_for_less_than
@@ -305,7 +305,7 @@ describe Ruy::TimePattern do
 
       context 'object is a time' do
         context 'object is greater than subject' do
-          let(:object) { Time.new(2015, 1, 1, 2, 0, 1, '+00:00') }
+          let(:object) { Time.new(2015, 1, 1, 2, 0, 1, 0) }
 
           it 'evaluates to the expected value' do
             expect(subject.send(method, object)).to eq expected_value_for_greater_than
@@ -313,7 +313,7 @@ describe Ruy::TimePattern do
         end
 
         context 'object is equal to subject' do
-          let(:object) { Time.new(2014, 12, 1, 2, 0, 0, '+00:00') }
+          let(:object) { Time.new(2014, 12, 1, 2, 0, 0, 0) }
 
           it 'evaluates to the expected value' do
             expect(subject.send(method, object)).to eq expected_value_for_equal_to
@@ -321,7 +321,7 @@ describe Ruy::TimePattern do
         end
 
         context 'object is less than subject' do
-          let(:object) { Time.new(2014, 11, 1, 2, 0, 0, '+00:00') }
+          let(:object) { Time.new(2014, 11, 1, 2, 0, 0, 0) }
 
           it 'evaluates to the expected value' do
             expect(subject.send(method, object)).to eq expected_value_for_less_than
