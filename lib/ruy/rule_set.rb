@@ -42,6 +42,24 @@ module Ruy
       nil
     end
 
+    def to_s
+      s = ''
+
+      s << @conditions.join("\n")
+
+      if @outcomes.any?
+        s << "\n" unless s == ''
+        s << @outcomes.join("\n")
+      end
+
+      if @fallback
+        s << "\n" unless s == ''
+        s << "fallback #{@fallback.inspect}\n"
+      end
+
+      s
+    end
+
   end
 
 end

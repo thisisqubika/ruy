@@ -1,5 +1,7 @@
 module Ruy
   class Rule
+    include Utils::Printable
+
     attr_reader :conditions
     attr_reader :vars
 
@@ -167,6 +169,38 @@ module Ruy
       o.kind_of?(Rule) &&
         conditions == o.conditions &&
         vars.keys == o.vars.keys
+    end
+
+    # @param [Integer] indentation Indentation level
+    def to_s(indentation = 0)
+      rule_name = Ruy::Utils::Naming.rule_name(self)
+
+      s = Ruy::Utils::Printable.indent(indentation) << rule_name
+
+      if @params.any?
+        stringified_params = @params.map(&:inspect)
+
+        s << ' ' << stringified_params.join(', ')
+      end
+
+      if @conditions.empty?
+        s << "\n"
+      else
+        s << " do\n"
+        s << @conditions.map { |c| c.to_s(indentation + 1) }.join()
+        s << Ruy::Utils::Printable.indent(indentation) + "end\n"
+      end
+
+      s
+    end
+
+    private
+
+    # Getter method for rules params. It returns all the params without nil objects
+    #
+    # @return [Array<Object>]
+    def params
+      @params.compact
     end
 
   end
