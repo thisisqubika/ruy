@@ -16,7 +16,7 @@ module Ruy
       end
 
       def call(var_ctx)
-        var_ctx.resolve(@attr) >= @value && super
+        @value <= var_ctx.resolve(@attr) && super
       end
 
       def ==(o)
