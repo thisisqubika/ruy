@@ -11763,7 +11763,7 @@ li.L1, li.L3, li.L5, li.L7, li.L9 {
 .SectionBrand {
   max-height: 100%;
   position: relative;
-  background: url(images/ruy_line_guides.svg) center center no-repeat fixed; }
+  background: url(/ruy/images/ruy_line_guides.svg) center center no-repeat fixed; }
   @media only screen and (orientation: landscape) {
     .SectionBrand {
       background-size: auto 1000px; }
@@ -11890,11 +11890,11 @@ li.L1, li.L3, li.L5, li.L7, li.L9 {
             .SectionBrand-rubies-layer {
               background-size: auto; } } }
     .SectionBrand-rubies__1 {
-      background-image: url('images/rubies-01.png'); }
+      background-image: url('/ruy/images/rubies-01.png'); }
     .SectionBrand-rubies__2 {
-      background-image: url('images/rubies-02.png'); }
+      background-image: url('/ruy/images/rubies-02.png'); }
     .SectionBrand-rubies__3 {
-      background-image: url('images/rubies-03.png'); }
+      background-image: url('/ruy/images/rubies-03.png'); }
 
 .SectionInstall-title {
   padding-left: 0.9375rem;
