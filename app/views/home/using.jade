@@ -1,0 +1,45 @@
+section#using.SectionUsing
+  .container-cell
+    .row
+      h2.SectionInstall-title
+        | Using
+      .SectionUsing-sublime
+        .terminal-window
+          header
+            .terminal-button.green
+            .terminal-button.yellow
+            .terminal-button.red
+          section.terminal
+            header.terminal-header
+              ul
+                li example.rb
+            section.terminal-body
+              pre.prettyprint.linenums.lang-rb
+                code
+                  :verbatim
+                    ruleset = Ruy::RuleSet.new
+
+                    # RuleSets can use :any and :all to do AND and OR groupings of conditions.
+
+                    ruleset.any do
+
+                        # RuleSets evaluate against Context variables.
+                        # Equality, scalarity (less than, greater
+                        # than or equal to, etc), and inclusion/exclusion
+                        # are supported
+
+                        between :age, 18, 22
+                        eq :school, 'University of Texas'
+                    end
+
+                    # RuleSets can have multiple outcomes when
+                    # conditions obtain in a certain Context.
+
+                    ruleset.outcome 'I matched!'
+
+                    ruleset.(age: 20) #=> "I matched!"
+                    ruleset.(age: 20, school: 'University of Alabama') #=> "I matched!"
+                    ruleset.(age: 16, school: 'University of Texas')   #=> "I matched!"
+                    ruleset.(age: 10, school: 'University of Alabama') #=> nil
+
+          footer.terminal-footer

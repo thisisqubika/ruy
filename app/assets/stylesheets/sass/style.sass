@@ -1,0 +1,431 @@
+%SectionPages
+  display: table
+  vertical-align: middle
+  height: 100%
+  width: 100%
+  background-color: #fff
+  @include grid-row($behavior: false)
+  max-width: 100%
+  max-height: rem-calc(756)
+
+.fork-top
+  position: absolute
+  top: 0
+  right: 0
+  border: 0
+  width: rem-calc(150)
+  height: rem-calc(150)
+
+.Header
+  top: -100px
+  opacity: 0
+  @include transition(all 0.5s ease-out)
+
+  &-show
+    top: 0
+    opacity: 1
+
+
+@include keyframes(scroll)
+  from
+    opacity: 1
+    @include transform(translateY(0px))
+  to
+    opacity: 0
+    @include transform(translateY(10px))
+
+.container-cell
+  display: table-cell
+  vertical-align: middle
+  height: 100%
+  width: 100%
+
+
+.current
+  color: $body-font-color
+  border-bottom: 1px solid $body-font-color
+
+.Navbar
+  &-doc
+    @include button($padding:$button-med)
+    position: absolute
+    right: rem-calc(15)
+    border: 1px solid $primary-color !important
+    text-transform: uppercase
+    margin: rem-calc(10 0 0 20)
+    font-size: rem-calc(13)
+    padding: rem-calc(9 14)
+    background: transparent
+
+    a
+      text-decoration: none
+
+    &:hover
+      a
+        color: #fff
+
+    @media #{$large-up}
+      display: none
+
+.SectionError
+  @extend %SectionPages
+
+  text-align: center
+
+  &-status
+    font-size: 10rem
+  img
+    width: rem-calc(200)
+    display: block
+    margin: 0 auto
+    margin-bottom: rem-calc(50)
+
+.SectionWay
+  @extend %SectionPages
+
+  &-title
+
+  &-description
+    display: table
+    height: 100%
+    vertical-align: middle
+
+    &-paragraph
+      &-text
+        font-size: 1.125rem
+
+    @include grid-column(12)
+
+    @media #{$medium-up}
+      @include grid-column(8, $offset: 2)
+
+    @media #{$large-up}
+      @include grid-column(4, $offset: 2)
+
+  &-diagram
+    display: table
+    height: 100%
+    vertical-align: middle
+    text-align: center
+    padding: 0
+
+    @include grid-column(12)
+
+    @media #{$medium-up}
+      @include grid-column(8, $offset: 2)
+
+    @media #{$large-up}
+      @include grid-column(4, $offset: 0)
+
+    img
+      width: 20rem
+
+
+.SectionBrand
+  @extend %SectionPages
+
+  max-height: 100%
+  position: relative
+
+  background: url(images/ruy_line_guides.svg) center center no-repeat fixed
+
+  @media #{$landscape}
+    background-size: auto 1000px
+    @media #{$medium-up}
+      background-size: 2000px
+
+  @media #{$portrait}
+    background-size: auto 1500px
+    @media #{$medium-up}
+      background-size: auto
+
+  &-scroll
+    display: none
+
+    @media #{$large-up}
+      @include animation(scroll 1s ease-in)
+      @include animation-iteration-count(infinite)
+      @include animation-fill-mode(both)
+      width: rem-calc(40)
+      height: rem-calc(40)
+      text-align: center
+      color: DimGray
+      position: absolute
+      top: calc(100% - 80px)
+      left: calc(50% - 20px)
+      font-size: rem-calc(37)
+      display: block
+      &:link, &:active, &:hover, &:visited
+       text-decoration: none
+       border: 0
+
+  &-ruby
+    position: absolute
+    @media #{$landscape}
+      width: 144px
+      height: 108px
+      top: calc(50% - 54px)
+      left: calc(50% - 72px)
+      margin-left: 1px
+
+    @media #{$portrait}
+      width: 216px
+      height: 162px
+      top: calc(50% - 81px)
+      left: calc(50% - 108px)
+      margin-left: 1px
+
+    @media #{$medium-up}
+      width: 288px
+      height: 216px
+      top: calc(50% - 108px)
+      left: calc(50% - 144px)
+      margin-left: 1px
+
+  &-logo
+    position: absolute
+    @media #{$landscape}
+      width: 100px
+      height: 108px
+      top: calc(65%)
+      left: calc(50% - 50px)
+      margin-left: 1px
+
+    @media #{$portrait}
+      width: 150px
+      height: 162px
+      top: calc(65%)
+      left: calc(50% - 75px)
+      margin-left: 1px
+
+    @media #{$medium-up}
+      width: 200px
+      height: 216px
+      top: calc(65%)
+      left: calc(50% - 100px)
+      margin-left: 1px
+
+  &-moto
+    font-weight: 100
+    color: DimGray
+    text-align: center
+    position: absolute
+
+    @media #{$landscape}
+      width: rem-calc(300)
+      top: calc(15%)
+      left: calc(50% - 150px)
+      font-size: rem-calc(20)
+
+    @media #{$portrait}
+      width: rem-calc(250)
+      top: calc(15%)
+      left: calc(50% - 125px)
+      font-size: rem-calc(24)
+
+    @media #{$medium-up}
+      top: calc(15%)
+      font-size: rem-calc(60)
+      left: calc(50% - 285px)
+      width: rem-calc(600)
+
+  &-rubies
+    width: 100%
+    height: 100%
+
+    &-layer
+      background-position: center center
+      background-repeat: no-repeat
+      position: absolute
+      width: 100%
+      height: 100%
+      top: 0
+      left: 0
+      display: none
+
+      @media #{$landscape}
+        background-size: auto 2000px
+        display: block
+        @media #{$medium-up}
+          background-size: auto
+
+    @for $i from 1 to 4
+      &__#{$i}
+        background-image: url('images/rubies-0#{$i}.png')
+
+.SectionInstall
+  @extend %SectionPages
+
+  &-title
+    @include grid-column(12)
+
+    @media #{$medium-up}
+      @include grid-column(8, $offset: 2)
+
+  &-terminal
+    @include grid-column(12)
+    margin-bottom:  rem-calc(20)
+
+    @media #{$medium-up}
+      @include grid-column(8, $offset: 2)
+
+    @media #{$large-up}
+      @include grid-column(3.5, $offset: 2, $collapse: true)
+
+    .terminal-window
+      width: 100%
+      .terminal
+        padding-top: rem-calc(12)
+
+  &-sublime
+    @include grid-column(12)
+
+    @media #{$medium-up}
+      @include grid-column(8, $offset: 2)
+      .terminal-window
+        ol
+          font-size: rem-calc(16)
+
+    @media #{$large-up}
+      @include grid-column(3.5, $offset: 0, $collapse: true)
+
+    .terminal-window
+      width: 100%
+      ol
+        font-size: rem-calc(12)
+
+  .separator
+    @include grid-column(11, $offset: 0.5, $collapse: true)
+    position: relative
+    border-bottom: 1px solid DimGray
+    margin-bottom: $column-gutter
+
+
+    @media #{$medium-up}
+      @include grid-column(7, $offset: 2.5)
+
+    @media #{$large-up}
+      @include grid-column(1, $offset: 0, $collapse: true)
+      border-right: 1px solid DimGray
+      border: none
+      height: 300px
+      &:after
+        content: ''
+        height: 300px
+        width: 1px
+        background-color: DimGray
+        position: absolute
+        left: 50%
+
+    &-text
+      background-color: #FFF
+      position: absolute
+      text-align: center
+      color: DimGray
+      font-weight: 400
+      width: 50px
+      left: calc(50% - 25px)
+      padding: 5px 0px
+      height: 20px
+      top: -18px
+      @media #{$large-up}
+        width: 100%
+        text-align: center
+        top: calc(50% - 25px)
+        left: 0
+        height: auto
+        z-index: 2
+
+
+.SectionUsing
+  @extend %SectionPages
+
+  &-title
+    @include grid-column(12)
+
+    @media #{$medium-up}
+      @include grid-column(10, $offset: 2, $collapse: true)
+
+  &-sublime
+    @include grid-column(12)
+
+    .terminal-window
+      width: 100%
+      height: rem-calc(570)
+      ol
+        font-size: rem-calc(11)
+
+
+    @media #{$medium-up}
+      @include grid-column(8, $offset: 2)
+      .terminal-body
+        overflow: hidden
+
+    @media #{$large-up}
+      @include grid-column(8, $offset: 2, $collapse: true)
+
+footer
+  height: 100%
+  display: block
+
+  .Footer-row
+    position: relative
+    height: 100%
+
+  .Footer-link
+    display: none
+    @media #{$large-up}
+      display: block
+      position: absolute
+      width: 100%
+      bottom: 0
+
+  .Footer-content
+    text-align: center
+    font-size: rem-calc(7)
+    display: block
+    position: absolute
+    top: calc(50% - 80px)
+    height: 200px
+    left: calc(50% - 80px)
+
+    .ruy
+      display: block
+      margin: 0px auto
+      width: 10em
+
+    .moove-it
+      width: 20em
+      margin: 0px auto
+
+    .maintained
+      font-weight: 100
+      font-size: 3em
+      margin: 1em 0px
+      width: 100%
+      display: block
+
+    @media #{$large-up}
+      display: block
+      position: absolute
+      height: auto
+      top: calc(50%)
+      left: 0
+      width: 100%
+      font-size: 12px
+
+      .ruy
+        display: inline
+        width: 8em
+        margin-top: -2em
+
+      .moove-it
+        width: 19em
+        margin-top: -3em
+        display: inline
+
+      .maintained
+        font-weight: 100
+        font-size: 5em
+        margin: 0px 0.4em
+        display: inline
