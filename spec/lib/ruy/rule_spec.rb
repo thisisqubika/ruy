@@ -67,6 +67,14 @@ describe Ruy::Rule do
     end
   end
 
+  describe '#greater_than' do
+    it 'adds a GreaterThan condition' do
+      rule.greater_than(:age, 18)
+
+      expect(rule.conditions).to include(be_a(Ruy::Conditions::GreaterThan))
+    end
+  end
+
   describe '#greater_than_or_equal' do
     it 'adds a GreaterThanOrEqual condition' do
       rule.greater_than_or_equal(18, :age)
