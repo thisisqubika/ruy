@@ -4,7 +4,7 @@ describe Ruy::Conditions::Assert do
 
   describe '#call' do
     it 'is true when truth value' do
-      context = Ruy::VariableContext.new({:success => true}, {})
+      context = Ruy::Context.new({:success => true})
 
       condition = Ruy::Conditions::Assert.new(:success)
 
@@ -14,7 +14,7 @@ describe Ruy::Conditions::Assert do
     end
 
     it 'is false when false' do
-      context = Ruy::VariableContext.new({:success => false}, {})
+      context = Ruy::Context.new({:success => false})
 
       condition = Ruy::Conditions::Assert.new(:success)
 

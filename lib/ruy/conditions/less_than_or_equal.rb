@@ -13,8 +13,8 @@ module Ruy
         @value = value
       end
 
-      def call(var_ctx)
-        @value >= var_ctx.resolve(@attr)
+      def call(ctx)
+        @value >= ctx.resolve(@attr)
       end
 
       def ==(o)

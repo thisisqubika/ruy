@@ -11,8 +11,8 @@ module Ruy
         @attr = attr
       end
 
-      def call(var_ctx)
-        var_ctx.resolve(@attr)
+      def call(ctx)
+        ctx.resolve(@attr)
       end
 
       def ==(o)

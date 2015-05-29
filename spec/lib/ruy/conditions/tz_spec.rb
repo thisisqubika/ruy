@@ -4,7 +4,7 @@ describe Ruy::Conditions::TZ do
   describe '#call' do
     let(:tz_identifier) { 'America/Argentina/Buenos_Aires' }
     let(:time) { Time.new(2015, 1, 1, 0, 0, 0, 0) }
-    let(:ctx) { Ruy::VariableContext.new({time: time}, []) }
+    let(:ctx) { Ruy::Context.new({time: time}) }
 
     subject { described_class.new(tz_identifier) }
 
