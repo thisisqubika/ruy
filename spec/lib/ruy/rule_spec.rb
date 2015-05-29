@@ -129,56 +129,20 @@ describe Ruy::Rule do
     end
   end
 
-  describe '#var' do
-    context 'with value' do
-      before do
-        rule.var(:foo, :bar)
-      end
-
-      it 'defines a variable' do
-        expect(rule.vars).to include(:foo)
-      end
-
-      it 'assigns the variable to a callable that evaluates to the given value' do
-        callable = rule.vars[:foo]
-
-        expect(callable.call).to eq(:bar)
-      end
-    end
-
-    context 'when block' do
-      before do
-        rule.var(:foo) { :bar }
-      end
-
-      it 'defines a variable' do
-        expect(rule.vars).to include(:foo)
-      end
-
-      it 'assigns the variable to the given block' do
-        callable = rule.vars[:foo]
-
-        expect(callable.call).to eq(:bar)
-      end
-    end
-  end
-
   describe '#==' do
     let(:other) { Ruy::Rule.new }
 
     before do
       rule.conditions << :c1
-      rule.var :v1, 'v1'
 
       other.conditions << :c1
-      other.var :v1, 'v1'
     end
 
     it 'is true when comparing with itself' do
       expect(rule).to eq(rule)
     end
 
-    context 'when other rule has same conditions and vars' do
+    context 'when other rule has same conditions' do
 
       it 'is true' do
         expect(rule).to eq(other)
@@ -188,14 +152,6 @@ describe Ruy::Rule do
     context 'when different set of conditions' do
       it 'is false' do
         other.conditions << :c2
-
-        expect(rule).to_not eq(other)
-      end
-    end
-
-    context 'when different set of variables' do
-      it 'is false' do
-        other.var :v2, 'v2'
 
         expect(rule).to_not eq(other)
       end
@@ -214,7 +170,7 @@ describe Ruy::Rule do
         eq :invalid_attr, 20
       }
 
-      expect(rule.call(Ruy::VariableContext.new({}, {}))).to be(false)
+      expect(rule.call(Ruy::Context.new({}))).to be(false)
     end
   end
 

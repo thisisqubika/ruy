@@ -12,10 +12,10 @@ module Ruy
         @tz_identifier = tz_identifier
       end
 
-      # @param [Ruy::VariableContext] var_ctx
-      def call(var_ctx)
+      # @param [Ruy::VariableContext] ctx
+      def call(ctx)
         @conditions.all? do |condition|
-          condition.call(var_ctx)
+          condition.call(ctx)
         end
       end
 

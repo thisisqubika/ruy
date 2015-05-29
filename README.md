@@ -53,21 +53,21 @@ A `Rule` is a set of conditions. Ruy has a number of builtin conditions:
 
 Rules can also group conditions arbitrarily as logical ANDs (**:all**) or OR (**:any**).
 
-#### Rule-level Variables
+#### RuleSet-level lazy values
 
-Rules can have variables set for them. These can be procs, or just values.
+Rules can have lazy values set for them. The context must provide a proc which is evaluted only once the first time the value is needed to evaluate a rule. The result returned by the proc application is memoized and used to evaluate subsequent rules.
 
 ```ruby
-rule.var :variable_name, 'Variable Value'
+rule.let :some_expensive_calculation
 ```
 #### Applying Rules
 
-Rules have a `#call` method that returns true when all conditions are met. `#call` takes one argument, a `VariableContext`, that has values for the various conditions to be evaluated against. If all the conditions pass, `#call` returns `true` and otherwise `false`. Example:
+Rules have a `#call` method that returns true when all conditions are met. `#call` takes one argument, a `Context`, that has values for the various conditions to be evaluated against. If all the conditions pass, `#call` returns `true` and otherwise `false`. Example:
 
 ```ruby
 rule = Ruy::Rule.new
 rule.eq :age, 21
-rule.call(VariableContext.new({age: 21, name: 'Leah'}, {})) # => true
+rule.call(Context.new({age: 21, name: 'Leah'})) # => true
 ```
 
 Cool thing about this is that by responding to `#call`, rules can do the whole `.()` syntax, or can be tested via `===`.

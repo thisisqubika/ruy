@@ -19,15 +19,15 @@ module Ruy
         instance_exec(&block) if block_given?
       end
 
-      def call(var_ctx)
+      def call(ctx)
         result = true
 
         if @attr
-          result &&= var_ctx.resolve(@attr) != @value
+          result &&= ctx.resolve(@attr) != @value
         end
 
         if self.conditions.any?
-          result &&= !super(var_ctx)
+          result &&= !super(ctx)
         end
 
         result

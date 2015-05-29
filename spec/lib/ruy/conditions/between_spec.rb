@@ -7,13 +7,13 @@ describe Ruy::Conditions::Between do
     subject(:condition) { Ruy::Conditions::Between.new(:age, 0, 17) }
 
     it 'is true when in range' do
-      context = Ruy::VariableContext.new({:age => 10}, {})
+      context = Ruy::Context.new({:age => 10})
 
       expect(condition.call(context)).to be
     end
 
     it 'is false when out of range' do
-      context = Ruy::VariableContext.new({:age => 18}, {})
+      context = Ruy::Context.new({:age => 18})
 
       expect(condition.call(context)).to_not be
     end
@@ -26,13 +26,13 @@ describe Ruy::Conditions::Between do
       end
 
       it 'is true when nested succeeds' do
-        context = Ruy::VariableContext.new({:age => 10, :success => true}, {})
+        context = Ruy::Context.new({:age => 10, :success => true})
 
         expect(condition.call(context)).to be
       end
 
       it 'is false when nested fails' do
-        context = Ruy::VariableContext.new({:age => 10, :success => false}, {})
+        context = Ruy::Context.new({:age => 10, :success => false})
 
         expect(condition.call(context)).to_not be
       end

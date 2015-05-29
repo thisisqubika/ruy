@@ -6,19 +6,19 @@ describe Ruy::Conditions::GreaterThanOrEqual do
     subject(:condition) { Ruy::Conditions::GreaterThanOrEqual.new(:age, 18) }
 
     it 'is true when value is equals' do
-      context = Ruy::VariableContext.new({ :age => 18 }, {})
+      context = Ruy::Context.new({ :age => 18 })
 
       expect(condition.call(context)).to be
     end
 
     it 'is true when value is greater' do
-      context = Ruy::VariableContext.new({ :age => 19 }, {})
+      context = Ruy::Context.new({ :age => 19 })
 
       expect(condition.call(context)).to be
     end
 
     it 'is false when value is lesser' do
-      context = Ruy::VariableContext.new({ :age => 17 }, {})
+      context = Ruy::Context.new({ :age => 17 })
 
       expect(condition.call(context)).to_not be
     end
@@ -31,13 +31,13 @@ describe Ruy::Conditions::GreaterThanOrEqual do
       end
 
       it 'is true when nested succeeds' do
-        context = Ruy::VariableContext.new({ :age => 18, :success => true }, {})
+        context = Ruy::Context.new({ :age => 18, :success => true })
 
         expect(condition.call(context)).to be
       end
 
       it 'is false when nested fails' do
-        context = Ruy::VariableContext.new({ :age => 18, :success => false }, {})
+        context = Ruy::Context.new({ :age => 18, :success => false })
 
         expect(condition.call(context)).to_not be
       end

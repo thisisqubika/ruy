@@ -20,9 +20,9 @@ module Ruy
         @tz = TZInfo::Timezone.get(tz_identifier)
       end
 
-      # @param [Ruy::VariableContext] var_ctx
-      def call(var_ctx)
-        resolved = var_ctx.resolve(@attr)
+      # @param [Ruy::Context] ctx
+      def call(ctx)
+        resolved = ctx.resolve(@attr)
         cmp = @tz.utc_to_local(resolved.to_time.utc)
 
         if @value.is_a?(Fixnum)
