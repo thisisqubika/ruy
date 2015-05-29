@@ -3,12 +3,11 @@ module Ruy
     include Utils::Printable
 
     attr_reader :conditions
-    attr_reader :vars
 
     def initialize(*args)
-      @conditions = []
-      @vars = {}
       @attrs = {}
+      @conditions = []
+
       @params = args
     end
 
@@ -134,23 +133,6 @@ module Ruy
       @attrs[name] = value
     end
 
-    # Defines a variable.
-    #
-    # If both value and block are given,
-    #   only the block will be taken into account.
-    #
-    # @param name The name of the variable
-    # @param value The value of the variable
-    #
-    # @yield a block that will resolve the variable's value
-    def var(name, value = nil, &block)
-      if block_given?
-        @vars[name] = block
-      else
-        @vars[name] = lambda { value }
-      end
-    end
-
     # Evaluates all conditions.
     #
     # @return [true] When all conditions succeeds
@@ -165,8 +147,7 @@ module Ruy
 
     def ==(o)
       o.kind_of?(Rule) &&
-        conditions == o.conditions &&
-        vars.keys == o.vars.keys
+        conditions == o.conditions
     end
 
     # @param [Integer] indentation Indentation level

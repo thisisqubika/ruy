@@ -7,13 +7,13 @@ describe Ruy::Conditions::Included do
     subject(:condition) { Ruy::Conditions::Included.new(:day_of_week, :sunday) }
 
     it 'is true when included' do
-      context = Ruy::VariableContext.new({:day_of_week => [:sunday, :monday]}, {})
+      context = Ruy::Context.new({:day_of_week => [:sunday, :monday]})
 
       expect(condition.call(context)).to be
     end
 
     it 'is false when not included' do
-      context = Ruy::VariableContext.new({:day_of_week => [:tuesday, :monday]}, {})
+      context = Ruy::Context.new({:day_of_week => [:tuesday, :monday]})
 
       expect(condition.call(context)).to_not be
     end
@@ -26,13 +26,13 @@ describe Ruy::Conditions::Included do
       end
 
       it 'is true when nested succeeds' do
-        context = Ruy::VariableContext.new({:day_of_week => [:tuesday], :success => true}, {})
+        context = Ruy::Context.new({:day_of_week => [:tuesday], :success => true})
 
         expect(condition.call(context)).to be
       end
 
       it 'is false when nested fails' do
-        context = Ruy::VariableContext.new({:day_of_week => [:sunday], :success => false}, {})
+        context = Ruy::Context.new({:day_of_week => [:sunday], :success => false})
 
         expect(condition.call(context)).to_not be
       end

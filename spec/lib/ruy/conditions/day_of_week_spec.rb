@@ -5,7 +5,7 @@ describe Ruy::Conditions::DayOfWeek do
 
   describe '#call' do
     shared_examples_for 'day of week matcher call' do
-      let(:vctx) { Ruy::VariableContext.new({time: time}, {}) }
+      let(:ctx) { Ruy::Context.new({time: time}) }
 
 
       context 'time zone identifier is passed' do
@@ -16,7 +16,7 @@ describe Ruy::Conditions::DayOfWeek do
             let(:value) { :wednesday }
 
             it 'returns a truthy value' do
-              expect(subject.call(vctx)).to be_truthy
+              expect(subject.call(ctx)).to be_truthy
             end
           end
 
@@ -24,7 +24,7 @@ describe Ruy::Conditions::DayOfWeek do
             let(:value) { :thursday }
 
             it 'returns a truthy value' do
-              expect(subject.call(vctx)).to be_falsey
+              expect(subject.call(ctx)).to be_falsey
             end
           end
         end
@@ -34,7 +34,7 @@ describe Ruy::Conditions::DayOfWeek do
             let(:value) { 3 }
 
             it 'returns a truthy value' do
-              expect(subject.call(vctx)).to be_truthy
+              expect(subject.call(ctx)).to be_truthy
             end
           end
 
@@ -42,7 +42,7 @@ describe Ruy::Conditions::DayOfWeek do
             let(:value) { 4 }
 
             it 'returns a truthy value' do
-              expect(subject.call(vctx)).to be_falsey
+              expect(subject.call(ctx)).to be_falsey
             end
           end
         end
@@ -51,7 +51,7 @@ describe Ruy::Conditions::DayOfWeek do
           let(:value) { :whatever }
 
           it 'returns a falsey value' do
-            expect(subject.call(vctx)).to be_falsey
+            expect(subject.call(ctx)).to be_falsey
           end
         end
       end
@@ -64,7 +64,7 @@ describe Ruy::Conditions::DayOfWeek do
             let(:value) { :thursday }
 
             it 'returns a truthy value' do
-              expect(subject.call(vctx)).to be_truthy
+              expect(subject.call(ctx)).to be_truthy
             end
           end
         end
@@ -74,7 +74,7 @@ describe Ruy::Conditions::DayOfWeek do
             let(:value) { 4 }
 
             it 'returns a truthy value' do
-              expect(subject.call(vctx)).to be_truthy
+              expect(subject.call(ctx)).to be_truthy
             end
           end
         end
@@ -83,7 +83,7 @@ describe Ruy::Conditions::DayOfWeek do
           let(:value) { :whatever }
 
           it 'returns a falsey value' do
-            expect(subject.call(vctx)).to be_falsey
+            expect(subject.call(ctx)).to be_falsey
           end
         end
       end
