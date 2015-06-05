@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Ruy::Conditions::LessThanOrEqual do
 
   describe '#==' do
-    subject(:condition) { Ruy::Conditions::LessThanOrEqual.new(:salary, 1_000) }
+    subject(:condition) { Ruy::Conditions::LessThanOrEqual.new(1_000, :salary) }
 
     context 'when comparing against self' do
       let(:other) { condition }
@@ -12,7 +12,7 @@ describe Ruy::Conditions::LessThanOrEqual do
     end
 
     context 'when same condition values' do
-      let(:other) { Ruy::Conditions::LessThanOrEqual.new(:salary, 1_000) }
+      let(:other) { Ruy::Conditions::LessThanOrEqual.new(1_000, :salary) }
 
       it { should eq(other) }
     end
@@ -24,7 +24,7 @@ describe Ruy::Conditions::LessThanOrEqual do
     end
 
     context 'when different values' do
-      let(:other) { Ruy::Conditions::LessThanOrEqual.new(:age, 5) }
+      let(:other) { Ruy::Conditions::LessThanOrEqual.new(5, :age) }
 
       it { should_not eq(other) }
     end

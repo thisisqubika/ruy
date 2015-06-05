@@ -6,12 +6,12 @@ module Ruy
     class Eq < Ruy::Rule
       attr_reader :attr, :value
 
-      # @param attr Context attribute's name
       # @param value Expected value
-      def initialize(attr, value)
+      # @param attr Context attribute's name
+      def initialize(value, attr)
         super
-        @attr = attr
         @value = value
+        @attr = attr
       end
 
       def call(ctx)

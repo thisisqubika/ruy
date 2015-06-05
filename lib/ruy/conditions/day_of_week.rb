@@ -9,13 +9,13 @@ module Ruy
       DAYS_INTO_WEEK = %w(sunday monday tuesday wednesday thursday friday saturday)
       attr_reader :attr, :value, :tz_identifier
 
-      # @param attr
       # @param value
+      # @param attr
       # @param tz_identifier
-      def initialize(attr, value, tz_identifier = 'UTC')
+      def initialize(value, attr, tz_identifier = 'UTC')
         super
-        @attr = attr
         @value = value
+        @attr = attr
         @tz_identifier = tz_identifier
         @tz = TZInfo::Timezone.get(tz_identifier)
       end

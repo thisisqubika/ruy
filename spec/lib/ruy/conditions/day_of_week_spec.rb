@@ -9,7 +9,7 @@ describe Ruy::Conditions::DayOfWeek do
 
 
       context 'time zone identifier is passed' do
-        subject { described_class.new(:time, value, tz_identifier) }
+        subject { described_class.new(value, :time, tz_identifier) }
 
         context 'value is a symbol' do
           context 'value is the day in the specified time zone' do
@@ -57,7 +57,7 @@ describe Ruy::Conditions::DayOfWeek do
       end
 
       context 'time zone identifier is not passed' do
-        subject { described_class.new(:time, value) }
+        subject { described_class.new(value, :time) }
 
         context 'value is a symbol' do
           context 'value is the UTC day' do
@@ -97,7 +97,7 @@ describe Ruy::Conditions::DayOfWeek do
   end
 
   describe '#==' do
-    subject { described_class.new(:timestamp, :dow, tz_identifier) }
+    subject { described_class.new(:dow, :timestamp, tz_identifier) }
 
     context 'comparing against itself' do
       let(:other) { subject }
@@ -106,7 +106,7 @@ describe Ruy::Conditions::DayOfWeek do
     end
 
     context 'against the same class with equal attributes' do
-      let(:other) { described_class.new(:timestamp, :dow, tz_identifier) }
+      let(:other) { described_class.new(:dow, :timestamp, tz_identifier) }
 
       it { is_expected.to eq(other) }
     end
@@ -118,19 +118,19 @@ describe Ruy::Conditions::DayOfWeek do
     end
 
     context 'against same class with different attribute' do
-      let(:other) { described_class.new(:other_timestamp, :dow, tz_identifier) }
+      let(:other) { described_class.new(:dow, :other_timestamp, tz_identifier) }
 
       it { is_expected.to_not eq(other) }
     end
 
     context 'against same class with different value' do
-      let(:other) { described_class.new(:timestamp, :other_dow, tz_identifier) }
+      let(:other) { described_class.new(:other_dow, :timestamp, tz_identifier) }
 
       it { is_expected.to_not eq(other) }
     end
 
     context 'against same class with different time zone identifier' do
-      let(:other) { described_class.new(:timestamp, :dow, 'UTC') }
+      let(:other) { described_class.new(:dow, :timestamp, 'UTC') }
 
       it { is_expected.to_not eq(other) }
     end

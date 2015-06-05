@@ -3,8 +3,7 @@ require 'spec_helper'
 describe Ruy::Conditions::Between do
 
   describe '#call' do
-
-    subject(:condition) { Ruy::Conditions::Between.new(:age, 0, 17) }
+    subject(:condition) { Ruy::Conditions::Between.new(0, 17, :age) }
 
     it 'is true when in range' do
       context = Ruy::Context.new({:age => 10})
@@ -20,7 +19,7 @@ describe Ruy::Conditions::Between do
 
     context 'when nested conditions' do
       subject(:condition) do
-        Ruy::Conditions::Between.new(:age, 0, 17) do
+        Ruy::Conditions::Between.new(0, 17, :age) do
           assert :success
         end
       end
@@ -40,7 +39,7 @@ describe Ruy::Conditions::Between do
   end
 
   describe '#==' do
-    subject(:condition) { Ruy::Conditions::Between.new(:age, 0, 17) }
+    subject(:condition) { Ruy::Conditions::Between.new(0, 17, :age) }
 
     context 'when comparing against self' do
       let(:other) { condition }
@@ -49,7 +48,7 @@ describe Ruy::Conditions::Between do
     end
 
     context 'when same condition values' do
-      let(:other) { Ruy::Conditions::Between.new(:age, 0, 17) }
+      let(:other) { Ruy::Conditions::Between.new(0, 17, :age) }
 
       it { should eq(other) }
     end
@@ -61,10 +60,9 @@ describe Ruy::Conditions::Between do
     end
 
     context 'when different values' do
-      let(:other) { Ruy::Conditions::Between.new(:salary, -1_000, 0) }
+      let(:other) { Ruy::Conditions::Between.new(-1_000, 0, :salary) }
 
       it { should_not eq(other) }
     end
-
   end
 end
