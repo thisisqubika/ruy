@@ -13,7 +13,7 @@ describe Ruy::Conditions::TZ do
         let(:day_of_week) { :wednesday }
 
         before do
-          subject.day_of_week :time, day_of_week
+          subject.day_of_week day_of_week, :time
         end
 
         it 'returns a truthy value' do
@@ -25,7 +25,7 @@ describe Ruy::Conditions::TZ do
         let(:day_of_week) { 3 }
 
         before do
-          subject.day_of_week :time, day_of_week
+          subject.day_of_week day_of_week, :time
         end
 
         it 'returns a truthy value' do
@@ -37,7 +37,7 @@ describe Ruy::Conditions::TZ do
     shared_examples_for 'tz wrapped comparators' do
       describe 'equality' do
         before do
-          subject.eq :time, value
+          subject.eq value, :time
         end
 
         it 'returns a truthy value' do
@@ -47,7 +47,7 @@ describe Ruy::Conditions::TZ do
 
       describe 'between' do
         before do
-          subject.between :time, left_value, right_value
+          subject.between left_value, right_value, :time
         end
 
         it 'returns a truthy value' do
@@ -57,7 +57,7 @@ describe Ruy::Conditions::TZ do
 
       describe 'greater than or equal' do
         before do
-          subject.greater_than_or_equal :time, left_value
+          subject.greater_than_or_equal left_value, :time
         end
 
         it 'returns a truthy value' do
@@ -67,7 +67,7 @@ describe Ruy::Conditions::TZ do
 
       describe 'less than' do
         before do
-          subject.less_than :time, right_value
+          subject.less_than right_value, :time
         end
 
         it 'returns a truthy value' do
@@ -77,7 +77,7 @@ describe Ruy::Conditions::TZ do
 
       describe 'less than or equal' do
         before do
-          subject.less_than_or_equal :time, right_value
+          subject.less_than_or_equal right_value, :time
         end
 
         it 'returns a truthy value' do

@@ -35,8 +35,8 @@ describe Ruy::RuleSet do
       set.let :expensive
       set.let :max
 
-      set.greater_than_or_equal :expensive, 10
-      set.less_than :expensive, 100
+      set.greater_than_or_equal 10, :expensive
+      set.less_than 100, :expensive
 
       set
     end
@@ -73,20 +73,20 @@ describe Ruy::RuleSet do
         set.let :expensive_count
         set.let :randomness
 
-        set.eq :city, 'New York'
+        set.eq 'New York', :city
 
         set.any do
-          between :age, 18, 22
-          eq :enabled, true
+          between 18, 22, :age
+          eq true, :enabled
         end
 
         set.any do
-          between :age, 0, 17
-          eq :enabled, false
+          between 0, 17, :age
+          eq false, :enabled
         end
 
         set.tz('America/New_York') do
-          eq :timestamp, '2015-01-01T00:00:00'
+          eq '2015-01-01T00:00:00', :timestamp
         end
 
         set.outcome 'I matched'
@@ -100,20 +100,20 @@ describe Ruy::RuleSet do
 let :expensive_count
 let :randomness
 
-eq :city, "New York"
+eq "New York", :city
 
 any do
-  between :age, 18, 22
-  eq :enabled, true
+  between 18, 22, :age
+  eq true, :enabled
 end
 
 any do
-  between :age, 0, 17
-  eq :enabled, false
+  between 0, 17, :age
+  eq false, :enabled
 end
 
 tz "America/New_York" do
-  eq :timestamp, "2015-01-01T00:00:00"
+  eq "2015-01-01T00:00:00", :timestamp
 end
 
 outcome "I matched"
@@ -151,7 +151,7 @@ EOS
         set = Ruy::RuleSet.new
 
         set.outcome 'It matched' do
-          eq :enabled, true
+          eq true, :enabled
         end
 
         set
@@ -160,7 +160,7 @@ EOS
       let(:representation) do
         <<EOS
 outcome "It matched" do
-  eq :enabled, true
+  eq true, :enabled
 end
 EOS
       end

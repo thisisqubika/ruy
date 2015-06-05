@@ -5,12 +5,12 @@ module Ruy
     class LessThan < Ruy::Rule
       attr_reader :attr, :value
 
-      # @param attr Context attribute's name
       # @param value
-      def initialize(attr, value)
+      # @param attr Context attribute's name
+      def initialize(value, attr)
         super
-        @attr = attr
         @value = value
+        @attr = attr
       end
 
       def call(ctx)
