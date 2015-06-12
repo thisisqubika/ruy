@@ -11,4 +11,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'tzinfo'
 
   s.add_development_dependency 'rspec', ['~> 3.1']
+  s.add_development_dependency 'simplecov', '0.10.0'
 end
