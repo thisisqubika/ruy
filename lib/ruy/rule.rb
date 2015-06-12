@@ -161,8 +161,6 @@ module Ruy
       end
 
       success.length == @conditions.length
-    rescue NoMethodError
-      false
     end
 
     def ==(o)
