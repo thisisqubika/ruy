@@ -3,9 +3,9 @@ module Ruy
 
     # Expects that all rules will succeed.
     class All < Ruy::Rule
-      def call(var_ctx)
+      def call(ctx)
         @conditions.all? do |condition|
-          condition.call(var_ctx)
+          condition.call(ctx)
         end
       end
     end
