@@ -8,10 +8,13 @@ describe Ruy::Utils::Printable do
   shared_examples 'an object printer' do
     let(:obj) { klass.new }
 
+    before do
+      klass.send(:include, Ruy::Utils::Printable)
+    end
+
     describe '#inspect' do
       it 'does not change #inspect output when redefining #to_s' do
         expect {
-          klass.send(:include, Ruy::Utils::Printable)
 
           def obj.to_s
             "anonymous"
@@ -24,7 +27,6 @@ describe Ruy::Utils::Printable do
     describe 'pretty print capabilities' do
       it 'does not change pretty print output when defining #to_s' do
         expect {
-          klass.send(:include, Ruy::Utils::Printable)
 
           def obj.to_s
             "anonymous"
