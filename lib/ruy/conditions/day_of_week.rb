@@ -9,20 +9,20 @@ module Ruy
       DAYS_INTO_WEEK = %w(sunday monday tuesday wednesday thursday friday saturday)
       attr_reader :attr, :value, :tz_identifier
 
-      # @param attr
       # @param value
+      # @param attr
       # @param tz_identifier
-      def initialize(attr, value, tz_identifier = 'UTC')
+      def initialize(value, attr, tz_identifier = 'UTC')
         super
-        @attr = attr
         @value = value
+        @attr = attr
         @tz_identifier = tz_identifier
         @tz = TZInfo::Timezone.get(tz_identifier)
       end
 
-      # @param [Ruy::VariableContext] var_ctx
-      def call(var_ctx)
-        resolved = var_ctx.resolve(@attr)
+      # @param [Ruy::Context] ctx
+      def call(ctx)
+        resolved = ctx.resolve(@attr)
         cmp = @tz.utc_to_local(resolved.to_time.utc)
 
         if @value.is_a?(Fixnum)

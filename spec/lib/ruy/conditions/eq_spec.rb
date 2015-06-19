@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Ruy::Conditions::Eq do
 
   describe '#==' do
-    subject(:condition) { Ruy::Conditions::Eq.new(:grade, :a) }
+    subject(:condition) { Ruy::Conditions::Eq.new(:a, :grade) }
 
     context 'when comparing against self' do
       let(:other) { condition }
@@ -12,7 +12,7 @@ describe Ruy::Conditions::Eq do
     end
 
     context 'when same condition values' do
-      let(:other) { Ruy::Conditions::Eq.new(:grade, :a) }
+      let(:other) { Ruy::Conditions::Eq.new(:a, :grade) }
 
       it { should eq(other) }
     end
@@ -24,7 +24,7 @@ describe Ruy::Conditions::Eq do
     end
 
     context 'when different values' do
-      let(:other) { Ruy::Conditions::Eq.new(:grade, :z) }
+      let(:other) { Ruy::Conditions::Eq.new(:z, :grade) }
 
       it { should_not eq(other) }
     end

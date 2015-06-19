@@ -7,13 +7,13 @@ describe Ruy::Conditions::Except do
     subject(:condition) { Ruy::Conditions::Except.new(:enabled, false) }
 
     it 'is true when enabled != false' do
-      context = Ruy::VariableContext.new({:enabled => true}, {})
+      context = Ruy::Context.new({:enabled => true})
 
       expect(condition.call(context)).to be
     end
 
     it 'is false when enabled = false' do
-      context = Ruy::VariableContext.new({:enabled => false}, {})
+      context = Ruy::Context.new({:enabled => false})
 
       expect(condition.call(context)).to_not be
     end
@@ -26,13 +26,13 @@ describe Ruy::Conditions::Except do
       end
 
       it 'is true when !success' do
-        context = Ruy::VariableContext.new({:enabled => true, :success => false}, {})
+        context = Ruy::Context.new({:enabled => true, :success => false})
 
         expect(condition.call(context)).to be
       end
 
       it 'is false when success' do
-        context = Ruy::VariableContext.new({:enabled => true, :success => true}, {})
+        context = Ruy::Context.new({:enabled => true, :success => true})
 
         expect(condition.call(context)).to_not be
       end
@@ -45,13 +45,13 @@ describe Ruy::Conditions::Except do
         end
 
         it 'is true when !success' do
-          context = Ruy::VariableContext.new({:enabled => true, :success => false}, {})
+          context = Ruy::Context.new({:enabled => true, :success => false})
 
           expect(condition.call(context)).to be
         end
 
         it 'is false when success' do
-          context = Ruy::VariableContext.new({:enabled => true, :success => true}, {})
+          context = Ruy::Context.new({:enabled => true, :success => true})
 
           expect(condition.call(context)).to_not be
         end

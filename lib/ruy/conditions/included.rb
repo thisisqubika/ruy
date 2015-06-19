@@ -15,8 +15,8 @@ module Ruy
         instance_exec(&block) if block_given?
       end
 
-      def call(var_ctx)
-        var_ctx.resolve(self.attr).include?(self.value) && super
+      def call(ctx)
+        ctx.resolve(self.attr).include?(self.value) && super
       end
 
       def ==(o)

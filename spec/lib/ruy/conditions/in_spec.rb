@@ -1,38 +1,37 @@
 require 'spec_helper'
 
-describe Ruy::Conditions::Included do
+describe Ruy::Conditions::In do
 
   describe '#call' do
+    subject(:condition) { Ruy::Conditions::In.new([:sunday, :monday], :day_of_week) }
 
-    subject(:condition) { Ruy::Conditions::Included.new(:day_of_week, :sunday) }
-
-    it 'is true when included' do
-      context = Ruy::VariableContext.new({:day_of_week => [:sunday, :monday]}, {})
+    it 'is true when in' do
+      context = Ruy::Context.new({:day_of_week => :sunday})
 
       expect(condition.call(context)).to be
     end
 
-    it 'is false when not included' do
-      context = Ruy::VariableContext.new({:day_of_week => [:tuesday, :monday]}, {})
+    it 'is false when not in' do
+      context = Ruy::Context.new({:day_of_week => :tuesday})
 
       expect(condition.call(context)).to_not be
     end
 
     context 'when nested conditions' do
       subject(:condition) do
-        Ruy::Conditions::Included.new(:day_of_week, :tuesday) do
+        Ruy::Conditions::In.new([:sunday, :monday], :day_of_week) do
           assert :success
         end
       end
 
       it 'is true when nested succeeds' do
-        context = Ruy::VariableContext.new({:day_of_week => [:tuesday], :success => true}, {})
+        context = Ruy::Context.new({:day_of_week => :sunday, :success => true})
 
         expect(condition.call(context)).to be
       end
 
       it 'is false when nested fails' do
-        context = Ruy::VariableContext.new({:day_of_week => [:sunday], :success => false}, {})
+        context = Ruy::Context.new({:day_of_week => :sunday, :success => false})
 
         expect(condition.call(context)).to_not be
       end
@@ -40,7 +39,7 @@ describe Ruy::Conditions::Included do
   end
 
   describe '#==' do
-    subject(:condition) { Ruy::Conditions::Included.new(:day_of_week, :sunday) }
+    subject(:condition) { Ruy::Conditions::In.new([:sunday, :monday], :day_of_week) }
 
     context 'when comparing against self' do
       let(:other) { condition }
@@ -49,7 +48,7 @@ describe Ruy::Conditions::Included do
     end
 
     context 'when same condition' do
-      let(:other) { Ruy::Conditions::Included.new(:day_of_week, :sunday) }
+      let(:other) { Ruy::Conditions::In.new([:sunday, :monday], :day_of_week) }
 
       it { should eq(other) }
     end
@@ -61,13 +60,13 @@ describe Ruy::Conditions::Included do
     end
 
     context 'when different attribute' do
-      let(:other) { Ruy::Conditions::Included.new(:dow, :sunday) }
+      let(:other) { Ruy::Conditions::In.new([:sunday, :monday], :dow) }
 
       it { should_not eq(other) }
     end
 
     context 'when different values' do
-      let(:other) { Ruy::Conditions::Included.new(:day_of_week, :saturday) }
+      let(:other) { Ruy::Conditions::In.new([:saturday], :day_of_week) }
 
       it { should_not eq(other) }
     end

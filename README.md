@@ -21,8 +21,8 @@ ruleset.any do
     # than or equal to, etc), and inclusion/exclusion
     # are supported
 
-    between :age, 18, 22
-    eq :school, 'University of Texas'
+    between 18, 22, :age
+    eq 'University of Texas', :school
 end
 
 # RuleSets can have multiple outcomes when
@@ -53,21 +53,21 @@ A `Rule` is a set of conditions. Ruy has a number of builtin conditions:
 
 Rules can also group conditions arbitrarily as logical ANDs (**:all**) or OR (**:any**).
 
-#### Rule-level Variables
+#### RuleSet-level lazy values
 
-Rules can have variables set for them. These can be procs, or just values.
+Rules can have lazy values set for them. The context must provide a proc which is evaluted only once the first time the value is needed to evaluate a rule. The result returned by the proc application is memoized and used to evaluate subsequent rules.
 
 ```ruby
-rule.var :variable_name, 'Variable Value'
+rule.let :some_expensive_calculation
 ```
 #### Applying Rules
 
-Rules have a `#call` method that returns true when all conditions are met. `#call` takes one argument, a `VariableContext`, that has values for the various conditions to be evaluated against. If all the conditions pass, `#call` returns `true` and otherwise `false`. Example:
+Rules have a `#call` method that returns true when all conditions are met. `#call` takes one argument, a `Context`, that has values for the various conditions to be evaluated against. If all the conditions pass, `#call` returns `true` and otherwise `false`. Example:
 
 ```ruby
 rule = Ruy::Rule.new
-rule.eq :age, 21
-rule.call(VariableContext.new({age: 21, name: 'Leah'}, {})) # => true
+rule.eq 21, :age
+rule.call(Context.new({age: 21, name: 'Leah'})) # => true
 ```
 
 Cool thing about this is that by responding to `#call`, rules can do the whole `.()` syntax, or can be tested via `===`.
@@ -80,7 +80,7 @@ An `Outcome` is a type of rule (`class Outcome < Rule`) that emits a value when 
 
 ```ruby
 outcome = Ruy::Outcome.new({sample: :outcome_value})
-outcome.eq :age, 21
+outcome.eq 21, :age
 outcome.(Ruy::VariableContext.new({age: 21}, {})) # => {sample: :outcome_value}
 ```
 
@@ -94,7 +94,7 @@ To repeat the initial example:
 ruleset = Ruy::RuleSet.new
 
 ruleset.any do
-  between :age, 18, 22
+  between 18, 22, :age
   eq :school, 'University of Texas'
 end
 
@@ -109,7 +109,7 @@ Additionally, RuleSets can have a fallback value when no outcomes apply.
 ruleset = Ruy::RuleSet.new
 
 ruleset[:description] = "Rule about checking the drinking age"
-ruleset.less_than :age, 21
+ruleset.less_than 21, :age
 
 ruleset.outcome "Underage!"
 
@@ -126,7 +126,7 @@ When it comes to matching times in different time zones, Ruy is bundled with a b
 ruleset = Ruy::RuleSet.new
 
 ruleset.tz 'America/New_York' do
-  eq :timestamp, '2015-01-01T00:00:00'
+  eq '2015-01-01T00:00:00', :timestamp
 end
 
 ruleset.outcome 'Happy New Year, NYC!'
@@ -149,11 +149,11 @@ ruleset = Ruy::RuleSet.new
 
 ruleset.any do
   tz 'America/New_York' do
-      day_of_week :timestamp, :saturday
+      day_of_week :saturday, :timestamp
   end
 
   tz 'America/New_York' do
-      day_of_week :timestamp, 0 # Sunday
+      day_of_week 0, :timestamp # Sunday
   end
 end
 
@@ -173,8 +173,8 @@ A possible workaround for this is to use `tz` blocks inside the nested block in 
 ```ruby
 ruleset = Ruy::RuleSet.new
 any do
-  tz 'America/New_York' { eq :timestamp, '2015-01-01T00:00:00' }
-  tz 'America/New_York' { eq :timestamp, '2015-01-01T02:00:00zUTC' }
+  tz 'America/New_York' { eq '2015-01-01T00:00:00', :timestamp }
+  tz 'America/New_York' { eq '2015-01-01T02:00:00zUTC', :timestamp }
 end
 
 ruleset.outcome 'Happy New Year, NYC!'
