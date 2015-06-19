@@ -1,5 +1,7 @@
 module Ruy
-  class RuleSet < Rule
+  class RuleSet
+    include DSL
+
     attr_reader :lets
     attr_reader :outcomes
 
@@ -10,6 +12,12 @@ module Ruy
       @outcomes = []
 
       @fallback = nil
+
+      @rule = Ruy::Rule.new
+    end
+
+    def conditions
+      @rule.conditions
     end
 
     def outcome(value, &block)
@@ -25,7 +33,7 @@ module Ruy
     # @param [Hash] context
     def call(context)
       ctx = Context.new(context, @lets)
-      if @apply = super(ctx)
+      if @apply = @rule.call(ctx)
         compute_outcome(ctx)
       else
         @fallback
@@ -61,7 +69,7 @@ module Ruy
 
       s << "\n\n" unless s == ''
 
-      s << @conditions.join("\n")
+      s << self.conditions.join("\n")
 
       if @outcomes.any?
         s << "\n" unless s == ''

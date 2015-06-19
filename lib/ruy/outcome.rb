@@ -1,16 +1,26 @@
 module Ruy
-  class Outcome < Rule
+  class Outcome
+    include DSL
+
     attr_reader :value
 
     def initialize(value)
-      super
       @value = value
+      @rule = Ruy::Rule.new
     end
 
     def call(ctx)
-      if super(ctx)
+      if @rule.call(ctx)
         @value
       end
+    end
+
+    def conditions
+      @rule.conditions
+    end
+
+    def params
+      [@value]
     end
 
     def ==(o)
