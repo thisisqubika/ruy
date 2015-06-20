@@ -5,7 +5,7 @@ describe Ruy::TimePattern do
   let(:timestamp) { "2014-12-31T23:59:59z#{time_zone_identifier}" }
   let(:tz) { TZInfo::Timezone.get(time_zone_identifier) }
   let(:local_time) { Time.new(2014, 12, 31, 23, 59, 59, 0) }
-  let(:utc_time) { tz.local_to_utc local_time }
+  let(:utc_time) { tz.local_to_utc(local_time) }
 
   subject { described_class.new(timestamp) }
 
@@ -427,4 +427,15 @@ describe Ruy::TimePattern do
     it_behaves_like 'time pattern comparison'
   end
 
+  describe 'method missing delegation' do
+    it 'delegates to its UTC based Time instance' do
+      expect(subject.gmt_offset).to eq(subject.utc.gmt_offset)
+    end
+
+    it 'delegates to super by default' do
+      expect {
+        subject.undefined_method!
+      }.to raise_error(NoMethodError, /#{Ruy::TimePattern.name}/)
+    end
+  end
 end
