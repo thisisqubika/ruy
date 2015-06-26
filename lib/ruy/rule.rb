@@ -8,7 +8,6 @@ module Ruy
     def initialize(*args)
       @attrs = {}
       @conditions = []
-
       @params = args
     end
 
