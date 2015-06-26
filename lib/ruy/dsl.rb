@@ -59,6 +59,13 @@ module Ruy
       self.conditions << Conditions::Except.new(attr, value, &block)
     end
 
+    # Adds a GreaterThan condition.
+    #
+    # @param (see Conditions::GreaterThanOrEqual#initialize)
+    def greater_than(value, attr)
+      @conditions << Conditions::GreaterThan.new(attr, value)
+    end
+
     # Adds a GreaterThanOrEqual condition.
     #
     # @param (see Conditions::GreaterThanOrEqual#initialize)
