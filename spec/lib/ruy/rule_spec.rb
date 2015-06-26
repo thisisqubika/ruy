@@ -41,6 +41,14 @@ describe Ruy::Rule do
     end
   end
 
+  describe '#in_cyclic_order' do
+    it 'adds a InCyclicOrder condition' do
+      rule.in_cyclic_order(23, 5, :work_hours)
+
+      expect(rule.conditions).to include(be_a(Ruy::Conditions::InCyclicOrder))
+    end
+  end
+
   describe '#cond' do
     it 'adds a Cond condition' do
       rule.cond {
