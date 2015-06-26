@@ -7,7 +7,7 @@ describe Ruy::Rule do
     it 'adds an All condition' do
       rule.all {
         between :age, 0, 1
-        eq :bofh, true
+        eq true, :bofh
       }
 
       expect(rule.conditions).to include(be_a(Ruy::Conditions::All))
@@ -18,7 +18,7 @@ describe Ruy::Rule do
     it 'adds an Any condition' do
       rule.any {
         between :age, 0, 1
-        eq :bofh, true
+        eq true, :bofh
       }
 
       expect(rule.conditions).to include(be_a(Ruy::Conditions::Any))
@@ -35,7 +35,7 @@ describe Ruy::Rule do
 
   describe '#between' do
     it 'adds a Between condition' do
-      rule.between(:year_of_birth, 1900, 2000)
+      rule.between(1900, 2000, :year_of_birth)
 
       expect(rule.conditions).to include(be_a(Ruy::Conditions::Between))
     end
@@ -44,7 +44,7 @@ describe Ruy::Rule do
   describe '#cond' do
     it 'adds a Cond condition' do
       rule.cond {
-        eq :rule, 'rule'
+        eq 'rule', :rule
       }
 
       expect(rule.conditions).to include(be_a(Ruy::Conditions::Cond))
@@ -53,7 +53,7 @@ describe Ruy::Rule do
 
   describe '#eq' do
     it 'adds an Eq condition' do
-      rule.eq(:zone, :warm)
+      rule.eq(:warm, :zone)
 
       expect(rule.conditions).to include(be_a(Ruy::Conditions::Eq))
     end
@@ -69,31 +69,31 @@ describe Ruy::Rule do
 
   describe '#greater_than_or_equal' do
     it 'adds a GreaterThanOrEqual condition' do
-      rule.greater_than_or_equal(:age, 18)
+      rule.greater_than_or_equal(18, :age)
 
       expect(rule.conditions).to include(be_a(Ruy::Conditions::GreaterThanOrEqual))
     end
   end
 
+  describe '#in' do
+    it 'adds an In condition' do
+      rule.in([:white, :blue, :red], :color)
+
+      expect(rule.conditions).to include(be_a(Ruy::Conditions::In))
+    end
+  end
+
   describe '#include' do
     it 'adds an Include condition' do
-      rule.include(:color, [:white, :blue, :red])
+      rule.include(:colors, :white)
 
       expect(rule.conditions).to include(be_a(Ruy::Conditions::Include))
     end
   end
 
-  describe '#included' do
-    it 'adds an Included condition' do
-      rule.included(:colors, :white)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::Included))
-    end
-  end
-
   describe '#less_than_or_equal' do
     it 'adds a LessThanOrEqual condition' do
-      rule.less_than_or_equal(:age, 17)
+      rule.less_than_or_equal(17, :age)
 
       expect(rule.conditions).to include(be_a(Ruy::Conditions::LessThanOrEqual))
     end
@@ -101,7 +101,7 @@ describe Ruy::Rule do
 
   describe '#less_than' do
     it 'adds a LessThan condition' do
-      rule.less_than(:age, 18)
+      rule.less_than(18, :age)
 
       expect(rule.conditions).to include(be_a(Ruy::Conditions::LessThan))
     end
@@ -110,10 +110,10 @@ describe Ruy::Rule do
   describe '#tz' do
     it 'adds a TZ condition' do
       rule.tz {
-        between :timestamp, '2014-12-31T23:00:00', '2015-01-01T01:00:00'
-        eq :timestamp, '2015-01-01T00:00:00'
+        between '2014-12-31T23:00:00', '2015-01-01T01:00:00', :timestamp
+        eq '2015-01-01T00:00:00', :timestamp
         all do
-          eq :age, 18
+          eq 18, :age
         end
       }
 
@@ -129,56 +129,20 @@ describe Ruy::Rule do
     end
   end
 
-  describe '#var' do
-    context 'with value' do
-      before do
-        rule.var(:foo, :bar)
-      end
-
-      it 'defines a variable' do
-        expect(rule.vars).to include(:foo)
-      end
-
-      it 'assigns the variable to a callable that evaluates to the given value' do
-        callable = rule.vars[:foo]
-
-        expect(callable.call).to eq(:bar)
-      end
-    end
-
-    context 'when block' do
-      before do
-        rule.var(:foo) { :bar }
-      end
-
-      it 'defines a variable' do
-        expect(rule.vars).to include(:foo)
-      end
-
-      it 'assigns the variable to the given block' do
-        callable = rule.vars[:foo]
-
-        expect(callable.call).to eq(:bar)
-      end
-    end
-  end
-
   describe '#==' do
     let(:other) { Ruy::Rule.new }
 
     before do
       rule.conditions << :c1
-      rule.var :v1, 'v1'
 
       other.conditions << :c1
-      other.var :v1, 'v1'
     end
 
     it 'is true when comparing with itself' do
       expect(rule).to eq(rule)
     end
 
-    context 'when other rule has same conditions and vars' do
+    context 'when other rule has same conditions' do
 
       it 'is true' do
         expect(rule).to eq(other)
@@ -188,14 +152,6 @@ describe Ruy::Rule do
     context 'when different set of conditions' do
       it 'is false' do
         other.conditions << :c2
-
-        expect(rule).to_not eq(other)
-      end
-    end
-
-    context 'when different set of variables' do
-      it 'is false' do
-        other.var :v2, 'v2'
 
         expect(rule).to_not eq(other)
       end
@@ -211,26 +167,26 @@ describe Ruy::Rule do
 
     it 'should return false if attributes are not available in context' do
       rule.all {
-        eq :invalid_attr, 20
+        eq 20, :invalid_attr
       }
 
-      expect(rule.call(Ruy::VariableContext.new({}, {}))).to be(false)
+      expect(rule.call(Ruy::Context.new({}))).to be(false)
     end
   end
 
   describe '#to_s' do
     let(:rule) do
-      between = Ruy::Conditions::Between.new(:age, 18, 22) do
-        eq :flag, true
-        greater_than_or_equal :height, 1.8
+      between = Ruy::Conditions::Between.new(18, 22, :age) do
+        eq true, :flag
+        greater_than_or_equal 1.8, :height
       end
     end
 
     let(:representation) do
       <<EOS
-between :age, 18, 22 do
-  eq :flag, true
-  greater_than_or_equal :height, 1.8
+between 18, 22, :age do
+  eq true, :flag
+  greater_than_or_equal 1.8, :height
 end
 EOS
     end
