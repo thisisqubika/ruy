@@ -33,15 +33,11 @@ module Ruy
     # @param [Hash] context
     def call(context)
       ctx = Context.new(context, @lets)
-      if @apply = @rule.call(ctx)
+      if @rule.call(ctx)
         compute_outcome(ctx)
       else
         @fallback
       end
-    end
-
-    def apply?
-      @apply
     end
 
     def compute_outcome(ctx)
