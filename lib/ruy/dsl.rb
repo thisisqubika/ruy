@@ -3,7 +3,7 @@ module Ruy
 
     # Adds an All condition.
     #
-    # @yield Evaluates the given block in the context of the current rule
+    # @yield Evaluates the given block in the context of the new rule
     def all(&block)
       cond = Conditions::All.new
       cond.instance_exec(&block)
@@ -13,7 +13,7 @@ module Ruy
 
     # Adds an Any condition.
     #
-    # @yield Evaluates the given block in the context of the current rule
+    # @yield Evaluates the given block in the context of the new rule
     def any(&block)
       cond = Conditions::Any.new
       cond.instance_exec(&block)
@@ -44,7 +44,7 @@ module Ruy
 
     # Adds a Cond condition.
     #
-    # @yield Evaluates the given block in the context of the current rule
+    # @yield Evaluates the given block in the context of the new rule
     def cond(&block)
       cond = Conditions::Cond.new
       cond.instance_exec(&block)

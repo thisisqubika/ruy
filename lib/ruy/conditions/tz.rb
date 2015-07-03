@@ -2,9 +2,10 @@ module Ruy
   module Conditions
 
     # Evaluates a block using comparison matchers that receive time-related objects with time zone awareness.
-    #   Does not support time zone-aware matchers inside sub-blocks.
-    #   A workaround for this is always surrounding your time zone-aware matchers by a 'tz' block even in sub-blocks
-    #   already surrounded by one.
+    #
+    # @note Does not support time zone-aware matchers inside sub-blocks.
+    #       A workaround for this is always surrounding your time zone-aware matchers by a 'tz' block even in sub-blocks
+    #       already surrounded by one.
     class TZ < Ruy::Rule
       # @param [String] tz_identifier String representing IANA's time zone identifier.
       def initialize(tz_identifier)
