@@ -69,7 +69,7 @@ describe Ruy::Rule do
 
   describe '#greater_than' do
     it 'adds a GreaterThan condition' do
-      rule.greater_than(:age, 18)
+      rule.greater_than(18, :age)
 
       expect(rule.conditions).to include(be_a(Ruy::Conditions::GreaterThan))
     end
