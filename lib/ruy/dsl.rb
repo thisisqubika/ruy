@@ -63,7 +63,7 @@ module Ruy
     #
     # @param (see Conditions::GreaterThanOrEqual#initialize)
     def greater_than(value, attr)
-      @conditions << Conditions::GreaterThan.new(attr, value)
+      @conditions << Conditions::GreaterThan.new(value, attr)
     end
 
     # Adds a GreaterThanOrEqual condition.
