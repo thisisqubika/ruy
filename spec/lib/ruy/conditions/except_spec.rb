@@ -4,7 +4,7 @@ describe Ruy::Conditions::Except do
 
   describe '#call' do
 
-    subject(:condition) { Ruy::Conditions::Except.new(:enabled, false) }
+    subject(:condition) { Ruy::Conditions::Except.new(false, :enabled) }
 
     it 'is true when enabled != false' do
       context = Ruy::Context.new({:enabled => true})
@@ -20,7 +20,7 @@ describe Ruy::Conditions::Except do
 
     context 'when nested conditions' do
       subject(:condition) do
-        Ruy::Conditions::Except.new(:enabled, false) do
+        Ruy::Conditions::Except.new(false, :enabled) do
           assert :success
         end
       end
@@ -60,7 +60,7 @@ describe Ruy::Conditions::Except do
   end
 
   describe '#==' do
-    subject(:condition) { Ruy::Conditions::Except.new(:enabled, false) }
+    subject(:condition) { Ruy::Conditions::Except.new(false, :enabled) }
 
     context 'when comparing against self' do
       let(:other) { condition }
@@ -69,7 +69,7 @@ describe Ruy::Conditions::Except do
     end
 
     context 'when same condition values' do
-      let(:other) { Ruy::Conditions::Except.new(:enabled, false) }
+      let(:other) { Ruy::Conditions::Except.new(false, :enabled) }
 
       it { should eq(other) }
     end
@@ -81,7 +81,7 @@ describe Ruy::Conditions::Except do
     end
 
     context 'when different values' do
-      let(:other) { Ruy::Conditions::Except.new(:disabled, true) }
+      let(:other) { Ruy::Conditions::Except.new(true, :disabled) }
 
       it { should_not eq(other) }
     end

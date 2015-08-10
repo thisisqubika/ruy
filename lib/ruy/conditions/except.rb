@@ -9,13 +9,13 @@ module Ruy
     class Except < Ruy::Rule
       attr_reader :attr, :value
 
-      # @param attr Context attribute's name
       # @param value Non-expected value
+      # @param attr Context attribute's name
       # @yield a block in the context of the current rule
-      def initialize(attr = nil, value = nil, &block)
+      def initialize(value = nil, attr = nil, &block)
         super
-        @attr = attr
         @value = value
+        @attr = attr
         instance_exec(&block) if block_given?
       end
 

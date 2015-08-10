@@ -61,7 +61,7 @@ describe Ruy::Rule do
 
   describe '#except' do
     it 'adds an Except condition' do
-      rule.except(:enabled, false)
+      rule.except(false, :enabled)
 
       expect(rule.conditions).to include(be_a(Ruy::Conditions::Except))
     end
