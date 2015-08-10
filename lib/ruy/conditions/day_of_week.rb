@@ -4,7 +4,7 @@ require 'tzinfo'
 module Ruy
   module Conditions
 
-    # Expects that a Time object's date corresponds to a specified day of the week
+    # Expects that a Time object's date corresponds to a specified day of the week.
     class DayOfWeek < Ruy::Rule
       DAYS_INTO_WEEK = %w(sunday monday tuesday wednesday thursday friday saturday)
       attr_reader :attr, :value, :tz_identifier
@@ -20,7 +20,6 @@ module Ruy
         @tz = TZInfo::Timezone.get(tz_identifier)
       end
 
-      # @param [Ruy::Context] ctx
       def call(ctx)
         resolved = ctx.resolve(@attr)
         cmp = @tz.utc_to_local(resolved.to_time.utc)
@@ -32,7 +31,6 @@ module Ruy
         end
       end
 
-      # @param o
       def ==(o)
         o.kind_of?(DayOfWeek) &&
           attr == o.attr &&

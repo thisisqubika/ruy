@@ -46,7 +46,7 @@ module Ruy
         conditions == o.conditions
     end
 
-    # Getter method for rules params. It returns all the params without nil objects
+    # Getter method for rules params. It returns all the params without nil objects.
     #
     # @return [Array<Object>]
     def params
