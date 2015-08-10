@@ -2,6 +2,33 @@ require 'spec_helper'
 
 describe Ruy::Conditions::Any do
 
+  describe '#call' do
+    subject(:condition) do
+      Ruy::Conditions::Any.new.tap do |rule|
+        rule.assert :active
+        rule.assert :enabled
+      end
+    end
+
+    it 'is true when some condition is met' do
+      context = Ruy::Context.new({:active => true})
+
+      expect(condition.call(context)).to be
+    end
+
+    it 'is true when some other condition is met' do
+      context = Ruy::Context.new({:enabled => true})
+
+      expect(condition.call(context)).to be
+    end
+
+    it 'is false when no conditions are met' do
+      context = Ruy::Context.new({:active => false, :enabled => false})
+
+      expect(condition.call(context)).to_not be
+    end
+  end
+
   describe '#==' do
     subject(:condition) { Ruy::Conditions::Any.new }
 
