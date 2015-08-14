@@ -80,6 +80,13 @@ module Ruy
       self.conditions << Conditions::In.new(values, attr, &block)
     end
 
+    # Adds a InCyclicOrder condition.
+    #
+    # @param (see Conditions::InCyclicOrder#initialize)
+    def in_cyclic_order(from, to, attr, &block)
+      @conditions << Conditions::InCyclicOrder.new(from, to, attr, &block)
+    end
+
     # Adds an Include condition.
     #
     # @param (see Conditions::Included#initialize)
@@ -100,7 +107,7 @@ module Ruy
     def less_than(value, attr)
       self.conditions << Conditions::LessThan.new(value, attr)
     end
-
+    
     # Adds a TZ condition block
     #
     # @param [String] tz_identifier String representing IANA's
