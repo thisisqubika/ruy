@@ -1,122 +1,134 @@
-#ruy
+# ruy
 
-Rules Engine for Ruby
+Ruy is a library for defining a set of conditions and evaluating them against a context.
 
-##Introduction
+``` ruby
+# discount_day.rb
+gifter = Ruy::RuleSet.new
 
-Ruy is a [rules engine](http://en.wikipedia.org/wiki/Business_rules_engine) built for detecting when certain conditions obtain, and what events (or outcomes) should be trigger when they do.
+gifter.eq :friday, :day_of_week
 
-A Ruy `ruleset` is a combination of `rules` that check for `conditions` and result in zero or more `outcomes`. Rulesets are loaded from an `adapter` that lets developers specify how to persist and store their rules arbitrarily.
-
-## Example
-```ruby
-ruleset = Ruy::RuleSet.new
-
-# RuleSets can use :any and :all to do AND and OR groupings of conditions.
-
-ruleset.any do
-
-    # RuleSets evaluate against Context variables.
-    # Equality, scalarity (less than, greater
-    # than or equal to, etc), and inclusion/exclusion
-    # are supported
-
-    between 18, 22, :age
-    eq 'University of Texas', :school
+gifter.outcome 8 do
+  greater_than_or_equal 300, :amount
 end
 
-# RuleSets can have multiple outcomes when
-# conditions obtain in a certain Context.
+gifter.outcome 7 do
+  greater_than_or_equal 100, :amount
+end
 
-ruleset.outcome "I matched!"
+gifter.outcome 3
 
-ruleset.(age: 20) #=> "I matched!"
-ruleset.(age: 20, school: "University of Alabama" #=> "I matched!"
-ruleset.(age: 16, school: 'University of Texas' #=> "I matched!"
-ruleset.(age: 10, school: 'University of Alabama') #=> nil
+gifter.fallback 0
 ```
 
-## Concepts
+RuleSets are evaluated against a context (the `Hash` being passed to `#call`) and return the first outcome that matches.
 
-Ruy at its core is about evaluating something against a rule. What's a rule? And what's "something"? Let's take a look.
+``` ruby
+gifter.call(day_of_week: :friday, amount: 314)
 
-### Rules
-
-A `Rule` is a set of conditions. Ruy has a number of builtin conditions:
-
-* Equal (**:eq**)
-* Assert (**:assert**)
-* Between (**:between**)
-* Not (**:except**)
-* Inclusion (**:include** and **:included**)
-* Less than/Greater than (**:less\_than**, **:less\_than\_or\_equal\_to**, **:greater\_than**, **:greater\_than\_or\_equal\_to**)
-
-Rules can also group conditions arbitrarily as logical ANDs (**:all**) or OR (**:any**).
-
-#### RuleSet-level lazy values
-
-Rules can have lazy values set for them. The context must provide a proc which is evaluted only once the first time the value is needed to evaluate a rule. The result returned by the proc application is memoized and used to evaluate subsequent rules.
-
-```ruby
-rule.let :some_expensive_calculation
-```
-#### Applying Rules
-
-Rules have a `#call` method that returns true when all conditions are met. `#call` takes one argument, a `Context`, that has values for the various conditions to be evaluated against. If all the conditions pass, `#call` returns `true` and otherwise `false`. Example:
-
-```ruby
-rule = Ruy::Rule.new
-rule.eq 21, :age
-rule.call(Context.new({age: 21, name: 'Leah'})) # => true
+# => 8
 ```
 
-Cool thing about this is that by responding to `#call`, rules can do the whole `.()` syntax, or can be tested via `===`.
+``` ruby
+gifter.call(day_of_week: :friday, amount: 256)
 
-`VariableContext`s are Hash-like objects that resolve attributes in some context. Typically, that context is just the hash, but it could be enriched via a `Rule` or extra info.
+# => 7
+```
 
+If no outcome matches, the default one is returned.
+``` ruby
+gifter.call(day_of_week: :friday, amount: 99)
+
+# => 3
+```
+
+If conditions are not met, the fallback value is returned.
+``` ruby
+gifter.call(day_of_week: :monday, amount: 124)
+
+# => 0
+```
+
+## Key concepts
+
+Ruy at its core is about evaluating a set of conditions against a context in order to return a result.
+
+### Conditions
+
+A condition evaluates the state of the context.
+
+Available conditions:
+
+ - all *All of the nested conditions must suffice*
+ - any *At least one of its nested conditions must suffice*
+ - assert *A context value must be truish*
+ - between *Evaluates that a context value must belong to a specified range*
+ - cond *At least one slice of two nested conditions must suffice*
+ - day_of_week *Evaluates that a Date/DateTime/Time weekday is matched*
+ - eq *Tests a context value for equality*
+ - except *Evaluates that a context value is not equal to a specified value*
+ - greater_than *Tests that context value is greater than something*
+ - greater_than_or_equal *Tests that context value is greater than or equal to something*
+ - in *A context value must belong to a specified list of values*
+ - in_cyclic_order *TBD*
+ - include *The context attribute must include a specified value*
+ - less_than_or_equal *Tests that context value is less than or equal to something*
+ - less_than *Tests that context value is less than something*
+
+Conditions can be nested. In such case, for the nesting condition to be met, the nested conditions must
+also be met.
+
+``` ruby
+between 0, 1_000, :amount do
+  eq :friday, :day_of_week
+end
+```
+
+is equivalent to:
+
+``` ruby
+all do
+  between 0, 1_000, :amount
+  eq :friday, :day_of_week
+end
+```
+
+### Rulsets
+
+A ruleset is a set of conditions that must suffice and returns a value resulting from either an
+outcome or a fallback.
+
+### Contexts
+
+A context is a `Hash` from which values are fetched in order to evaluate a ruleset.
+
+### Lazy values
+
+Rulesets can define lazy values. The context must provide a proc which is evaluted only once the first time the value is needed. The result returned by the proc is memoized and used to evaluate subsequent conditions.
+
+
+``` ruby
+# premium_discount_day.rb
+gifter = Ruy::RuleSet.new
+
+gifter.let :amounts_average # an expensive calculation
+
+gifter.eq :friday, :week_of_day
+
+gifter.greater_than_or_equal 10_000, :amounts_average
+
+gifter.outcome true
+```
+
+``` ruby
+gifter.call(day_of_week: :friday, amounts_average: -> { Stats::Amounts.compute_average })
+```
 ### Outcomes
 
-An `Outcome` is a type of rule (`class Outcome < Rule`) that emits a value when the rule is evaluated (via `#call`), instead of just returning `true`. Example:
+An outcome is the result of a successful ruleset evaluation. An outcome can also have nested
+conditions, in such case, if the conditions meet, the outcome value is returned.
 
-```ruby
-outcome = Ruy::Outcome.new({sample: :outcome_value})
-outcome.eq 21, :age
-outcome.(Ruy::VariableContext.new({age: 21}, {})) # => {sample: :outcome_value}
-```
-
-### RuleSets
-
-A `RuleSet` also derives from `Rule`, but allows for more complex combinations of conditions and outcomes.
-
-To repeat the initial example:
-
-```ruby
-ruleset = Ruy::RuleSet.new
-
-ruleset.any do
-  between 18, 22, :age
-  eq :school, 'University of Texas'
-end
-
-ruleset.outcome "I matched!"
-```
-
-In this case, calling `ruleset.call(age: 20)` will work just fine. But we can now attach multiple outcomes (each with their own conditions), and `#call` will return the first outcome matching.
-
-Additionally, RuleSets can have a fallback value when no outcomes apply.
-
-```ruby
-ruleset = Ruy::RuleSet.new
-
-ruleset[:description] = "Rule about checking the drinking age"
-ruleset.less_than 21, :age
-
-ruleset.outcome "Underage!"
-
-ruleset.fallback "Nothing Matched"
-
-ruleset.(Ruy::VariableContext.new({age: 21}, {})) # => "Nothing matched"
-```
+A RuleSet can have multiple outcomes, the first matching one is returned.
 
 ### Time Zone awareness
 
