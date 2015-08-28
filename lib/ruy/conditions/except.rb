@@ -6,7 +6,7 @@ module Ruy
     # When a sub-rule is given, Except will expect an unsuccessful evaluation of that sub-rule.
     # When a sub-rule is not given, Except will expect a context attribute is not equal to a given
     # value.
-    class Except < Ruy::Rule
+    class Except < Condition
       attr_reader :attr, :value
 
       # @param value Non-expected value

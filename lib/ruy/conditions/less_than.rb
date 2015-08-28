@@ -2,13 +2,12 @@ module Ruy
   module Conditions
 
     # Expects that a context attribute will be less than given value.
-    class LessThan < Ruy::Rule
+    class LessThan < Condition
       attr_reader :attr, :value
 
       # @param value
       # @param attr Context attribute's name
       def initialize(value, attr)
-        super
         @value = value
         @attr = attr
       end

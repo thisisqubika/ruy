@@ -1,140 +1,15 @@
 require 'spec_helper'
 
 describe Ruy::Rule do
-  subject(:rule) { Ruy::Rule.new }
+  subject(:rule) do
+    rule = Ruy::Rule.new
 
-  describe '#all' do
-    it 'adds an All condition' do
-      rule.all {
-        between :age, 0, 1
-        eq true, :bofh
-      }
+    rule.assert :flag
 
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::All))
-    end
-  end
+    rule.outcome :outcome
+    rule.fallback :fallback
 
-  describe '#any' do
-    it 'adds an Any condition' do
-      rule.any {
-        between :age, 0, 1
-        eq true, :bofh
-      }
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::Any))
-    end
-  end
-
-  describe '#assert' do
-    it 'adds an Assert condition' do
-      rule.assert(:success)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::Assert))
-    end
-  end
-
-  describe '#between' do
-    it 'adds a Between condition' do
-      rule.between(1900, 2000, :year_of_birth)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::Between))
-    end
-  end
-
-  describe '#in_cyclic_order' do
-    it 'adds a InCyclicOrder condition' do
-      rule.in_cyclic_order(23, 5, :work_hours)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::InCyclicOrder))
-    end
-  end
-
-  describe '#cond' do
-    it 'adds a Cond condition' do
-      rule.cond {
-        eq 'rule', :rule
-      }
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::Cond))
-    end
-  end
-
-  describe '#eq' do
-    it 'adds an Eq condition' do
-      rule.eq(:warm, :zone)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::Eq))
-    end
-  end
-
-  describe '#except' do
-    it 'adds an Except condition' do
-      rule.except(false, :enabled)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::Except))
-    end
-  end
-
-  describe '#greater_than' do
-    it 'adds a GreaterThan condition' do
-      rule.greater_than(18, :age)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::GreaterThan))
-    end
-  end
-
-  describe '#greater_than_or_equal' do
-    it 'adds a GreaterThanOrEqual condition' do
-      rule.greater_than_or_equal(18, :age)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::GreaterThanOrEqual))
-    end
-  end
-
-  describe '#in' do
-    it 'adds an In condition' do
-      rule.in([:white, :blue, :red], :color)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::In))
-    end
-  end
-
-  describe '#include' do
-    it 'adds an Include condition' do
-      rule.include(:colors, :white)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::Include))
-    end
-  end
-
-  describe '#less_than_or_equal' do
-    it 'adds a LessThanOrEqual condition' do
-      rule.less_than_or_equal(17, :age)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::LessThanOrEqual))
-    end
-  end
-
-  describe '#less_than' do
-    it 'adds a LessThan condition' do
-      rule.less_than(18, :age)
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::LessThan))
-    end
-  end
-
-  describe '#tz' do
-    it 'adds a TZ condition' do
-      rule.tz {
-        between '2014-12-31T23:00:00', '2015-01-01T01:00:00', :timestamp
-        eq '2015-01-01T00:00:00', :timestamp
-        all do
-          eq 18, :age
-        end
-      }
-
-      expect(rule.conditions).to include(be_a(Ruy::Conditions::TZ))
-    end
+    rule
   end
 
   describe '#set, #get' do
@@ -145,71 +20,164 @@ describe Ruy::Rule do
     end
   end
 
-  describe '#==' do
-    let(:other) { Ruy::Rule.new }
+  describe '#let' do
+    let(:rule) do
+      set = Ruy::Rule.new
 
-    before do
-      rule.conditions << :c1
+      set.let :expensive
+      set.let :max
 
-      other.conditions << :c1
+      set.greater_than_or_equal 10, :expensive
+      set.less_than 100, :expensive
+
+      set
     end
 
-    it 'is true when comparing with itself' do
-      expect(rule).to eq(rule)
+    it 'resolves only once' do
+      resolved = 0
+      ctx = {
+        :expensive => -> { resolved += 1 }
+      }
+
+      rule.call(ctx)
+
+      expect(resolved).to eq(1)
     end
 
-    context 'when other rule has same conditions' do
+    it 'does not resolve unused lets' do
+      resolved = false
+      ctx = {
+        :expensive => -> { 0 },
+        :max => -> { resolved = true }
+      }
 
-      it 'is true' do
-        expect(rule).to eq(other)
-      end
-    end
+      rule.call(ctx)
 
-    context 'when different set of conditions' do
-      it 'is false' do
-        other.conditions << :c2
-
-        expect(rule).to_not eq(other)
-      end
+      expect(resolved).to_not be
     end
   end
 
   describe '#call' do
-    it 'returns true when no conditions' do
-      ctx = double(:context)
+    it 'resolves to outcome when conditions met' do
+      result = rule.call(:flag => true)
 
-      expect(subject.call(ctx)).to be
+      expect(result).to eq(:outcome)
     end
 
-    it 'should return false if attributes are not available in context' do
-      rule.all {
-        eq 20, :invalid_attr
-      }
+    it 'resolves to fallback when conditions do not met' do
+      result = rule.call(:flag => false)
 
-      expect(rule.call(Ruy::Context.new({}))).to be(false)
+      expect(result).to eq(:fallback)
     end
   end
 
   describe '#to_s' do
-    let(:rule) do
-      between = Ruy::Conditions::Between.new(18, 22, :age) do
-        eq true, :flag
-        greater_than_or_equal 1.8, :height
+    context 'with a full defined rule' do
+      let(:rule) do
+        rule = Ruy::Rule.new
+
+        rule.set :name, 'Full defined rule'
+
+        rule.let :expensive_count
+        rule.let :randomness
+
+        rule.eq 'New York', :city
+
+        rule.any do
+          between 18, 22, :age
+          eq true, :enabled
+        end
+
+        rule.any do
+          between 0, 17, :age
+          eq false, :enabled
+        end
+
+        rule.tz('America/New_York') do
+          eq '2015-01-01T00:00:00', :timestamp
+        end
+
+        rule.outcome 'I matched'
+
+        rule.fallback 'Nothing matched'
+        rule
+      end
+
+      let(:representation) do
+        <<EOS
+set :name, "Full defined rule"
+
+let :expensive_count
+let :randomness
+
+eq "New York", :city
+
+any do
+  between 18, 22, :age
+  eq true, :enabled
+end
+
+any do
+  between 0, 17, :age
+  eq false, :enabled
+end
+
+tz "America/New_York" do
+  eq "2015-01-01T00:00:00", :timestamp
+end
+
+outcome "I matched"
+
+fallback "Nothing matched"
+EOS
+      end
+
+      it 'matches the expected representation' do
+        expect(rule.to_s).to eq(representation)
       end
     end
 
-    let(:representation) do
-      <<EOS
-between 18, 22, :age do
-  eq true, :flag
-  greater_than_or_equal 1.8, :height
+    context 'with a rule that only has a fallback' do
+      let(:rule) do
+        rule = Ruy::Rule.new
+
+        rule.fallback 'Nothing matched'
+        rule
+      end
+
+      let(:representation) do
+        <<EOS
+fallback "Nothing matched"
+EOS
+      end
+
+      it 'matches the expected representation' do
+        expect(rule.to_s).to eq(representation)
+      end
+    end
+
+    context 'with a rule that only has an outcome' do
+      let(:rule) do
+        rule = Ruy::Rule.new
+
+        rule.outcome 'It matched' do
+          eq true, :enabled
+        end
+
+        rule
+      end
+
+      let(:representation) do
+        <<EOS
+outcome "It matched" do
+  eq true, :enabled
 end
 EOS
-    end
+      end
 
-    it 'matches the expected representation' do
-      expect(rule.to_s).to eq(representation)
+      it 'matches the expected representation' do
+        expect(rule.to_s).to eq(representation)
+      end
     end
   end
-
 end

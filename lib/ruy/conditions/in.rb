@@ -2,7 +2,7 @@ module Ruy
   module Conditions
 
     # Expects that a context attribute is included in a set of values.
-    class In < Ruy::Rule
+    class In < Condition
       attr_reader :attr, :values
 
       # @param values Expected set of values

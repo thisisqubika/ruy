@@ -4,7 +4,7 @@ module Ruy
     # Expects that a context value belongs to a given range.
     #
     # Comparison formula: from <= context[attr] <= to
-    class Between < Ruy::Rule
+    class Between < Condition
       attr_reader :attr, :from, :to
 
       # @param from Range lower bound

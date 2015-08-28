@@ -11,7 +11,7 @@ module Ruy
     # @param value The value of this outcome
     def initialize(value)
       @value = value
-      @rule = Ruy::Rule.new
+      @root_condition = Ruy::Conditions::All.new
     end
 
     # Returns the value of this outcome is all of the conditions succeed.
@@ -23,14 +23,14 @@ module Ruy
     # @return [Object]
     # @return [nil] If some of the conditions does not succeeds
     def call(ctx)
-      if @rule.call(ctx)
+      if @root_condition.call(ctx)
         @value
       end
     end
 
-    # @return [Array<Ruy::Rule>]
+    # @return [Array<Ruy::Condition>]
     def conditions
-      @rule.conditions
+      @root_condition.conditions
     end
 
     # @return [Array] An array containing the value of this outcome

@@ -2,7 +2,7 @@ module Ruy
   module Conditions
 
     # Expects that a context attribute will be equal to a given value.
-    class Eq < Ruy::Rule
+    class Eq < Condition
       attr_reader :attr, :value
 
       # @param value Expected value
