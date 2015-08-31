@@ -12,34 +12,28 @@ section#using.SectionUsing
           section.terminal
             header.terminal-header
               ul
-                li example.rb
+                li discount_day.rb
             section.terminal-body
               pre.prettyprint.linenums.lang-rb
                 code
                   :verbatim
-                    ruleset = Ruy::RuleSet.new
+                    gifter = Ruy::Rule.new
 
-                    # RuleSets can use :any and :all to do AND and OR groupings of conditions.
+                    gifter.set :name, 'Unforgettable Fridays'
 
-                    ruleset.any do
+                    gifter.eq :friday, :day_of_week
 
-                        # RuleSets evaluate against Context variables.
-                        # Equality, scalarity (less than, greater
-                        # than or equal to, etc), and inclusion/exclusion
-                        # are supported
-
-                        between :age, 18, 22
-                        eq :school, 'University of Texas'
+                    gifter.outcome 7 do
+                      greater_than_or_equal 100, :amount
                     end
 
-                    # RuleSets can have multiple outcomes when
-                    # conditions obtain in a certain Context.
+                    gifter.fallback 0
 
-                    ruleset.outcome 'I matched!'
 
-                    ruleset.(age: 20) #=> "I matched!"
-                    ruleset.(age: 20, school: 'University of Alabama') #=> "I matched!"
-                    ruleset.(age: 16, school: 'University of Texas')   #=> "I matched!"
-                    ruleset.(age: 10, school: 'University of Alabama') #=> nil
 
+                    gifter.call(day_of_week: :friday, amount: 256)
+                    # => 7
+
+                    gifter.call(day_of_week: :monday, amount: 124)
+                    # => 0
           footer.terminal-footer
