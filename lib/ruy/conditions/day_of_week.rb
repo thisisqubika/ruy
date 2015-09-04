@@ -5,7 +5,7 @@ module Ruy
   module Conditions
 
     # Expects that a Time object's date corresponds to a specified day of the week.
-    class DayOfWeek < Ruy::Rule
+    class DayOfWeek < Condition
       DAYS_INTO_WEEK = %w(sunday monday tuesday wednesday thursday friday saturday)
       attr_reader :attr, :value, :tz_identifier
 

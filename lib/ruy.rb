@@ -1,7 +1,6 @@
 require_relative 'ruy/utils'
 require_relative 'ruy/dsl'
 require_relative 'ruy/rule'
-require_relative 'ruy/rule_set'
 require_relative 'ruy/conditions'
 require_relative 'ruy/context'
 require_relative 'ruy/outcome'

@@ -2,7 +2,7 @@ module Ruy
   module Conditions
 
     # Expects that a context attribute will be greater than the given value.
-    class GreaterThan < Ruy::Rule
+    class GreaterThan < Condition
       attr_reader :attr, :value
 
       # @param value

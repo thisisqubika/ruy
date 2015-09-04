@@ -1,6 +1,6 @@
 module Ruy
   module Conditions
-    class InCyclicOrder < Ruy::Rule
+    class InCyclicOrder < Condition
       attr_reader :from, :to, :attr
 
       def initialize(from, to, attr, &block)

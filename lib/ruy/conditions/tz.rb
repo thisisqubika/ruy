@@ -6,7 +6,7 @@ module Ruy
     # @note Does not support time zone-aware matchers inside sub-blocks.
     #       A workaround for this is always surrounding your time zone-aware matchers by a 'tz' block even in sub-blocks
     #       already surrounded by one.
-    class TZ < Ruy::Rule
+    class TZ < Condition
       # @param [String] tz_identifier String representing IANA's time zone identifier.
       def initialize(tz_identifier)
         super

@@ -63,7 +63,7 @@ module Ruy
     #
     # @param (see Conditions::GreaterThanOrEqual#initialize)
     def greater_than(value, attr)
-      @conditions << Conditions::GreaterThan.new(value, attr)
+      self.conditions << Conditions::GreaterThan.new(value, attr)
     end
 
     # Adds a GreaterThanOrEqual condition.
@@ -84,7 +84,7 @@ module Ruy
     #
     # @param (see Conditions::InCyclicOrder#initialize)
     def in_cyclic_order(from, to, attr, &block)
-      @conditions << Conditions::InCyclicOrder.new(from, to, attr, &block)
+      self.conditions << Conditions::InCyclicOrder.new(from, to, attr, &block)
     end
 
     # Adds an Include condition.
@@ -107,7 +107,7 @@ module Ruy
     def less_than(value, attr)
       self.conditions << Conditions::LessThan.new(value, attr)
     end
-    
+
     # Adds a TZ condition block
     #
     # @param [String] tz_identifier String representing IANA's

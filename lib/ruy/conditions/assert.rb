@@ -2,7 +2,7 @@ module Ruy
   module Conditions
 
     # Asserts that an attribute has a truth value.
-    class Assert < Ruy::Rule
+    class Assert < Condition
       attr_reader :attr
 
       # @param attr Context attribute's name

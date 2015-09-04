@@ -2,9 +2,9 @@ module Ruy
   module Conditions
 
     # Expects that at least one of the rules will succeed.
-    class Any < Ruy::Rule
+    class Any < Condition
       def call(ctx)
-        @conditions.any? do |condition|
+        conditions.any? do |condition|
           condition.call(ctx)
         end
       end
