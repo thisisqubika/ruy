@@ -16,26 +16,6 @@ describe Ruy::Conditions::Between do
 
       expect(condition.call(context)).to_not be
     end
-
-    context 'when nested conditions' do
-      subject(:condition) do
-        Ruy::Conditions::Between.new(0, 17, :age) do
-          assert :success
-        end
-      end
-
-      it 'is true when nested succeeds' do
-        context = Ruy::Context.new({:age => 10, :success => true})
-
-        expect(condition.call(context)).to be
-      end
-
-      it 'is false when nested fails' do
-        context = Ruy::Context.new({:age => 10, :success => false})
-
-        expect(condition.call(context)).to_not be
-      end
-    end
   end
 
   describe '#==' do

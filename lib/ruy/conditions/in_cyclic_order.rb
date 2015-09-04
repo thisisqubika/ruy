@@ -8,16 +8,15 @@ module Ruy
         @from = from
         @to = to
         @attr = attr
-        instance_exec(&block) if block_given?
       end
 
       def call(ctx)
         value = ctx.resolve(@attr)
 
         if @from > @to
-          (@from <= value || @to >= value) && super
+          (@from <= value || @to >= value)
         else
-          (@from <= value && @to >= value) && super
+          (@from <= value && @to >= value)
         end
       end
 
@@ -25,8 +24,7 @@ module Ruy
         o.kind_of?(self.class) &&
           @from == o.from &&
           @to   == o.to &&
-          @attr == o.attr &&
-          self.conditions == o.conditions
+          @attr == o.attr
       end
     end
   end

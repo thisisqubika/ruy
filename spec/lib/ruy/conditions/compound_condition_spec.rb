@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Ruy::Conditions::Condition do
+describe Ruy::Conditions::CompoundCondition do
   subject(:condition) { described_class.new }
 
   describe '#call' do

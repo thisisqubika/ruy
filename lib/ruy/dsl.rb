@@ -132,7 +132,7 @@ module Ruy
         s << ' ' << stringified_params.join(', ')
       end
 
-      if self.conditions.empty?
+      if !self.respond_to?(:conditions) || self.conditions.empty?
         s << "\n"
       else
         s << " do\n"

@@ -12,18 +12,16 @@ module Ruy
         super
         @value = value
         @attr = attr
-        instance_exec(&block) if block_given?
       end
 
       def call(ctx)
-        @value <= ctx.resolve(@attr) && super
+        @value <= ctx.resolve(@attr)
       end
 
       def ==(o)
         o.kind_of?(GreaterThanOrEqual) &&
           attr == o.attr &&
-          value == o.value &&
-          self.conditions == o.conditions
+          value == o.value
       end
     end
   end

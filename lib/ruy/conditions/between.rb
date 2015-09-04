@@ -17,20 +17,18 @@ module Ruy
         @from = from
         @to = to
         @attr = attr
-        instance_exec(&block) if block_given?
       end
 
       def call(ctx)
         value = ctx.resolve(@attr)
-        @from <= value && @to >= value && super
+        @from <= value && @to >= value
       end
 
       def ==(o)
         o.kind_of?(Between) &&
           @attr == o.attr &&
           @from == o.from &&
-          @to   == o.to &&
-          self.conditions == o.conditions
+          @to   == o.to
       end
     end
   end
