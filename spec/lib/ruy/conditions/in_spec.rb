@@ -16,26 +16,6 @@ describe Ruy::Conditions::In do
 
       expect(condition.call(context)).to_not be
     end
-
-    context 'when nested conditions' do
-      subject(:condition) do
-        Ruy::Conditions::In.new([:sunday, :monday], :day_of_week) do
-          assert :success
-        end
-      end
-
-      it 'is true when nested succeeds' do
-        context = Ruy::Context.new({:day_of_week => :sunday, :success => true})
-
-        expect(condition.call(context)).to be
-      end
-
-      it 'is false when nested fails' do
-        context = Ruy::Context.new({:day_of_week => :sunday, :success => false})
-
-        expect(condition.call(context)).to_not be
-      end
-    end
   end
 
   describe '#==' do

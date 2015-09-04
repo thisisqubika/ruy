@@ -84,24 +84,6 @@ Available conditions:
  - less_than_or_equal *Tests that context value is less than or equal to something*
  - less_than *Tests that context value is less than something*
 
-Conditions can be nested. In such case, for the nesting condition to be met, the nested conditions must
-also be met.
-
-``` ruby
-between 0, 1_000, :amount do
-  eq :friday, :day_of_week
-end
-```
-
-is equivalent to:
-
-``` ruby
-all do
-  between 0, 1_000, :amount
-  eq :friday, :day_of_week
-end
-```
-
 ### Rules
 
 A Rule is a set of conditions that must suffice and returns a value resulting from either an

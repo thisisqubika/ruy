@@ -6,7 +6,7 @@ module Ruy
     # @note Does not support time zone-aware matchers inside sub-blocks.
     #       A workaround for this is always surrounding your time zone-aware matchers by a 'tz' block even in sub-blocks
     #       already surrounded by one.
-    class TZ < Condition
+    class TZ < CompoundCondition
       # @param [String] tz_identifier String representing IANA's time zone identifier.
       def initialize(tz_identifier)
         super
@@ -15,7 +15,7 @@ module Ruy
 
       # @param [Ruy::VariableContext] ctx
       def call(ctx)
-        @conditions.all? do |condition|
+        conditions.all? do |condition|
           condition.call(ctx)
         end
       end
@@ -24,7 +24,7 @@ module Ruy
       #
       # @param (see Ruy::Conditions::DayOfWeek#initialize)
       def day_of_week(dow, attr)
-        @conditions << DayOfWeek.new(dow, attr, @tz_identifier)
+        conditions << DayOfWeek.new(dow, attr, @tz_identifier)
       end
 
       # Intercepts an 'eq' call to the superclass and enhances its arguments

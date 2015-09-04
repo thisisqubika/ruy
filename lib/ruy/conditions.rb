@@ -1,4 +1,5 @@
 require_relative 'conditions/condition'
+require_relative 'conditions/compound_condition'
 require_relative 'conditions/all'
 require_relative 'conditions/any'
 require_relative 'conditions/assert'

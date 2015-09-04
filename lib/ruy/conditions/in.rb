@@ -12,18 +12,16 @@ module Ruy
         super
         @values = values
         @attr = attr
-        instance_exec(&block) if block_given?
       end
 
       def call(var_ctx)
-        self.values.include?(var_ctx.resolve(self.attr)) && super
+        self.values.include?(var_ctx.resolve(self.attr))
       end
 
       def ==(o)
         o.kind_of?(In) &&
           self.attr == o.attr &&
-          self.values == o.values &&
-          self.conditions == o.conditions
+          self.values == o.values
       end
     end
 

@@ -22,26 +22,6 @@ describe Ruy::Conditions::GreaterThanOrEqual do
 
       expect(condition.call(context)).to_not be
     end
-
-    context 'when nested conditions' do
-      subject(:condition) do
-        Ruy::Conditions::GreaterThanOrEqual.new(18, :age) do
-          assert :success
-        end
-      end
-
-      it 'is true when nested succeeds' do
-        context = Ruy::Context.new({ :age => 18, :success => true })
-
-        expect(condition.call(context)).to be
-      end
-
-      it 'is false when nested fails' do
-        context = Ruy::Context.new({ :age => 18, :success => false })
-
-        expect(condition.call(context)).to_not be
-      end
-    end
   end
 
   describe '#==' do
