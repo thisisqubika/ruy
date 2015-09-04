@@ -55,8 +55,8 @@ module Ruy
     # Adds an Except condition.
     #
     # @param (see Conditions::Except#initialize)
-    def except(value = nil, attr = nil, &block)
-      self.conditions << Conditions::Except.new(value, attr, &block)
+    def except(&block)
+      self.conditions << Conditions::Except.new(&block)
     end
 
     # Adds a GreaterThan condition.
