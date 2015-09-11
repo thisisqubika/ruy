@@ -79,7 +79,7 @@ describe Ruy::DSL do
 
   describe '#except' do
     it 'adds an Except condition' do
-      host.except(false, :enabled)
+      host.except
 
       expect(host.conditions).to include(be_a(Ruy::Conditions::Except))
     end
