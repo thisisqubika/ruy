@@ -187,3 +187,7 @@ rule.outcome 'Happy New Year, NYC!'
 Support for time zone awareness in nested blocks inside `tz` blocks is planned. This workaround could stop working in future versions; use it at your own risk.
 
 Ruy depends on [TZInfo](http://tzinfo.github.io/ "TZ Info website") to calculate offsets using IANA's Time Zone Database. Check their website for information about time zone identifiers.
+
+### Documentation
+
+[RubyDoc.info](http://www.rubydoc.info/github/moove-it/ruy)
