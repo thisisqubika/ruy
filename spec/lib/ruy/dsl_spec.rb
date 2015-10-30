@@ -16,7 +16,7 @@ describe Ruy::DSL do
   describe '#all' do
     it 'adds an All condition' do
       host.all {
-        between :age, 0, 1
+        between 0, 1, :age
         eq true, :bofh
       }
 
@@ -27,7 +27,7 @@ describe Ruy::DSL do
   describe '#any' do
     it 'adds an Any condition' do
       host.any {
-        between :age, 0, 1
+        between 0, 1, :age
         eq true, :bofh
       }
 
@@ -130,6 +130,17 @@ describe Ruy::DSL do
       host.less_than(18, :age)
 
       expect(host.conditions).to include(be_a(Ruy::Conditions::LessThan))
+    end
+  end
+
+  describe '#some' do
+    it 'adds a Some condition' do
+      host.some(:person) {
+        between 0, 1, :age
+        eq true, :bofh
+      }
+
+      expect(host.conditions).to include(be_a(Ruy::Conditions::Some))
     end
   end
 

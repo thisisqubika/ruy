@@ -93,6 +93,13 @@ describe Ruy::Rule do
           eq false, :enabled
         end
 
+        rule.some(:cities) do
+          eq 'France', :country
+          some :partners do
+            eq 'Glasgow', :name
+          end
+        end
+
         rule.tz('America/New_York') do
           eq '2015-01-01T00:00:00', :timestamp
         end
@@ -120,6 +127,13 @@ end
 any do
   between 0, 17, :age
   eq false, :enabled
+end
+
+some :cities do
+  eq "France", :country
+  some :partners do
+    eq "Glasgow", :name
+  end
 end
 
 tz "America/New_York" do
