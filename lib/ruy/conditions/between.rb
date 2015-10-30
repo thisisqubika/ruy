@@ -10,9 +10,7 @@ module Ruy
       # @param from Range lower bound
       # @param to Range upper bound
       # @param attr Name of the attribute that will be evaluated
-      #
-      # @yield a block in the context of the current rule
-      def initialize(from, to, attr, &block)
+      def initialize(from, to, attr)
         super
         @from = from
         @to = to

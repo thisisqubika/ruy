@@ -7,8 +7,7 @@ module Ruy
 
       # @param value
       # @param attr Context attribute's name
-      # @yield a block in the context of the current rule
-      def initialize(value, attr, &block)
+      def initialize(value, attr)
         super
         @value = value
         @attr = attr
