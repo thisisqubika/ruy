@@ -93,6 +93,13 @@ describe Ruy::Rule do
           eq false, :enabled
         end
 
+        rule.every(:car) do
+          assert :airbag
+          every(:wheels) do
+            greater_than 28, :diameter
+          end
+        end
+
         rule.some(:cities) do
           eq 'France', :country
           some :partners do
@@ -127,6 +134,13 @@ end
 any do
   between 0, 17, :age
   eq false, :enabled
+end
+
+every :car do
+  assert :airbag
+  every :wheels do
+    greater_than 28, :diameter
+  end
 end
 
 some :cities do

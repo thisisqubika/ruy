@@ -77,6 +77,17 @@ describe Ruy::DSL do
     end
   end
 
+  describe '#every' do
+    it 'adds an Every condition' do
+      host.every(:person) {
+        between 0, 1, :age
+        eq true, :bofh
+      }
+
+      expect(host.conditions).to include(be_a(Ruy::Conditions::Every))
+    end
+  end
+
   describe '#except' do
     it 'adds an Except condition' do
       host.except
