@@ -68,21 +68,21 @@ A condition evaluates the state of the context.
 
 Available conditions:
 
- - all *All of the nested conditions must suffice*
- - any *At least one of its nested conditions must suffice*
- - assert *A context value must be truish*
- - between *Evaluates that a context value must belong to a specified range*
- - cond *At least one slice of two nested conditions must suffice*
- - day_of_week *Evaluates that a Date/DateTime/Time weekday is matched*
- - eq *Tests a context value for equality*
- - except *Evaluates that a context value is not equal to a specified value*
- - greater_than *Tests that context value is greater than something*
- - greater_than_or_equal *Tests that context value is greater than or equal to something*
- - in *A context value must belong to a specified list of values*
- - in_cyclic_order *Expects that a value is included in a cyclic order*
- - include *The context attribute must include a specified value*
- - less_than_or_equal *Tests that context value is less than or equal to something*
- - less_than *Tests that context value is less than something*
+ - `all` *All of the nested conditions must suffice*
+ - `any` *At least one of its nested conditions must suffice*
+ - `assert` *Tests that a given context value must be a truthy value*
+ - `between` *Evaluates that a given context value must belong to a specified range*
+ - `cond` *At least one slice of two nested conditions must suffice*
+ - `day_of_week` *Evaluates that a Date/DateTime/Time weekday is matched*
+ - `eq` *Tests a context value for equality*
+ - `except` *Evaluates that a given context value is not equal to a specified value*
+ - `greater_than` *Tests that a given context value is greater than something*
+ - `greater_than_or_equal` *Tests that a given context value is greater than or equal to something*
+ - `in` *Given context value must belong to a specified list of values*
+ - `in_cyclic_order` *Expects that a given context value is included in a cyclic order*
+ - `include` *The context value must include a specified value*
+ - `less_than_or_equal` *Tests that a given context value is less than or equal to something*
+ - `less_than` *Tests that a given context value is less than something*
 
 ### Rules
 
@@ -104,7 +104,7 @@ gifter = Ruy::Rule.new
 
 gifter.let :amounts_average # an expensive calculation
 
-gifter.eq :friday, :week_of_day
+gifter.eq :friday, :day_of_week
 
 gifter.greater_than_or_equal 10_000, :amounts_average
 
@@ -141,7 +141,7 @@ String time patterns follow the Ruy's well-formed time pattern structure as foll
 
 `YYYY-MM-DDTHH:MM:SS[z<IANA Time Zone Database identifier>]`
 
-Where the time zone identifier is optional, but if you specify it, will take precedence over the block's identifier. In case you don't specify it, Ruy will get the time zone from the `tz` block's argument. If neither the block nor the pettern specify it, UTC will be used.
+Where the time zone identifier is optional, but if you specify it, will take precedence over the block's identifier. In case you don't specify it, Ruy will get the time zone from the `tz` block's argument. If neither the block nor the pattern specify it, UTC will be used.
 
 #### Days of week matcher
 
@@ -184,7 +184,16 @@ end
 rule.outcome 'Happy New Year, NYC!'
 ```
 
-Support for time zone awareness in nested blocks inside `tz` blocks is planned. This workaround could stop working in future versions; use it at your own risk.
+The following won't do what you expect. Instead, equality will be evaluated interpreting the time as a simple string.
+
+```ruby
+rule.tz 'America/New_York' do
+  any do
+    eq '2015-01-01T00:00:00', :timestamp
+    eq '2015-01-01T02:00:00zUTC', :timestamp
+  end
+end
+```
 
 Ruy depends on [TZInfo](http://tzinfo.github.io/ "TZ Info website") to calculate offsets using IANA's Time Zone Database. Check their website for information about time zone identifiers.
 
