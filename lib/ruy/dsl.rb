@@ -31,15 +31,15 @@ module Ruy
     # Adds a Between condition.
     #
     # @param (see Conditions::Between#initialize)
-    def between(from, to, attr, &block)
-      self.conditions << Conditions::Between.new(from, to, attr, &block)
+    def between(from, to, attr)
+      self.conditions << Conditions::Between.new(from, to, attr)
     end
 
     # Adds an Eq condition.
     #
     # @param (see Conditions::Eq#initialize)
-    def eq(value, attr, &block)
-      self.conditions << Conditions::Eq.new(value, attr, &block)
+    def eq(value, attr)
+      self.conditions << Conditions::Eq.new(value, attr)
     end
 
     # Adds a Cond condition.
@@ -76,28 +76,28 @@ module Ruy
     # Adds an In condition.
     #
     # @param (see Conditions::Include#initialize)
-    def in(values, attr, &block)
-      self.conditions << Conditions::In.new(values, attr, &block)
+    def in(values, attr)
+      self.conditions << Conditions::In.new(values, attr)
     end
 
     # Adds a InCyclicOrder condition.
     #
     # @param (see Conditions::InCyclicOrder#initialize)
-    def in_cyclic_order(from, to, attr, &block)
-      self.conditions << Conditions::InCyclicOrder.new(from, to, attr, &block)
+    def in_cyclic_order(from, to, attr)
+      self.conditions << Conditions::InCyclicOrder.new(from, to, attr)
     end
 
     # Adds an Include condition.
     #
     # @param (see Conditions::Included#initialize)
-    def include(value, attr, &block)
-      self.conditions << Conditions::Include.new(value, attr, &block)
+    def include(value, attr)
+      self.conditions << Conditions::Include.new(value, attr)
     end
 
     # Adds a LessOrEqualThan condition.
     #
     # @param (see Conditions::LessOrEqualThan#initialize)
-    def less_than_or_equal(value, attr, &block)
+    def less_than_or_equal(value, attr)
       self.conditions << Conditions::LessThanOrEqual.new(value, attr)
     end
 

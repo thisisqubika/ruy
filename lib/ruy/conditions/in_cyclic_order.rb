@@ -3,7 +3,7 @@ module Ruy
     class InCyclicOrder < Condition
       attr_reader :from, :to, :attr
 
-      def initialize(from, to, attr, &block)
+      def initialize(from, to, attr)
         super
         @from = from
         @to = to

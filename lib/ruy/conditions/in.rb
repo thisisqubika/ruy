@@ -7,8 +7,7 @@ module Ruy
 
       # @param values Expected set of values
       # @param attr Context attribute's name
-      # @yield a block in the context of the current rule
-      def initialize(values, attr, &block)
+      def initialize(values, attr)
         super
         @values = values
         @attr = attr
