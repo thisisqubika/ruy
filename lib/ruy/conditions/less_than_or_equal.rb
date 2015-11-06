@@ -3,25 +3,28 @@ module Ruy
 
     # Expects that a context attribute will be less than or equal to the given value.
     class LessThanOrEqual < Condition
-      attr_reader :attr, :value
+      attr_reader :obj, :attr
 
-      # @param attr Context attribute's name
-      # @param value
-      def initialize(value, attr)
+      # @param obj Context attribute's name
+      # @param attr
+      def initialize(obj, *attrs)
         super
-        @value = value
-        @attr = attr
-      end
-
-      def call(ctx)
-        @value >= ctx.resolve(@attr)
+        @obj = obj
+        @attr = attrs.first if attrs.any?
       end
 
       def ==(o)
         o.kind_of?(LessThanOrEqual) &&
-          attr == o.attr &&
-          value == o.value
+          o.obj == @obj &&
+          o.attr == @attr
       end
+
+      protected
+
+      def evaluate(value)
+        @obj >= value
+      end
+
     end
   end
 end

@@ -7,36 +7,39 @@ module Ruy
     # Expects that a Time object's date corresponds to a specified day of the week.
     class DayOfWeek < Condition
       DAYS_INTO_WEEK = %w(sunday monday tuesday wednesday thursday friday saturday)
-      attr_reader :attr, :value, :tz_identifier
 
-      # @param value
+      attr_reader :day, :attr, :tz_identifier
+
+      # @param day
       # @param attr
       # @param tz_identifier
-      def initialize(value, attr, tz_identifier = 'UTC')
+      def initialize(day, attr, tz_identifier = 'UTC')
         super
-        @value = value
+        @day = day
         @attr = attr
         @tz_identifier = tz_identifier
-        @tz = TZInfo::Timezone.get(tz_identifier)
-      end
-
-      def call(ctx)
-        resolved = ctx.resolve(@attr)
-        cmp = @tz.utc_to_local(resolved.to_time.utc)
-
-        if @value.is_a?(Fixnum)
-          cmp.wday == @value
-        else
-          DAYS_INTO_WEEK.include?(@value.to_s) && cmp.send("#{@value}?")
-        end
       end
 
       def ==(o)
         o.kind_of?(DayOfWeek) &&
-          attr == o.attr &&
-          value == o.value &&
-          tz_identifier == o.tz_identifier
+          o.day == @day &&
+          o.attr == @attr &&
+          o.tz_identifier == @tz_identifier
       end
+
+      protected
+
+      def evaluate(value)
+        # Get the TZInfo::Timezone object here so it can be garbage-collected later
+        cmp = TZInfo::Timezone.get(@tz_identifier).utc_to_local(value.to_time.utc)
+
+        if @day.is_a?(Fixnum)
+          cmp.wday == @day
+        else
+          DAYS_INTO_WEEK.include?(@day.to_s) && cmp.send("#{@day}?")
+        end
+      end
+
     end
   end
 end

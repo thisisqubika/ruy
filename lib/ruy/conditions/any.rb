@@ -1,7 +1,7 @@
 module Ruy
   module Conditions
 
-    # Expects that at least one of the rules will succeed.
+    # Expects that at least one of the sub-conditions is be satisfied.
     class Any < CompoundCondition
       def call(ctx)
         conditions.any? do |condition|
@@ -9,10 +9,6 @@ module Ruy
         end
       end
 
-      def ==(o)
-        o.kind_of?(Any) &&
-          conditions == o.conditions
-      end
     end
   end
 end

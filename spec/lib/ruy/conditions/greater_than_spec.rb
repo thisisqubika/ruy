@@ -3,24 +3,48 @@ require 'spec_helper'
 describe Ruy::Conditions::GreaterThan do
 
   describe '#call' do
-    subject(:condition) { Ruy::Conditions::GreaterThan.new(18, :age) }
+    context 'when instance receives no argument' do
+      subject(:condition) { Ruy::Conditions::GreaterThan.new(18) }
 
-    it 'is true when value is greater' do
-      context = Ruy::Context.new({ :age => 19 }, {})
+      it 'is true when value is greater' do
+        context = Ruy::Context.new(19)
 
-      expect(condition.call(context)).to be
+        expect(condition.call(context)).to be
+      end
+
+      it 'is false when value is equal' do
+        context = Ruy::Context.new(18)
+
+        expect(condition.call(context)).to_not be
+      end
+
+      it 'is false when value is smaller' do
+        context = Ruy::Context.new(17)
+
+        expect(condition.call(context)).to_not be
+      end
     end
 
-    it 'is false when value is equal' do
-      context = Ruy::Context.new({ :age => 18 }, {})
+    context 'when instance receives an attribute' do
+      subject(:condition) { Ruy::Conditions::GreaterThan.new(18, :age) }
 
-      expect(condition.call(context)).to_not be
-    end
+      it 'is true when value is greater' do
+        context = Ruy::Context.new({ :age => 19 })
 
-    it 'is false when value is smaller' do
-      context = Ruy::Context.new({ :age => 17 }, {})
+        expect(condition.call(context)).to be
+      end
 
-      expect(condition.call(context)).to_not be
+      it 'is false when value is equal' do
+        context = Ruy::Context.new({ :age => 18 })
+
+        expect(condition.call(context)).to_not be
+      end
+
+      it 'is false when value is smaller' do
+        context = Ruy::Context.new({ :age => 17 })
+
+        expect(condition.call(context)).to_not be
+      end
     end
   end
 
@@ -33,20 +57,32 @@ describe Ruy::Conditions::GreaterThan do
       it { should eq(other) }
     end
 
-    context 'when same condition values' do
+    context 'when condition has the same attributes' do
       let(:other) { Ruy::Conditions::GreaterThan.new(1_000, :salary) }
 
       it { should eq(other) }
     end
 
-    context 'when different rule' do
+    context 'when condition is different' do
       let(:other) { Ruy::Conditions::All.new }
 
       it { should_not eq(other) }
     end
 
-    context 'when different values' do
-      let(:other) { Ruy::Conditions::GreaterThan.new(5, :age) }
+    context 'when condition has different values' do
+      let(:other) { Ruy::Conditions::GreaterThan.new(5, :salary) }
+
+      it { should_not eq(other) }
+    end
+
+    context 'when condition has different attributes' do
+      let(:other) { Ruy::Conditions::GreaterThan.new(1_000, :age) }
+
+      it { should_not eq(other) }
+    end
+
+    context 'when condition has no attributes' do
+      let(:other) { Ruy::Conditions::GreaterThan.new(5) }
 
       it { should_not eq(other) }
     end

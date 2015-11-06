@@ -3,52 +3,71 @@ require 'spec_helper'
 describe Ruy::Conditions::Assert do
 
   describe '#call' do
-    it 'is true when truth value' do
-      context = Ruy::Context.new({:success => true})
+    context 'instance receives no attribute' do
+      subject(:condition) { described_class.new }
 
-      condition = Ruy::Conditions::Assert.new(:success)
+      it 'is true when context is a truthy value' do
+        context = Ruy::Context.new(true)
+        expect(condition.call(context)).to be
+      end
 
-      result = condition.call(context)
-
-      expect(result).to be
+      it 'is false when context is a falsey value' do
+        context = Ruy::Context.new(false)
+        expect(condition.call(context)).to_not be
+      end
     end
 
-    it 'is false when false' do
-      context = Ruy::Context.new({:success => false})
+    context 'instance receives an attribute' do
+      subject(:condition) { described_class.new(:attr) }
 
-      condition = Ruy::Conditions::Assert.new(:success)
+      it 'is true when attribute resolves to a truthy value' do
+        context = Ruy::Context.new(attr: true)
+        expect(condition.call(context)).to be
+      end
 
-      result = condition.call(context)
-
-      expect(result).to_not be
+      it 'is false when attribute resolves to a falsey value' do
+        context = Ruy::Context.new(attr: false)
+        expect(condition.call(context)).to_not be
+      end
     end
   end
 
   describe '#==' do
-    subject(:condition) { Ruy::Conditions::Assert.new(:success) }
+    shared_examples_for 'condition equality' do |*names|
+      subject(:condition) { described_class.new(*names) }
 
-    context 'when comparing against self' do
-      let(:other) { condition }
+      context 'when comparing against self' do
+        let(:other) { condition }
 
-      it { should eq(other) }
+        it { should eq(other) }
+      end
+
+      context 'when condition has the same attributes' do
+        let(:other) { Ruy::Conditions::Assert.new(*names) }
+
+        it { should eq(other) }
+      end
+
+      context 'when condition is different' do
+        let(:other) { Ruy::Conditions::All.new }
+
+        it { should_not eq(other) }
+      end
+
+      context 'when condition has different attributes' do
+        let(:other) { Ruy::Conditions::Assert.new(:error) }
+
+        it { should_not eq(other) }
+      end
     end
 
-    context 'when same condition values' do
-      let(:other) { Ruy::Conditions::Assert.new(:success) }
-
-      it { should eq(other) }
+    context 'instance receives no attribute' do
+      it_behaves_like 'condition equality'
     end
 
-    context 'when different rule' do
-      let(:other) { Ruy::Conditions::All.new }
-
-      it { should_not eq(other) }
+    context 'instance receives an attribute' do
+      it_behaves_like 'condition equality', :attr
     end
 
-    context 'when different values' do
-      let(:other) { Ruy::Conditions::Assert.new(:error) }
-
-      it { should_not eq(other) }
-    end
   end
 end

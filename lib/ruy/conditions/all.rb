@@ -1,7 +1,7 @@
 module Ruy
   module Conditions
 
-    # Expects that all rules will succeed.
+    # Expects all sub-conditions to be satisfied.
     class All < CompoundCondition
     end
   end

@@ -7,7 +7,6 @@ describe Ruy::Conditions::DayOfWeek do
     shared_examples_for 'day of week matcher call' do
       let(:ctx) { Ruy::Context.new({time: time}) }
 
-
       context 'time zone identifier is passed' do
         subject { described_class.new(value, :time, tz_identifier) }
 

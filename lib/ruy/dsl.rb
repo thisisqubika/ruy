@@ -24,22 +24,15 @@ module Ruy
     # Adds an Assert condition.
     #
     # @param (see Conditions::Assert#initialize)
-    def assert(attr)
-      self.conditions << Conditions::Assert.new(attr)
+    def assert(*attrs)
+      self.conditions << Conditions::Assert.new(*attrs)
     end
 
     # Adds a Between condition.
     #
     # @param (see Conditions::Between#initialize)
-    def between(from, to, attr)
-      self.conditions << Conditions::Between.new(from, to, attr)
-    end
-
-    # Adds an Eq condition.
-    #
-    # @param (see Conditions::Eq#initialize)
-    def eq(value, attr)
-      self.conditions << Conditions::Eq.new(value, attr)
+    def between(from, to, *attrs)
+      self.conditions << Conditions::Between.new(from, to, *attrs)
     end
 
     # Adds a Cond condition.
@@ -52,11 +45,18 @@ module Ruy
       self.conditions << cond
     end
 
+    # Adds an Eq condition.
+    #
+    # @param (see Conditions::Eq#initialize)
+    def eq(value, *attrs)
+      self.conditions << Conditions::Eq.new(value, *attrs)
+    end
+
     # Adds an Every condition.
     #
     # @param (see Conditions::Every#initialize)
-    def every(attr, &block)
-      cond = Conditions::Every.new(attr)
+    def every(*attrs, &block)
+      cond = Conditions::Every.new(*attrs)
       cond.instance_exec(&block)
 
       self.conditions << cond
@@ -72,57 +72,57 @@ module Ruy
     # Adds a GreaterThan condition.
     #
     # @param (see Conditions::GreaterThanOrEqual#initialize)
-    def greater_than(value, attr)
-      self.conditions << Conditions::GreaterThan.new(value, attr)
+    def greater_than(value, *attrs)
+      self.conditions << Conditions::GreaterThan.new(value, *attrs)
     end
 
     # Adds a GreaterThanOrEqual condition.
     #
     # @param (see Conditions::GreaterThanOrEqual#initialize)
-    def greater_than_or_equal(value, attr)
-      self.conditions << Conditions::GreaterThanOrEqual.new(value, attr)
+    def greater_than_or_equal(value, *attrs)
+      self.conditions << Conditions::GreaterThanOrEqual.new(value, *attrs)
     end
 
     # Adds an In condition.
     #
     # @param (see Conditions::Include#initialize)
-    def in(values, attr)
-      self.conditions << Conditions::In.new(values, attr)
+    def in(values, *attrs)
+      self.conditions << Conditions::In.new(values, *attrs)
     end
 
     # Adds a InCyclicOrder condition.
     #
     # @param (see Conditions::InCyclicOrder#initialize)
-    def in_cyclic_order(from, to, attr)
-      self.conditions << Conditions::InCyclicOrder.new(from, to, attr)
+    def in_cyclic_order(from, to, *attrs)
+      self.conditions << Conditions::InCyclicOrder.new(from, to, *attrs)
     end
 
     # Adds an Include condition.
     #
     # @param (see Conditions::Included#initialize)
-    def include(value, attr)
-      self.conditions << Conditions::Include.new(value, attr)
-    end
-
-    # Adds a LessOrEqualThan condition.
-    #
-    # @param (see Conditions::LessOrEqualThan#initialize)
-    def less_than_or_equal(value, attr)
-      self.conditions << Conditions::LessThanOrEqual.new(value, attr)
+    def include(value, *attrs)
+      self.conditions << Conditions::Include.new(value, *attrs)
     end
 
     # Adds a LessThan condition.
     #
     # @param (see Conditions::LessThan#initialize)
-    def less_than(value, attr)
-      self.conditions << Conditions::LessThan.new(value, attr)
+    def less_than(value, *attrs)
+      self.conditions << Conditions::LessThan.new(value, *attrs)
+    end
+
+    # Adds a LessOrEqualThan condition.
+    #
+    # @param (see Conditions::LessOrEqualThan#initialize)
+    def less_than_or_equal(value, *attrs)
+      self.conditions << Conditions::LessThanOrEqual.new(value, *attrs)
     end
 
     # Adds a Some condition.
     #
     # @param (see Conditions::Some#initialize)
-    def some(attr, &block)
-      cond = Conditions::Some.new(attr)
+    def some(*attrs, &block)
+      cond = Conditions::Some.new(*attrs)
       cond.instance_exec(&block)
 
       self.conditions << cond

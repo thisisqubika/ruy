@@ -42,7 +42,7 @@ describe Ruy::Conditions::Any do
       it { should eq(other) }
     end
 
-    context 'when same sub-conditions' do
+    context 'having same sub-conditions' do
       let(:other) { Ruy::Conditions::Any.new }
 
       before do
@@ -52,7 +52,7 @@ describe Ruy::Conditions::Any do
       it { should eq(other) }
     end
 
-    context 'when same sub-conditions but different rule' do
+    context 'having same sub-conditions but different rule' do
       let(:other) { Ruy::Conditions::All.new }
 
       before do

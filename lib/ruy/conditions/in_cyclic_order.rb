@@ -3,16 +3,23 @@ module Ruy
     class InCyclicOrder < Condition
       attr_reader :from, :to, :attr
 
-      def initialize(from, to, attr)
+      def initialize(from, to, *attrs)
         super
         @from = from
         @to = to
-        @attr = attr
+        @attr = attrs.first if attrs.any?
       end
 
-      def call(ctx)
-        value = ctx.resolve(@attr)
+      def ==(o)
+        o.kind_of?(self.class) &&
+          o.from == @from &&
+          o.to   == @to &&
+          o.attr == @attr
+      end
 
+      protected
+
+      def evaluate(value)
         if @from > @to
           (@from <= value || @to >= value)
         else
@@ -20,12 +27,6 @@ module Ruy
         end
       end
 
-      def ==(o)
-        o.kind_of?(self.class) &&
-          @from == o.from &&
-          @to   == o.to &&
-          @attr == o.attr
-      end
     end
   end
 end

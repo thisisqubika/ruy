@@ -5,28 +5,29 @@ module Ruy
     #
     # Comparison formula: from <= context[attr] <= to
     class Between < Condition
-      attr_reader :attr, :from, :to
+      attr_reader :from, :to, :attr
 
       # @param from Range lower bound
       # @param to Range upper bound
       # @param attr Name of the attribute that will be evaluated
-      def initialize(from, to, attr)
+      def initialize(from, to, *attrs)
         super
         @from = from
         @to = to
-        @attr = attr
-      end
-
-      def call(ctx)
-        value = ctx.resolve(@attr)
-        @from <= value && @to >= value
+        @attr = attrs.first if attrs.any?
       end
 
       def ==(o)
         o.kind_of?(Between) &&
-          @attr == o.attr &&
-          @from == o.from &&
-          @to   == o.to
+          o.from == @from &&
+          o.to == @to &&
+          o.attr == @attr
+      end
+
+      protected
+
+      def evaluate(value)
+        @from <= value && @to >= value
       end
     end
   end

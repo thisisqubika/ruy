@@ -33,4 +33,22 @@ describe Ruy::Conditions::CompoundCondition do
       end
     end
   end
+
+  describe '#==' do
+    context 'when condition is different' do
+      let(:other) { Ruy::Conditions::Eq.new(4) }
+
+      it { should_not eq(other) }
+    end
+
+    context 'when sub-conditions are different' do
+      let(:other) { Ruy::Conditions::CompoundCondition.new }
+
+      before do
+        other.eq 8, :number
+      end
+
+      it { should_not eq(other) }
+    end
+  end
 end

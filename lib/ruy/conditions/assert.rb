@@ -1,23 +1,19 @@
 module Ruy
   module Conditions
 
-    # Asserts that an attribute has a truth value.
+    # Asserts that an attribute has a truthy value.
     class Assert < Condition
       attr_reader :attr
 
-      # @param attr Context attribute's name
-      def initialize(attr)
+      # @param attr Context attribute's attr
+      def initialize(*attrs)
         super
-        @attr = attr
-      end
-
-      def call(ctx)
-        ctx.resolve(@attr)
+        @attr = attrs.first if attrs.any?
       end
 
       def ==(o)
         o.kind_of?(Assert) &&
-          @attr == o.attr
+          o.attr == @attr
       end
     end
   end
