@@ -75,6 +75,7 @@ Available conditions:
  - `cond` *At least one slice of two nested conditions must suffice*
  - `day_of_week` *Evaluates that a Date/DateTime/Time weekday is matched*
  - `eq` *Tests a context value for equality*
+ - `every` *Evaluates that at all the elements of a context enumerable matches the nested conditions*
  - `except` *Evaluates that a given context value is not equal to a specified value*
  - `greater_than` *Tests that a given context value is greater than something*
  - `greater_than_or_equal` *Tests that a given context value is greater than or equal to something*

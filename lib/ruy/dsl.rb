@@ -52,6 +52,16 @@ module Ruy
       self.conditions << cond
     end
 
+    # Adds an Every condition.
+    #
+    # @param (see Conditions::Every#initialize)
+    def every(attr, &block)
+      cond = Conditions::Every.new(attr)
+      cond.instance_exec(&block)
+
+      self.conditions << cond
+    end
+
     # Adds an Except condition.
     #
     # @param (see Conditions::Except#initialize)
