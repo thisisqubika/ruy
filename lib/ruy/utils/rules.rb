@@ -7,7 +7,7 @@ module Ruy
       # Returns true when all the conditions match, false otherwise.
       #
       # @param [Array<Condition>] conditions
-      # @param [Hash] ctx
+      # @param [Context] ctx
       #
       # @return [Boolean]
       def self.evaluate_conditions(conditions, ctx)

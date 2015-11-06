@@ -83,6 +83,7 @@ Available conditions:
  - `include` *The context value must include a specified value*
  - `less_than_or_equal` *Tests that a given context value is less than or equal to something*
  - `less_than` *Tests that a given context value is less than something*
+ - `some` *Evaluates that at least one element of a context enumerable matches the nested conditions*
 
 ### Rules
 

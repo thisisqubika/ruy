@@ -108,6 +108,16 @@ module Ruy
       self.conditions << Conditions::LessThan.new(value, attr)
     end
 
+    # Adds a Some condition.
+    #
+    # @param (see Conditions::Some#initialize)
+    def some(attr, &block)
+      cond = Conditions::Some.new(attr)
+      cond.instance_exec(&block)
+
+      self.conditions << cond
+    end
+
     # Adds a TZ condition block
     #
     # @param [String] tz_identifier String representing IANA's
