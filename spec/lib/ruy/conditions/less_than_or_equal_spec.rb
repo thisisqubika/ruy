@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe Ruy::Conditions::LessThan do
+describe Ruy::Conditions::LessThanOrEqual do
   describe '#call' do
     context 'when instance receives no attribute' do
-      subject(:condition) { Ruy::Conditions::LessThan.new(18) }
+      subject(:condition) { Ruy::Conditions::LessThanOrEqual.new(18) }
 
-      it 'is false when value is equal' do
+      it 'is true when value is equal' do
         context = Ruy::Context.new(18)
 
-        expect(condition.call(context)).to_not be
+        expect(condition.call(context)).to be
       end
 
       it 'is false when value is bigger' do
@@ -25,12 +25,12 @@ describe Ruy::Conditions::LessThan do
     end
 
     context 'when instance receives an attribute' do
-      subject(:condition) { Ruy::Conditions::LessThan.new(18, :age) }
+      subject(:condition) { Ruy::Conditions::LessThanOrEqual.new(18, :age) }
 
-      it 'is false when value is equal' do
+      it 'is true when value is equal' do
         context = Ruy::Context.new({ :age => 18 })
 
-        expect(condition.call(context)).to_not be
+        expect(condition.call(context)).to be
       end
 
       it 'is false when value is bigger' do
@@ -46,8 +46,9 @@ describe Ruy::Conditions::LessThan do
       end
     end
   end
+
   describe '#==' do
-    subject(:condition) { Ruy::Conditions::LessThan.new(1_000, :salary) }
+    subject(:condition) { Ruy::Conditions::LessThanOrEqual.new(1_000, :salary) }
 
     context 'when comparing against self' do
       let(:other) { condition }
@@ -56,7 +57,7 @@ describe Ruy::Conditions::LessThan do
     end
 
     context 'when condition is the same' do
-      let(:other) { Ruy::Conditions::LessThan.new(1_000, :salary) }
+      let(:other) { Ruy::Conditions::LessThanOrEqual.new(1_000, :salary) }
 
       it { should eq(other) }
     end
@@ -67,20 +68,20 @@ describe Ruy::Conditions::LessThan do
       it { should_not eq(other) }
     end
 
-    context 'when condition has a different value' do
-      let(:other) { Ruy::Conditions::LessThan.new(5, :salary) }
+    context 'when condition has a different attribute' do
+      let(:other) { Ruy::Conditions::LessThanOrEqual.new(5, :age) }
 
       it { should_not eq(other) }
     end
 
-    context 'when condition has a different attribute' do
-      let(:other) { Ruy::Conditions::LessThan.new(1_000, :age) }
+    context 'when condition has a different value' do
+      let(:other) { Ruy::Conditions::LessThanOrEqual.new(5, :salary) }
 
       it { should_not eq(other) }
     end
 
     context 'when condition has no attribute' do
-      let(:other) { Ruy::Conditions::LessThan.new(1_000) }
+      let(:other) { Ruy::Conditions::LessThanOrEqual.new(1_000) }
 
       it { should_not eq(other) }
     end

@@ -3,25 +3,28 @@ module Ruy
 
     # Expects that a context attribute will be equal to a given value.
     class Eq < Condition
-      attr_reader :attr, :value
+      attr_reader :obj, :attr
 
-      # @param value Expected value
+      # @param obj Expected object
       # @param attr Context attribute's name
-      def initialize(value, attr)
+      def initialize(obj, *attrs)
         super
-        @value = value
-        @attr = attr
-      end
-
-      def call(ctx)
-        @value == ctx.resolve(@attr)
+        @obj = obj
+        @attr = attrs.first if attrs.any?
       end
 
       def ==(o)
         o.kind_of?(Eq) &&
-          attr == o.attr &&
-          value == o.value
+          o.obj == @obj &&
+          o.attr == @attr
       end
+
+      protected
+
+      def evaluate(value)
+        @obj == value
+      end
+
     end
   end
 end

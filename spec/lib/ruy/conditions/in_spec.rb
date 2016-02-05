@@ -3,18 +3,36 @@ require 'spec_helper'
 describe Ruy::Conditions::In do
 
   describe '#call' do
-    subject(:condition) { Ruy::Conditions::In.new([:sunday, :monday], :day_of_week) }
+    context 'when instance receives no attribute' do
+      subject(:condition) { Ruy::Conditions::In.new([:sunday, :monday]) }
 
-    it 'is true when in' do
-      context = Ruy::Context.new({:day_of_week => :sunday})
+      it 'is true when included' do
+        context = Ruy::Context.new(:sunday)
 
-      expect(condition.call(context)).to be
+        expect(condition.call(context)).to be
+      end
+
+      it 'is false when not included' do
+        context = Ruy::Context.new(:wednesday)
+
+        expect(condition.call(context)).to_not be
+      end
     end
 
-    it 'is false when not in' do
-      context = Ruy::Context.new({:day_of_week => :tuesday})
+    context 'when instance receives an attribute' do
+      subject(:condition) { Ruy::Conditions::In.new([:sunday, :monday], :day_of_week) }
 
-      expect(condition.call(context)).to_not be
+      it 'is true when in' do
+        context = Ruy::Context.new({:day_of_week => :sunday})
+
+        expect(condition.call(context)).to be
+      end
+
+      it 'is false when not in' do
+        context = Ruy::Context.new({:day_of_week => :tuesday})
+
+        expect(condition.call(context)).to_not be
+      end
     end
   end
 
@@ -27,26 +45,32 @@ describe Ruy::Conditions::In do
       it { should eq(other) }
     end
 
-    context 'when same condition' do
+    context 'when condition has the same attributes' do
       let(:other) { Ruy::Conditions::In.new([:sunday, :monday], :day_of_week) }
 
       it { should eq(other) }
     end
 
-    context 'when different rule' do
+    context 'when condition is different' do
       let(:other) { Ruy::Conditions::All.new }
 
       it { should_not eq(other) }
     end
 
-    context 'when different attribute' do
+    context 'when condition has a different attribute' do
       let(:other) { Ruy::Conditions::In.new([:sunday, :monday], :dow) }
 
       it { should_not eq(other) }
     end
 
-    context 'when different values' do
+    context 'when condition has different values' do
       let(:other) { Ruy::Conditions::In.new([:saturday], :day_of_week) }
+
+      it { should_not eq(other) }
+    end
+
+    context 'when condition has no attributes' do
+      let(:other) { Ruy::Conditions::In.new([:saturday]) }
 
       it { should_not eq(other) }
     end

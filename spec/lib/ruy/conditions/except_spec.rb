@@ -8,13 +8,13 @@ describe Ruy::Conditions::Except do
       Ruy::Conditions::Except.new { assert :sunday }
     end
 
-    it 'is true when !sunday' do
+    it 'is true when inner condition is not satisfied' do
       context = Ruy::Context.new({:sunday => false})
 
       expect(condition.call(context)).to be
     end
 
-    it 'is false when sunday' do
+    it 'is false when inner condition is satisfied' do
       context = Ruy::Context.new({:sunday => true})
 
       expect(condition.call(context)).to_not be
@@ -30,19 +30,19 @@ describe Ruy::Conditions::Except do
       it { should eq(other) }
     end
 
-    context 'when same nested condition' do
+    context 'when condition has the same nested condition' do
       let(:other) { Ruy::Conditions::Except.new { assert :sunday } }
 
       it { should eq(other) }
     end
 
-    context 'when different nested condition' do
+    context 'when condition has a different nested condition' do
       let(:other) { Ruy::Conditions::Except.new { assert :monday } }
 
       it { should_not eq(other) }
     end
 
-    context 'when different rule' do
+    context 'when condition is different' do
       let(:other) { Ruy::Conditions::All.new }
 
       it { should_not eq(other) }

@@ -3,24 +3,26 @@ module Ruy
 
     # Expects that a context attribute is included in a set of values.
     class In < Condition
-      attr_reader :attr, :values
+      attr_reader :ary, :attr
 
-      # @param values Expected set of values
+      # @param ary Expected set of values
       # @param attr Context attribute's name
-      def initialize(values, attr)
+      def initialize(ary, *attrs)
         super
-        @values = values
-        @attr = attr
-      end
-
-      def call(var_ctx)
-        self.values.include?(var_ctx.resolve(self.attr))
+        @ary = ary
+        @attr = attrs.first if attrs.any?
       end
 
       def ==(o)
         o.kind_of?(In) &&
-          self.attr == o.attr &&
-          self.values == o.values
+          o.ary == @ary &&
+          o.attr == @attr
+      end
+
+      protected
+
+      def evaluate(value)
+        @ary.include?(value)
       end
     end
 

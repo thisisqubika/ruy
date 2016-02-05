@@ -2,16 +2,17 @@ module Ruy
   # Context that resolves lets and values access.
   class Context
 
-    # @param [Hash] ctx
-    # @param [Array] lets Names of the 'let' variables
-    def initialize(ctx, lets = [])
-      @ctx = ctx
-      @lets = lets
+    attr_reader :values
 
+    # @param [Object] a value or Hash with values
+    # @param [Array] symbol names of the 'let' variables
+    def initialize(values, lets = [])
+      @values = values
+      @lets = lets
       @resolved_lets = {}
     end
 
-    # Resolve the given attr from the lets or the context.
+    # Resolve the given attribute from defined 'let' variables or stored values.
     #
     # @param [Symbol] attr
     #
@@ -19,9 +20,9 @@ module Ruy
     # @return [nil] when attribute cannot be resolved
     def resolve(attr)
       if @lets.include?(attr)
-        @resolved_lets[attr] ||= @ctx.instance_exec(&@ctx[attr])
+        @resolved_lets[attr] ||= @values.instance_exec(&@values[attr])
       else
-        @ctx.fetch(attr) { |key| @ctx[key.to_s] }
+        @values.fetch(attr) { |key| @values[attr.to_s] }
       end
     end
   end

@@ -1,25 +1,27 @@
 module Ruy
   module Conditions
 
-    # Expects that a context attribute will be less than given value.
+    # Expects that a context attribute will be less than the given value.
     class LessThan < Condition
-      attr_reader :attr, :value
+      attr_reader :obj, :attr
 
-      # @param value
+      # @param obj
       # @param attr Context attribute's name
-      def initialize(value, attr)
-        @value = value
-        @attr = attr
-      end
-
-      def call(ctx)
-        @value > ctx.resolve(@attr)
+      def initialize(obj, *attrs)
+        @obj = obj
+        @attr = attrs.first if attrs.any?
       end
 
       def ==(o)
         o.kind_of?(LessThan) &&
-          attr == o.attr &&
-          value == o.value
+          o.obj == @obj &&
+          o.attr == @attr
+      end
+
+      protected
+
+      def evaluate(value)
+        @obj > value
       end
     end
   end

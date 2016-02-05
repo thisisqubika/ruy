@@ -13,13 +13,6 @@ module Ruy
         @tz_identifier = tz_identifier
       end
 
-      # @param [Ruy::VariableContext] ctx
-      def call(ctx)
-        conditions.all? do |condition|
-          condition.call(ctx)
-        end
-      end
-
       # Adds a DayOfWeek condition
       #
       # @param (see Ruy::Conditions::DayOfWeek#initialize)
@@ -30,8 +23,8 @@ module Ruy
       # Intercepts an 'eq' call to the superclass and enhances its arguments
       #
       # @param (see Ruy::Conditions::Eq#initialize)
-      def eq(pattern, attr, &block)
-        super(TimePattern.new(pattern, @tz_identifier), attr, &block)
+      def eq(pattern, *attrs, &block)
+        super(TimePattern.new(pattern, @tz_identifier), *attrs, &block)
       end
 
       # TODO Add Greater condition call here
@@ -39,29 +32,29 @@ module Ruy
       # Intercepts a 'greater_than_or_equal' call to the superclass and enhances its arguments
       #
       # @param (see Ruy::Conditions::GreaterThanOrEqual#initialize)
-      def greater_than_or_equal(pattern, attr, &block)
-        super(TimePattern.new(pattern, @tz_identifier), attr, &block)
+      def greater_than_or_equal(pattern, *attrs, &block)
+        super(TimePattern.new(pattern, @tz_identifier), *attrs, &block)
       end
 
       # Intercepts a 'less_than' call to the superclass and enhances its arguments
       #
       # @param (see Ruy::Conditions::LessThan#initialize)
-      def less_than(pattern, attr, &block)
-        super(TimePattern.new(pattern, @tz_identifier), attr, &block)
+      def less_than(pattern, *attrs, &block)
+        super(TimePattern.new(pattern, @tz_identifier), *attrs, &block)
       end
 
       # Intercepts a 'less_than_or_equal' call to the superclass and enhances its arguments
       #
       # @param (see Ruy::Conditions::LessThanOrEqual#initialize)
-      def less_than_or_equal(pattern, attr, &block)
-        super(TimePattern.new(pattern, @tz_identifier), attr, &block)
+      def less_than_or_equal(pattern, *attrs, &block)
+        super(TimePattern.new(pattern, @tz_identifier), *attrs, &block)
       end
 
       # Intercepts a 'between' call to the superclass and enhances its arguments
       #
       # @param (see Ruy::Conditions::Between#initialize)
-      def between(from, to, attr, &block)
-        super(TimePattern.new(from, @tz_identifier), TimePattern.new(to, @tz_identifier), attr, &block)
+      def between(from, to, *attrs, &block)
+        super(TimePattern.new(from, @tz_identifier), TimePattern.new(to, @tz_identifier), *attrs, &block)
       end
 
     end

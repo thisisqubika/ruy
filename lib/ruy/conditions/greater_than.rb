@@ -3,25 +3,28 @@ module Ruy
 
     # Expects that a context attribute will be greater than the given value.
     class GreaterThan < Condition
-      attr_reader :attr, :value
+      attr_reader :obj, :attr
 
-      # @param value
+      # @param obj
       # @param attr Context attribute's name
-      def initialize(value, attr)
+      def initialize(obj, *attrs)
         super
-        @value = value
-        @attr = attr
-      end
-
-      def call(var_ctx)
-        @value < var_ctx.resolve(@attr)
+        @obj = obj
+        @attr = attrs.first if attrs.any?
       end
 
       def ==(o)
         o.kind_of?(GreaterThan) &&
-          attr == o.attr &&
-          value == o.value
+          o.obj == @obj &&
+          o.attr == @attr
       end
+
+      protected
+
+      def evaluate(value)
+        @obj < value
+      end
+
     end
   end
 end
