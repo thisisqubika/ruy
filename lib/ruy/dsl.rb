@@ -45,6 +45,18 @@ module Ruy
       self.conditions << cond
     end
 
+    # Adds a Dig condition.
+    #
+    # @param (see Conditions::Dig#initialize)
+    #
+    # @yield Evaluates the given block in the context of the new rule
+    def dig(*attrs, &block)
+      condition = Conditions::Dig.new(*attrs)
+      condition.instance_exec(&block)
+
+      self.conditions << condition
+    end
+
     # Adds an Eq condition.
     #
     # @param (see Conditions::Eq#initialize)

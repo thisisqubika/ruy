@@ -74,6 +74,7 @@ Available conditions:
  - `between` *Evaluates that a given context value must belong to a specified range*
  - `cond` *At least one slice of two nested conditions must suffice*
  - `day_of_week` *Evaluates that a Date/DateTime/Time weekday is matched*
+ - `dig` *Digs into a Hash allowing to define conditions over nested attributes*
  - `eq` *Tests a context value for equality*
  - `every` *Evaluates that at all the elements of a context enumerable matches the nested conditions*
  - `except` *Evaluates that a given context value is not equal to a specified value*

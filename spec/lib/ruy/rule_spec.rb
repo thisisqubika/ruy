@@ -107,6 +107,10 @@ describe Ruy::Rule do
           end
         end
 
+        rule.dig(:location, :address) do
+          eq '5th Av', :street
+        end
+
         rule.tz('America/New_York') do
           eq '2015-01-01T00:00:00', :timestamp
         end
@@ -148,6 +152,10 @@ some :cities do
   some :partners do
     eq "Glasgow", :name
   end
+end
+
+dig :location, :address do
+  eq "5th Av", :street
 end
 
 tz "America/New_York" do

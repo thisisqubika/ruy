@@ -75,6 +75,16 @@ describe Ruy::DSL do
     end
   end
 
+  describe '#dig' do
+    it 'adds a Dig condition' do
+      host.dig(:location) {
+        assert :address
+      }
+
+      expect(host.conditions).to include(be_a(Ruy::Conditions::Dig))
+    end
+  end
+
   describe '#eq' do
     it 'adds an Eq condition' do
       host.eq(:warm, :zone)
