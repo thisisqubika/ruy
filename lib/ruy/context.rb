@@ -12,6 +12,15 @@ module Ruy
       @resolved_lets = {}
     end
 
+    # Returns true if the given attr is present in the current context
+    #
+    # @param [Object] attr
+    #
+    # @return [Boolean]
+    def include?(attr)
+      @values.include?(attr) || @values.include?(attr.to_s) || @lets.include?(attr)
+    end
+
     # Resolve the given attribute from defined 'let' variables or stored values.
     #
     # @param [Symbol] attr
