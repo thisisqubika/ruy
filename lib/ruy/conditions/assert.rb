@@ -1,20 +1,30 @@
 module Ruy
   module Conditions
 
-    # Asserts that an attribute has a truthy value.
+    # Expects that the context key stores a truthy value
+    #
     class Assert < Condition
-      attr_reader :attr
+      attr_reader :key
 
-      # @param attr Context attribute's attr
-      def initialize(*attrs)
+      # @param key
+      # @example evaluate that :key passes
+      #   Asset.new(:key)
+      def initialize(*keys)
         super
-        @attr = attrs.first if attrs.any?
+        @key = keys.first if keys.any?
       end
 
       def ==(o)
         o.kind_of?(Assert) &&
-          o.attr == @attr
+        o.key == @key
       end
+
+      protected
+
+      def evaluate(obj)
+        !!obj
+      end
+
     end
   end
 end

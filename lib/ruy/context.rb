@@ -1,38 +1,57 @@
 module Ruy
-  # Context that resolves lets and values access.
+  class UnexpectedObjectError < StandardError; end
+
+  # Wraps an evaluation object and stores lazy variables.
+  # It supports hierarchical structures that can be navigated
+  # using the #[] method.
+  #
   class Context
 
-    attr_reader :values
+    attr_reader :obj
+    alias_method :object, :obj
 
-    # @param [Object] a value or Hash with values
-    # @param [Array] symbol names of the 'let' variables
-    def initialize(values, lets = [])
-      @values = values
+    # @param obj
+    # @param [Array<Symbol>] lets
+    # @example a Hash context
+    #   Context.new({key: 5})
+    # @example a Hash context and expected lazy variables
+    #   Context.new({key: 5}, [:lazy_a, :lazy_b])
+    # @example a Fixnum context
+    #   Context.new(5)
+    def initialize(obj, lets = [])
+      @obj = obj
       @lets = lets
       @resolved_lets = {}
     end
 
-    # Returns true if the given attr is present in the current context
+    # Returns true if the given key can be resolved in the current context
     #
-    # @param [Object] attr
+    # @param key
     #
     # @return [Boolean]
-    def include?(attr)
-      @values.include?(attr) || @values.include?(attr.to_s) || @lets.include?(attr)
+    def include?(key)
+      @obj.kind_of?(Hash) && @obj.include?(key)
     end
 
-    # Resolve the given attribute from defined 'let' variables or stored values.
+    # Resolves an attribute key to its corresponding value
     #
-    # @param [Symbol] attr
+    # @param key
     #
-    # @return [Object]
-    # @return [nil] when attribute cannot be resolved
-    def resolve(attr)
-      if @lets.include?(attr)
-        @resolved_lets[attr] ||= @values.instance_exec(&@values[attr])
+    # @return the value
+    # @return [nil] if key cannot be resolved
+    # @raise UnexpectedObjectError if object in context is not a Hash
+    def resolve(key)
+      if !@obj.kind_of?(Hash)
+        raise UnexpectedObjectError, 'Object in context is not a Hash instance'
+      end
+
+      # Lazy variables have precedence over context attributes
+      if @lets.include?(key)
+        @resolved_lets[key] ||= @obj.instance_exec(&@obj[key])
       else
-        @values.fetch(attr) { |key| @values[attr.to_s] }
+        @obj[key]
       end
     end
+
   end
 end

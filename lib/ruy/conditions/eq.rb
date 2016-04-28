@@ -1,22 +1,25 @@
 module Ruy
   module Conditions
 
-    # Expects that a context attribute will be equal to a given value.
+    # Expects that a context attribute will be equal to a given value
+    #
     class Eq < Condition
-      attr_reader :obj, :attr
+      attr_reader :obj, :key
 
-      # @param obj Expected object
-      # @param attr Context attribute's name
-      def initialize(obj, *attrs)
+      # @param obj
+      # @param key
+      # @example evaluate that :key is 5
+      #   Eq.new(5, :key)
+      def initialize(obj, *keys)
         super
         @obj = obj
-        @attr = attrs.first if attrs.any?
+        @key = keys.first if keys.any?
       end
 
       def ==(o)
         o.kind_of?(Eq) &&
           o.obj == @obj &&
-          o.attr == @attr
+          o.key == @key
       end
 
       protected

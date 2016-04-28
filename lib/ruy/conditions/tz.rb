@@ -1,60 +1,59 @@
 module Ruy
   module Conditions
 
-    # Evaluates a block using comparison matchers that receive time-related objects with time zone awareness.
+    # Evaluates a block using comparison matchers
+    # that receive time-related objects with time zone awareness
     #
     # @note Does not support time zone-aware matchers inside sub-blocks.
-    #       A workaround for this is always surrounding your time zone-aware matchers by a 'tz' block even in sub-blocks
-    #       already surrounded by one.
+    #   A workaround for this is always surrounding your
+    #   time zone-aware matchers by a 'tz' block even in sub-blocks
+    #   already surrounded by one.
     class TZ < CompoundCondition
-      # @param [String] tz_identifier String representing IANA's time zone identifier.
+      
+      # @param [String] tz_identifier
+      #   String representing IANA's time zone identifier.
+      # @example evaluate all the sub-conditions under CST
+      #   TZ.new('CST')
       def initialize(tz_identifier)
         super
         @tz_identifier = tz_identifier
       end
 
-      # Adds a DayOfWeek condition
-      #
-      # @param (see Ruy::Conditions::DayOfWeek#initialize)
-      def day_of_week(dow, attr)
-        conditions << DayOfWeek.new(dow, attr, @tz_identifier)
+      # @see Ruy::Conditions::DayOfWeek#initialize
+      def day_of_week(dow, key)
+        conditions << DayOfWeek.new(dow, key, @tz_identifier)
       end
 
-      # Intercepts an 'eq' call to the superclass and enhances its arguments
-      #
-      # @param (see Ruy::Conditions::Eq#initialize)
-      def eq(pattern, *attrs, &block)
-        super(TimePattern.new(pattern, @tz_identifier), *attrs, &block)
+      # @see Ruy::Conditions::Eq#initialize
+      def eq(pattern, *keys)
+        super(TimePattern.new(pattern, @tz_identifier), *keys)
       end
 
-      # TODO Add Greater condition call here
 
-      # Intercepts a 'greater_than_or_equal' call to the superclass and enhances its arguments
-      #
-      # @param (see Ruy::Conditions::GreaterThanOrEqual#initialize)
-      def greater_than_or_equal(pattern, *attrs, &block)
-        super(TimePattern.new(pattern, @tz_identifier), *attrs, &block)
+      # @see Ruy::Conditions::GreaterThanOrEqual#initialize
+      def greater_than(pattern, *keys)
+        super(TimePattern.new(pattern, @tz_identifier), *keys)
       end
 
-      # Intercepts a 'less_than' call to the superclass and enhances its arguments
-      #
-      # @param (see Ruy::Conditions::LessThan#initialize)
-      def less_than(pattern, *attrs, &block)
-        super(TimePattern.new(pattern, @tz_identifier), *attrs, &block)
+      # @see Ruy::Conditions::GreaterThanOrEqual#initialize
+      def greater_than_or_equal(pattern, *keys)
+        super(TimePattern.new(pattern, @tz_identifier), *keys)
       end
 
-      # Intercepts a 'less_than_or_equal' call to the superclass and enhances its arguments
-      #
-      # @param (see Ruy::Conditions::LessThanOrEqual#initialize)
-      def less_than_or_equal(pattern, *attrs, &block)
-        super(TimePattern.new(pattern, @tz_identifier), *attrs, &block)
+      # @see Ruy::Conditions::LessThan#initialize
+      def less_than(pattern, *keys)
+        super(TimePattern.new(pattern, @tz_identifier), *keys)
       end
 
-      # Intercepts a 'between' call to the superclass and enhances its arguments
-      #
-      # @param (see Ruy::Conditions::Between#initialize)
-      def between(from, to, *attrs, &block)
-        super(TimePattern.new(from, @tz_identifier), TimePattern.new(to, @tz_identifier), *attrs, &block)
+      # @see Ruy::Conditions::LessThanOrEqual#initialize
+      def less_than_or_equal(pattern, *keys)
+        super(TimePattern.new(pattern, @tz_identifier), *keys)
+      end
+
+      # @see Ruy::Conditions::Between#initialize)
+      def between(from, to, *keys)
+        super(TimePattern.new(from, @tz_identifier),
+          TimePattern.new(to, @tz_identifier), *keys)
       end
 
     end

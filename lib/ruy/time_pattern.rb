@@ -39,12 +39,6 @@ module Ruy
       @utc_offset = @tz.current_period.utc_total_offset
     end
 
-    # Implements Ruby's spaceship operator to work with Time objects.
-    #   Uses Object's spaceship operator if passed object
-    #   does not respond to #to_time.
-    #
-    # @param [#to_time]
-    # @return [Fixnum]
     def <=>(o)
       if o.respond_to?(:to_time)
         time = o.to_time
@@ -67,12 +61,6 @@ module Ruy
       end
     end
 
-    # Overrides Object equal operator and uses Comparable equality
-    #   for Time objects.
-    #   Uses identity comparison if passed object does not respond to #to_time.
-    #
-    # @param [#to_time]
-    # @return [Boolean]
     def ==(o)
       if o.is_a?(self.class)
         return year == o.year &&
@@ -90,25 +78,20 @@ module Ruy
     end
 
     # Returns a well-formed Ruy timestamp with IANA time zone identifier
-    #   representing the current TimePattern object.
+    # representing the current TimePattern object.
     #
-    # @return [String]
     def to_s
       @pattern
     end
 
-    # Returns a representation of the time pattern
-    #
-    # @return [String]
     def inspect
       @pattern.inspect
     end
 
-    # Overrides Ruby's method missing call to redirect calls
-    #   to the stored Time object in case it responds to the missing method.
-    #   Will call to super in case it doesn't.
+    protected
+
+    # Redirects missing methods to the UTC Time object stored in the instance
     #
-    # @param (see BasicObject#method_missing)
     def method_missing(method, *args)
       @utc.respond_to?(method) ? @utc.send(method, *args) : super
     end
