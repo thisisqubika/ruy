@@ -77,7 +77,7 @@ Available conditions:
  - `dig` *Digs into a Hash allowing to define conditions over nested attributes*
  - `eq` *Tests a context value for equality*
  - `every` *Evaluates that at all the elements of a context enumerable matches the nested conditions*
- - `except` *Evaluates that a given context value is not equal to a specified value*
+ - `except` *Evaluates that any of the nested conditions does not suffice*
  - `greater_than` *Tests that a given context value is greater than something*
  - `greater_than_or_equal` *Tests that a given context value is greater than or equal to something*
  - `in` *Given context value must belong to a specified list of values*
@@ -89,7 +89,7 @@ Available conditions:
 
 ### Rules
 
-A Rule is a set of conditions that must suffice and returns a value resulting from either an
+A Rule is a set of conditions that must suffice, and return a value resulting from either an
 outcome or a fallback.
 
 ### Contexts
@@ -98,7 +98,8 @@ A context is a `Hash` from which values are fetched in order to evaluate a Rule.
 
 ### Lazy values
 
-Rules can define lazy values. The context must provide a proc which is evaluted only once the first time the value is needed. The result returned by the proc is memoized and used to evaluate subsequent conditions.
+Rules can define lazy values. The context must provide a `Proc` which is evaluted only once the first
+ time the value is needed. The result returned by the proc is memoized and used to evaluate subsequent conditions.
 
 
 ``` ruby
