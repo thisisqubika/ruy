@@ -76,48 +76,51 @@ describe Ruy::Rule do
       let(:rule) do
         rule = Ruy::Rule.new
 
-        rule.set :name, 'Full defined rule'
+        rule.instance_exec do
+          set :name, 'Full defined rule'
 
-        rule.let :expensive_count
-        rule.let :randomness
+          let :expensive_count
+          let :randomness
 
-        rule.eq 'New York', :city
+          eq 'New York', :city
 
-        rule.any do
-          between 18, 22, :age
-          eq true, :enabled
-        end
-
-        rule.any do
-          between 0, 17, :age
-          eq false, :enabled
-        end
-
-        rule.every(:car) do
-          assert :airbag
-          every(:wheels) do
-            greater_than 28, :diameter
+          any do
+            between 18..22, :age
+            eq true, :enabled
           end
-        end
 
-        rule.some(:cities) do
-          eq 'France', :country
-          some :partners do
-            eq 'Glasgow', :name
+          any do
+            between 0, 17, :age
+            eq false, :enabled
           end
+
+          every(:car) do
+            assert :airbag
+            every(:wheels) do
+              greater_than 28, :diameter
+            end
+          end
+
+          some(:cities) do
+            eq 'France', :country
+            some :partners do
+              eq 'Glasgow', :name
+            end
+          end
+
+          dig(:location, :address) do
+            eq '5th Av', :street
+          end
+
+          tz('America/New_York') do
+            eq '2015-01-01T00:00:00', :timestamp
+          end
+
+          outcome 'I matched'
+
+          fallback 'Nothing matched'
         end
 
-        rule.dig(:location, :address) do
-          eq '5th Av', :street
-        end
-
-        rule.tz('America/New_York') do
-          eq '2015-01-01T00:00:00', :timestamp
-        end
-
-        rule.outcome 'I matched'
-
-        rule.fallback 'Nothing matched'
         rule
       end
 
@@ -131,7 +134,7 @@ let :randomness
 eq "New York", :city
 
 any do
-  between 18, 22, :age
+  between 18..22, :age
   eq true, :enabled
 end
 

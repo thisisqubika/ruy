@@ -32,6 +32,20 @@ describe Ruy::Conditions::Between do
       end
     end
 
+    context 'when range' do
+      subject(:condition) { described_class.new(0..17, :age) }
+
+      it 'is true when attribute resolves to a value range' do
+        context = Ruy::Context.new({:age => 10})
+        expect(condition.call(context)).to be
+      end
+
+      it 'is false when attribute resolves to value out of range' do
+        context = Ruy::Context.new({:age => 18})
+
+        expect(condition.call(context)).to_not be
+      end
+    end
   end
 
   describe '#==' do
