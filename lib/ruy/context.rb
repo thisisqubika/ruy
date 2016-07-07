@@ -11,7 +11,7 @@ module Ruy
     alias_method :object, :obj
 
     # @param obj
-    # @param [Array<Symbol>] lets
+    # @param lets [Array<Symbol>]
     # @example a Hash context
     #   Context.new({key: 5})
     # @example a Hash context and expected lazy variables

@@ -20,14 +20,12 @@ module Ruy
     # Returns the value of this outcome if all of the conditions succeed.
     # It also returns the value when there's no conditions.
     #
-    # @param [Ruy::Context] ctx
+    # @param ctx [Ruy::Context]
     #
     # @return the value
     # @return [nil] if conditions are not met
     def call(ctx)
-      if @root_condition.call(ctx)
-        @value
-      end
+      @value if @root_condition.call(ctx)
     end
 
     # @return [Array<Ruy::Condition>]

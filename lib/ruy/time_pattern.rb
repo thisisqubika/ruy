@@ -9,9 +9,9 @@ module Ruy
     attr_reader :year, :month, :day, :hour, :min, :sec, :time_zone, :tz, :local,
       :utc, :utc_offset
 
-    # @param [String] pattern String representing a Ruy's
+    # @param pattern [String] String representing a Ruy's
     #   well-formed timestamp pattern
-    # @param [String] tz_identifier String representing IANA's
+    # @param tz_identifier [String] String representing IANA's
     #   time zone identifier. Defaults to UTC if none passed.
     def initialize(pattern, tz_identifier = 'UTC')
       unless match_data = pattern.match(WELL_FORMED_TS_EXP)

@@ -34,7 +34,7 @@ module Ruy
     # Evaluates that rule conditions return the corresponding outcome
     # or fallback depending on whether the conditions matched or not
     #
-    # @param [Hash] context
+    # @param context [Hash]
     #
     # @return outcome or fallback values
     def call(context)
@@ -50,7 +50,7 @@ module Ruy
     # Stores the name of a lazy variable whose block will be defined
     # in the evaluated context
     #
-    # @param [Symbol] name
+    # @param name [Symbol]
     def let(name)
       @lets << name
     end

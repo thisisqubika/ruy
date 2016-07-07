@@ -12,6 +12,7 @@ module Ruy
         instance_exec(&block) if block_given?
       end
 
+      # @see CompoundCondition#evaluate
       def evaluate(ctx)
         !super
       end

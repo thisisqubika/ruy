@@ -6,7 +6,7 @@ module Ruy
     class Dig < CompoundCondition
       attr_reader :chain
 
-      # @param *chain Context attributes' chain
+      # @param chain Sequence of keys to navigate the hash hierarchy
       # @example navigate key -> sub_key -> sub_sub_key
       #   Dig.new(:key, :sub_key, :sub_sub_key)
       def initialize(*chain)
@@ -16,15 +16,17 @@ module Ruy
 
       def ==(o)
         super &&
-        o.chain == @chain
+          o.chain == @chain
       end
 
       protected
 
+      # @see CompoundCondition#evaluate
       def evaluate(ctx)
         ctx && Ruy::Utils::Rules.evaluate_conditions(conditions, ctx)
       end
 
+      # @see CompoundCondition#resolve
       def resolve(ctx)
         @chain.reduce(ctx) do |currentctx, key|
           if currentctx.include?(key)

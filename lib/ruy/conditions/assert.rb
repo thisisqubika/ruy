@@ -4,23 +4,22 @@ module Ruy
     # Expects that the context key stores a truthy value
     #
     class Assert < Condition
-      attr_reader :key
-
       # @param key
       # @example evaluate that :key passes
-      #   Asset.new(:key)
-      def initialize(*keys)
+      #   Assert.new(:key)
+      def initialize(*key)
         super
-        @key = keys.first if keys.any?
+        @key = key.first if key.any?
       end
 
       def ==(o)
         o.kind_of?(Assert) &&
-        o.key == @key
+          o.key == @key
       end
 
       protected
 
+      # @see Condition#evaluate
       def evaluate(obj)
         !!obj
       end

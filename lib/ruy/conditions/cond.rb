@@ -10,6 +10,7 @@ module Ruy
 
       protected
 
+      # @see CompoundCondition#evaluate
       def evaluate(ctx)
         clauses = conditions.each_slice(2)
 

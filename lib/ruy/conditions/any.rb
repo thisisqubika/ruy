@@ -7,6 +7,7 @@ module Ruy
 
       protected
 
+      # @see CompoundCondition#evaluate
       def evaluate(ctx)
         conditions.any? do |condition|
           condition.call(ctx)

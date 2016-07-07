@@ -5,14 +5,13 @@ module Ruy
     # matches the set of sub-conditions
     #
     class Every < CompoundCondition
-      attr_reader :key
 
       # @param key
       # @example check that every element of :array matches the sub-conditions
       #   Every.new(:array)
-      def initialize(*keys)
+      def initialize(*key)
         super
-        @key = keys.first if keys.any?
+        @key = key.first if key.any?
       end
 
       def ==(o)
@@ -22,6 +21,7 @@ module Ruy
 
       protected
 
+      # @see CompoundCondition#evaluate
       def evaluate(enum)
         enum.all? do |ctx|
           newctx = Ruy::Context.new(ctx)

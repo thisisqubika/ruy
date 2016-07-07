@@ -15,7 +15,7 @@ module Ruy
 
       # Evaluates a context's object for its compliance with the condition.
       #
-      # @param [Context] ctx
+      # @param ctx [Context]
       # @return [Boolean]
       def call(ctx)
         evaluate(resolve(ctx))
@@ -42,7 +42,7 @@ module Ruy
       # Lookups the object of evaluation in the context
       # based on the initialization attribute
       #
-      # @param [Context] ctx
+      # @param ctx [Context]
       # @return an object stored in the context
       def resolve(ctx)
         has_key? ? ctx.resolve(key) : ctx.object

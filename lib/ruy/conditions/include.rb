@@ -5,16 +5,16 @@ module Ruy
     # from the context attribute
     #
     class Include < Condition
-      attr_reader :obj, :key
+      attr_reader :obj
 
       # @param obj
       # @param key
       # @example check that :key includes 5
       #   Include.new(5, :key)
-      def initialize(obj, *keys)
+      def initialize(obj, *key)
         super
         @obj = obj
-        @key = keys.first if keys.any?
+        @key = key.first if key.any?
       end
 
       def ==(o)
@@ -25,6 +25,7 @@ module Ruy
 
       protected
 
+      # @see Condition#evaluate
       def evaluate(enum)
         enum.include?(@obj)
       end

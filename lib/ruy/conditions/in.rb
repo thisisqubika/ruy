@@ -4,16 +4,16 @@ module Ruy
     # Expects that a context attribute is included in a set of values
     #
     class In < Condition
-      attr_reader :ary, :key
+      attr_reader :ary
 
       # @param ary
       # @param key
       # @example check that :key is included in [1,3,5]
       #   In.new([1,3,5], :key)
-      def initialize(ary, *keys)
+      def initialize(ary, *key)
         super
         @ary = ary
-        @key = keys.first if keys.any?
+        @key = key.first if key.any?
       end
 
       def ==(o)
@@ -24,6 +24,7 @@ module Ruy
 
       protected
 
+      # @see Condition#evaluate
       def evaluate(value)
         @ary.include?(value)
       end

@@ -10,7 +10,7 @@ module Ruy
     class DayOfWeek < Condition
       DAYS_INTO_WEEK = %w(sunday monday tuesday wednesday thursday friday saturday)
 
-      attr_reader :day, :key, :tz_identifier
+      attr_reader :day, :tz_identifier
 
       # @param day
       # @param key
@@ -35,6 +35,7 @@ module Ruy
 
       protected
 
+      # @see Condition#evaluate
       def evaluate(date)
         # Get the TZInfo::Timezone object here so it can be garbage-collected later
         cmp = TZInfo::Timezone.get(@tz_identifier).utc_to_local(date.to_time.utc)

@@ -5,21 +5,21 @@ module Ruy
     # matches the set of sub-conditions
     #
     class Some < CompoundCondition
-      attr_reader :key
 
       # @param key
       # @example check that at least a value from :key matches the sub-conditions
       #   Some.new(:key)
-      def initialize(*keys)
+      def initialize(*key)
         super
-        @key = keys.first if keys.any?
+        @key = key.first if key.any?
       end
 
+      # @see CompoundCondition#evaluate
       def evaluate(enum)
         enum.any? do |ctx|
-          newctx = Ruy::Context.new(ctx)
+          new_ctx = Ruy::Context.new(ctx)
 
-          Ruy::Utils::Rules.evaluate_conditions(conditions, newctx)
+          Ruy::Utils::Rules.evaluate_conditions(conditions, new_ctx)
         end
       end
 

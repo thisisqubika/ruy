@@ -4,16 +4,16 @@ module Ruy
     # Expects that a context attribute will be greater than the given value
     #
     class GreaterThan < Condition
-      attr_reader :obj, :key
+      attr_reader :obj
 
       # @param obj
       # @param key
       # @example expects that :key is greater than 5
       #   GreaterThan.new(5, :key)
-      def initialize(obj, *keys)
+      def initialize(obj, *key)
         super
         @obj = obj
-        @key = keys.first if keys.any?
+        @key = key.first if key.any?
       end
 
       def ==(o)
@@ -24,6 +24,7 @@ module Ruy
 
       protected
 
+      # @see Condition#evaluate
       def evaluate(value)
         @obj < value
       end

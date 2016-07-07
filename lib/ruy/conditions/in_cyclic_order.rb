@@ -4,18 +4,18 @@ module Ruy
     # Expects that a value is contained in a cyclic order
     #
     class InCyclicOrder < Condition
-      attr_reader :from, :to, :key
+      attr_reader :from, :to
 
       # @param from left bound
       # @param to right bound
       # @param key
-      # @example check that :key is between a cycle defined between 100 and -100
+      # @example check that :key is included in a cycle defined between 100 and -100
       #   InCyclicOrder.new(100, -100, :key)
-      def initialize(from, to, *keys)
+      def initialize(from, to, *key)
         super
         @from = from
         @to = to
-        @key = keys.first if keys.any?
+        @key = key.first if key.any?
       end
 
       def ==(o)
@@ -27,6 +27,7 @@ module Ruy
 
       protected
 
+      # @see Condition#evaluate
       def evaluate(value)
         if @from > @to
           (@from <= value || @to >= value)
