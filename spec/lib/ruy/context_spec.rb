@@ -66,7 +66,29 @@ describe Ruy::Context do
       end
     end
 
-    pending 'when attribute references a lazy variable'
+    context 'when attribute references a lazy variable' do
+      let(:ctx) { {:lazy => -> { Array.new } } }
+
+      subject { described_class.new(ctx, [:lazy]) }
+
+      it 'returns the expected value' do
+        expect(subject.resolve(:lazy)).to be_kind_of(Array)
+      end
+
+      it 'caches the result' do
+        ary = subject.resolve(:lazy)
+        expect(subject.resolve(:lazy)).to be(ary)
+      end
+
+      context 'and key is not in the context' do
+        let(:ctx) { {:other_key => 1} }
+
+        it 'returns nil' do
+          expect(subject.resolve(:key)).to be_nil
+        end
+      end
+
+    end
 
   end
 end
