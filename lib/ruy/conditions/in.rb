@@ -1,26 +1,30 @@
 module Ruy
   module Conditions
 
-    # Expects that a context attribute is included in a set of values.
+    # Expects that a context attribute is included in a set of values
+    #
     class In < Condition
-      attr_reader :ary, :attr
+      attr_reader :ary
 
-      # @param ary Expected set of values
-      # @param attr Context attribute's name
-      def initialize(ary, *attrs)
+      # @param ary
+      # @param key
+      # @example check that :key is included in [1,3,5]
+      #   In.new([1,3,5], :key)
+      def initialize(ary, *key)
         super
         @ary = ary
-        @attr = attrs.first if attrs.any?
+        @key = key.first if key.any?
       end
 
       def ==(o)
         o.kind_of?(In) &&
           o.ary == @ary &&
-          o.attr == @attr
+          o.key == @key
       end
 
       protected
 
+      # @see Condition#evaluate
       def evaluate(value)
         @ary.include?(value)
       end

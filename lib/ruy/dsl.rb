@@ -142,7 +142,7 @@ module Ruy
 
     # Adds a TZ condition block
     #
-    # @param [String] tz_identifier String representing IANA's
+    # @param tz_identifier [String] String representing IANA's
     #   time zone identifier. Defaults to UTC if none passed.
     # @yield Evaluates the given block in the context of the TZ rule
     def tz(tz_identifier = 'UTC', &block)
@@ -152,7 +152,7 @@ module Ruy
       self.conditions << cond
     end
 
-    # @param [Integer] indentation Indentation level
+    # @param indentation [Integer] Indentation level
     def to_s(indentation = 0)
       rule_name = Ruy::Utils::Naming.rule_name(self)
 

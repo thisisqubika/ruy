@@ -6,8 +6,8 @@ module Ruy
       #
       # Returns true when all the conditions match, false otherwise.
       #
-      # @param [Array<Condition>] conditions
-      # @param [Context] ctx
+      # @param conditions [Array<Condition>]
+      # @param ctx [Context]
       #
       # @return [Boolean]
       def self.evaluate_conditions(conditions, ctx)
@@ -20,7 +20,7 @@ module Ruy
 
       # Returns the value of the first outcome that matches
       #
-      # @param [Ruy::Context] ctx
+      # @param ctx [Ruy::Context]
       #
       # @return [Object] The value of the first matching outcome
       # @return [nil] when no outcome matches

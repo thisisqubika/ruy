@@ -7,7 +7,7 @@ module Ruy
       # @example
       #   simple_module_name(Net::HTTP) # => 'HTTP'
       #
-      # @param [Module] mod
+      # @param mod [Module]
       #
       # @return [String]
       # @return [nil] if given module is an anonymous one.
@@ -26,7 +26,7 @@ module Ruy
       #  - all caps
       #  - camel case mixed with all caps
       #
-      # @param [String] s
+      # @param s [String]
       #
       # @return [String]
       def self.snakecase(s)
@@ -40,7 +40,7 @@ module Ruy
       # @example
       #   rule_name(Ruy::Eq.new) # => 'eq'
       #
-      # @param [Ruy::Rule] rule
+      # @param rule [Ruy::Rule]
       #
       # @return [String]
       def self.rule_name(rule)

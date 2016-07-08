@@ -1,14 +1,17 @@
 module Ruy
   module Conditions
 
-    # Expects a successful evaluation of a sub-pair of conditions.
+    # Evaluates any given number of sub-conditions in subsequent pairs
+    # until one pair evaluates succesfully.
+    # If an uneven number of conditions is given, it will evaluate in pairs
+    # except for the last condition which will be evaluated alone.
     #
-    # Groups rules in slices of 2 conditions. Then evalutes each slice until one of them succeds.
-    # If there's an even number of conditions, the last slice will have only one condition.
-    #
-    # Cond is handy for mocking if/else if/else constructs.
     class Cond < CompoundCondition
-      def call(ctx)
+
+      protected
+
+      # @see CompoundCondition#evaluate
+      def evaluate(ctx)
         clauses = conditions.each_slice(2)
 
         clauses.any? do |rule_1, rule_2|
@@ -21,6 +24,8 @@ module Ruy
           end
         end
       end
+
     end
+
   end
 end

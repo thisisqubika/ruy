@@ -18,20 +18,22 @@ describe Ruy::Context do
       end
     end
 
-    context 'when attribute is present in hash as a string' do
-      let(:ctx) { {'attr' => 'value'} }
-
-      it 'is true' do
-        expect(subject.include?(:attr)).to be true
-      end
-    end
-
     describe 'lazy attributes lookup' do
       subject { described_class.new(ctx, [:lazy]) }
 
       context 'when looked up lazy attribute is defined' do
-        it 'is true' do
-          expect(subject.include?(:lazy)).to be true
+        context 'when there\'s the same key in the context' do
+          let(:ctx) { {lazy: 'value'} }
+
+          it 'is true' do
+            expect(subject.include?(:lazy)).to be true
+          end
+        end
+
+        context 'when context does not have the same key' do
+          it 'is false' do
+            expect(subject.include?(:lazy)).to be false
+          end
         end
       end
 
@@ -55,14 +57,6 @@ describe Ruy::Context do
     context 'when attribute is not present in hash' do
       it 'returns nil' do
         expect(subject.resolve(:non_existent_attribute)).to be_nil
-      end
-    end
-
-    context 'when attribute is present in hash as a string' do
-      let(:ctx) { {'attr' => 'value'} }
-
-      it 'returns the expected value' do
-        expect(subject.resolve(:attr)).to eq('value')
       end
     end
 

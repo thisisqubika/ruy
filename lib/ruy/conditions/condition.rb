@@ -1,5 +1,9 @@
 module Ruy
   module Conditions
+
+    # Abstract base class for simple conditions
+    #
+    # @abstract
     class Condition
       include Ruy::DSL
 
@@ -9,30 +13,39 @@ module Ruy
         @params = params
       end
 
-      # Evaluates a context value to check whether or not it satisfies the condition.
+      # Evaluates a context's object for its compliance with the condition.
       #
-      # @param [Context] ctx
+      # @param ctx [Context]
       # @return [Boolean]
       def call(ctx)
-        evaluate(solve(ctx))
+        evaluate(resolve(ctx))
       end
 
       protected
 
-      # Evaluates a value to check if it satisfies the condition.
+      attr_reader :key
+
+      # Returns true if a key has been defined among the condition attributes
       #
-      # @param [Object] value
       # @return [Boolean]
-      def evaluate(value)
-        value
+      def has_key?
+        defined? @key
       end
 
-      # Lookups the value in the context based on the initialization attribute.
+      # Evaluates an object to check if it satisfies the condition
       #
-      # @param [Context] ctx
-      # @return [Object]
-      def solve(ctx)
-        defined?(@attr) ? ctx.resolve(@attr) : ctx.values
+      # @abstract
+      # @param obj
+      # @return [Boolean] true if it satisfies the condition, false otherwise
+      def evaluate(obj); end
+
+      # Lookups the object of evaluation in the context
+      # based on the initialization attribute
+      #
+      # @param ctx [Context]
+      # @return an object stored in the context
+      def resolve(ctx)
+        has_key? ? ctx.resolve(key) : ctx.object
       end
 
     end

@@ -1,31 +1,31 @@
 module Ruy
   # Represents a possible result (outcome) of evaluating a rule set
+  # Additionally, an outcome can be composed of rules. In that case,
+  # the outcome will evaluate to its value
+  # if all of them are evaluated successfully.
   #
-  # Additionally, an outcome can be composed of rules. In that case, the outcome will evaluate to
-  # its value if all of them are evaluated successfully.
   class Outcome
     include DSL
 
     attr_reader :value
 
-    # @param value The value of this outcome
+    # @param value
+    # @example will return true if evaluation passes
+    #   Outcome.new(true)
     def initialize(value)
       @value = value
       @root_condition = Ruy::Conditions::All.new
     end
 
-    # Returns the value of this outcome is all of the conditions succeed.
-    #
+    # Returns the value of this outcome if all of the conditions succeed.
     # It also returns the value when there's no conditions.
     #
-    # @param [Ruy::Context] ctx
+    # @param ctx [Ruy::Context]
     #
-    # @return [Object]
-    # @return [nil] If some of the conditions does not succeeds
+    # @return the value
+    # @return [nil] if conditions are not met
     def call(ctx)
-      if @root_condition.call(ctx)
-        @value
-      end
+      @value if @root_condition.call(ctx)
     end
 
     # @return [Array<Ruy::Condition>]

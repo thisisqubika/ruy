@@ -1,27 +1,31 @@
 module Ruy
   module Conditions
 
-    # Iterates over an Enumerable evaluating that some value matches the set of sub-conditions.
+    # Iterates over an Enumerable evaluating that some value
+    # matches the set of sub-conditions
+    #
     class Some < CompoundCondition
-      attr_reader :attr
 
-      # @param attr Context attribute's name
-      def initialize(*attrs)
+      # @param key
+      # @example check that at least a value from :key matches the sub-conditions
+      #   Some.new(:key)
+      def initialize(*key)
         super
-        @attr = attrs.first if attrs.any?
+        @key = key.first if key.any?
       end
 
-      def call(ctx)
-        solve(ctx).any? do |newctx|
-          ctx = Ruy::Context.new(newctx)
+      # @see CompoundCondition#evaluate
+      def evaluate(enum)
+        enum.any? do |ctx|
+          new_ctx = Ruy::Context.new(ctx)
 
-          Ruy::Utils::Rules.evaluate_conditions(conditions, ctx)
+          Ruy::Utils::Rules.evaluate_conditions(conditions, new_ctx)
         end
       end
 
       def ==(o)
         super &&
-          o.attr == @attr
+          o.key == @key
       end
     end
   end
