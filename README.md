@@ -125,7 +125,7 @@ conditions, in such case, if the conditions meet, the outcome value is returned.
 
 A Rule can have multiple outcomes, the first matching one is returned.
 
-### Time Zone awareness
+## Time Zone awareness
 
 When it comes to matching times in different time zones, Ruy is bundled with a built in `tz` block that will enable specific matchers to make time zone-aware comparisons.
 
@@ -147,7 +147,7 @@ String time patterns follow the Ruy's well-formed time pattern structure as foll
 
 Where the time zone identifier is optional, but if you specify it, will take precedence over the block's identifier. In case you don't specify it, Ruy will get the time zone from the `tz` block's argument. If neither the block nor the pattern specify it, UTC will be used.
 
-#### Days of week matcher
+### Days of week matcher
 
 Inside any `tz` block, there's a matcher to look for a specific day of the week in the time zone of the block.
 
@@ -171,7 +171,7 @@ This matcher supports both the `Symbol` and number syntax in the range `(0..6)` 
 
 The day of week matcher will try to parse timestamps using the ISO8601 format unless the context passes a Time object.
 
-#### Nested blocks support
+### Nested blocks support
 
 You cannot use matchers inside nested blocks in a `tz` block expecting them to work as if they were immediate children of `tz`.
 
@@ -201,6 +201,6 @@ end
 
 Ruy depends on [TZInfo](http://tzinfo.github.io/ "TZ Info website") to calculate offsets using IANA's Time Zone Database. Check their website for information about time zone identifiers.
 
-### Documentation
+## Documentation
 
 [RubyDoc.info](http://www.rubydoc.info/github/moove-it/ruy)
