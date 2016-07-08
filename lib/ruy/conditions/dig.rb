@@ -6,7 +6,7 @@ module Ruy
     class Dig < CompoundCondition
       attr_reader :chain
 
-      # @param chain Sequence of keys to navigate the hash hierarchy
+      # @param chain [Array<Object>] Sequence of keys to navigate the hash hierarchy
       # @example navigate key -> sub_key -> sub_sub_key
       #   Dig.new(:key, :sub_key, :sub_sub_key)
       def initialize(*chain)
