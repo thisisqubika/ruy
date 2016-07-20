@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://moove-it.github.io/ruy/'
   s.email       = 'ruy@moove-it.com'
 
-  s.add_runtime_dependency 'tzinfo', '~> 1'
+  s.add_runtime_dependency 'tzinfo'
 
   s.add_development_dependency 'rspec', '~> 3.1'
   s.add_development_dependency 'simplecov', '0.10.0'
