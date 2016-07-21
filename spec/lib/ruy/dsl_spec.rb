@@ -50,6 +50,14 @@ describe Ruy::DSL do
     end
   end
 
+  describe '#belong' do
+    it 'adds a Belong condition' do
+      host.belong([:white, :blue, :red], :color)
+
+      expect(host.conditions).to include(be_a(Ruy::Conditions::Belong))
+    end
+  end
+
   describe '#between' do
     it 'adds a Between condition' do
       host.between(1900, 2000, :year_of_birth)
@@ -157,14 +165,6 @@ describe Ruy::DSL do
         host.greater_than_or_equal(18)
         expect(host.conditions).to include(be_a(Ruy::Conditions::GreaterThanOrEqual))
       end
-    end
-  end
-
-  describe '#in' do
-    it 'adds an In condition' do
-      host.in([:white, :blue, :red], :color)
-
-      expect(host.conditions).to include(be_a(Ruy::Conditions::In))
     end
   end
 

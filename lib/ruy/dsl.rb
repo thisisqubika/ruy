@@ -28,6 +28,13 @@ module Ruy
       self.conditions << Conditions::Assert.new(*attrs)
     end
 
+    # Adds a Belong condition.
+    #
+    # @param (see Conditions::Belong#initialize)
+    def belong(values, *attrs)
+      self.conditions << Conditions::Belong.new(values, *attrs)
+    end
+
     # Adds a Between condition.
     #
     # @param (see Conditions::Between#initialize)
@@ -93,13 +100,6 @@ module Ruy
     # @param (see Conditions::GreaterThanOrEqual#initialize)
     def greater_than_or_equal(value, *attrs)
       self.conditions << Conditions::GreaterThanOrEqual.new(value, *attrs)
-    end
-
-    # Adds an In condition.
-    #
-    # @param (see Conditions::Include#initialize)
-    def in(values, *attrs)
-      self.conditions << Conditions::In.new(values, *attrs)
     end
 
     # Adds a InCyclicOrder condition.

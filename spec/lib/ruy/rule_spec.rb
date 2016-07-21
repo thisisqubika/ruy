@@ -94,6 +94,8 @@ describe Ruy::Rule do
             eq false, :enabled
           end
 
+          belong [:saturday, :sunday], :day_of_week
+
           every(:car) do
             assert :airbag
             every(:wheels) do
@@ -142,6 +144,8 @@ any do
   between 0, 17, :age
   eq false, :enabled
 end
+
+belong [:saturday, :sunday], :day_of_week
 
 every :car do
   assert :airbag
