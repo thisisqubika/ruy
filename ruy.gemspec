@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'ruy'
-  s.version     = '2.0.0'
+  s.version     = '2.0.1'
   s.files       = %w(LICENSE README.md) + Dir['lib/**/*']
   s.author      = 'Moove-IT'
   s.license     = 'MIT'
